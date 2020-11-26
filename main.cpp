@@ -19,8 +19,7 @@ int main()
 
 	//getimage(xxx, "/testResources/0_1.jpg");
 	//putimage(0, 0, xxx);
-
-
+	printf("Hello") ;
 
 	//system("pause");//stdlib.h
 	//test:¡¨Ω”≤‚ ‘
