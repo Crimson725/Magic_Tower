@@ -7,6 +7,7 @@
 地图：使用二维数组
 3、交互（上下左右，触碰）
 4、关卡优化*/
+#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,8 +40,8 @@ typedef struct Actor
 	char *name = "打工人"; //名称
 	int level = 1;		   //初始等级
 	int hp = 1000;		   //初始血量
-	int Attack = 10;	   //初始攻击力
-	int Defence = 10;	   ///初始防御力
+	int Attack = 30;	   //初始攻击力
+	int Defence = 30;	   ///初始防御力
 	int money = 0;		   //初始金钱
 	int exp = 0;		   //初始经验
 	int x;				   //位置坐标x
@@ -85,6 +86,7 @@ void changemap()
 {
 	memcpy(M[map_order_now - 1].Map, map, sizeof(map)); //string.h 函数 地图切换函数
 }
+//任务位置切换核心函数(待完善)
 void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
 {
 }
@@ -229,8 +231,8 @@ void initImage() //图像初始化函数
 	getimage(Stars.img, "/picture1/Stars.png");
 	getimage(People.img, "/picture1/actor.png");
 	getimage(StoneMan.img, "/picture1/StoneMan.png")
-		//弹窗图片
-		getimage(CrossEmblem_PUSH.img, "/picture1/CrossEmblem_PUSH.png");
+	//弹窗图片
+	getimage(CrossEmblem_PUSH.img, "/picture1/CrossEmblem_PUSH.png");
 	getimage(Shop_PUSH[0].img, "/picture1/Shop1.png");
 	getimage(Shop_PUSH[1].img, "/picture1/Shop2.png");
 	getimage(Shop_PUSH[2].img, "/picture1/Shop3.png");
@@ -432,17 +434,38 @@ void InitEnemy() //敌人角色初始化
 	MonsterKing.money = 30;
 	strcpy(MonsterKing.name, "史莱姆王");
 }
+void VersusWindow()//战斗界面(RPG形式)
+{
+
+}
+void Control_Move()//控制人物移动函数
+{
+	if(kbhit())
+	{
+		char move=getch();
+		switch(move)
+		{
+			case 72:
+				if(map[People.x-1][People.y]==0)
+				{
+					People.x-=1;
+					getimage(People.img, "/picture1/actorB.png");//人物向前走，后视图
+				}
+		}
+	}
+
+
+}
 int main()
 {
-	initgraph(800, 600); //创建窗口 800*600 ege库函数
+	initgraph(1080, 780,0); //创建窗口 800*600 ege库函数
 	setcaption("Magic_Tower");
 	//PIMAGE xxx = newimage();
 
 	//getimage(xxx, "/testResources/0_1.jpg");
 	//putimage(0, 0, xxx);
 
-	//system("pause");//stdlib.h
-	//test:连接测试
+	
 	getch();
 	closegraph(); //窗口关闭 ege库函数
 	return 0;
