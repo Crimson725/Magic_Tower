@@ -434,6 +434,134 @@ void InitEnemy() //敌人角色初始化
 	MonsterKing.money = 30;
 	strcpy(MonsterKing.name, "史莱姆王");
 }
+void Show_Map()
+{
+	/*memcpy(map, map1, sizeof(map));
+	map[PEOPLE.x][PEOPLE.y] = 15;
+	putimage(0, 0, BEIJING.img);*/
+
+	for (int i = 0;i < 13;i++)
+	{
+		for (int j = 0;j < 13;j++)
+		{
+			if (map[j][i] == 0)
+				putimage(60 * i + 304, 60 * j + 3, Floor.img);
+			else if (map[j][i] == 2)
+				putimage(60 * i + 304, 60 * j + 3, Wall.img);
+			else if (map[j][i] == 3)
+				putimage(60 * i + 304, 60 * j + 3, RedDoor.img);
+			else if (map[j][i] == 4)
+				putimage(60 * i + 304, 60 * j + 3, YellowDoor.img);
+			else if (map[j][i] == 5)
+				putimage(60 * i + 304, 60 * j + 3, BlueDoor.img);
+			else if (map[j][i] == 6)
+				putimage(60 * i + 304, 60 * j + 3, HP.img);
+			else if (map[j][i] == 7)
+				putimage(60 * i + 304, 60 * j + 3, BigHP.img);
+			else if (map[j][i] == 8)
+				putimage(60 * i + 304, 60 * j + 3, CrossEmblem.img);
+			else if (map[j][i] == 9)
+				putimage(60 * i + 304, 60 * j + 3, WindOrient.img);
+			else if (map[j][i] == 10)
+				putimage(60 * i + 304, 60 * j + 3, Upstairs.img);
+			else if (map[j][i] == 11)
+				putimage(60 * i + 304, 60 * j + 3, Downstairs.img);
+			else if (map[j][i] == 12)
+				putimage(60 * i + 304, 60 * j + 3, YKey.img);
+			else if (map[j][i] == 13)
+				putimage(60 * i + 304, 60 * j + 3, RKey.img);
+			else if (map[j][i] == 14)
+				putimage(60 * i + 304, 60 * j + 3, BKey.img);
+			else if (map[j][i] == 15)
+				putimage(60 * i + 304, 60 * j + 3, People.img);
+			else if (map[j][i] == 16)
+				putimage(60 * i + 304, 60 * j + 3, RedDiamond.img);
+			else if (map[j][i] == 17)
+				putimage(60 * i + 304, 60 * j + 3, BlueDiamond.img);
+			else if (map[j][i] == 18)
+				putimage(60 * i + 304, 60 * j + 3, OldMan.img);
+			else if (map[j][i] == 19)
+				putimage(60 * i + 304, 60 * j + 3, RedMan.img);
+			else if (map[j][i] == 20)
+				putimage(60 * i + 304, 60 * j + 3, GreenDoor.img);
+			else if (map[j][i] == 21)
+				putimage(60 * i + 304, 60 * j + 3, Sword.img);
+			else if (map[j][i] == 22)
+				putimage(60 * i + 304, 60 * j + 3, Shop.img);
+			else if (map[j][i] == 23)
+				putimage(60 * i + 304, 60 * j + 3, Warrior.img);
+			else if (map[j][i] == 24)
+				putimage(60 * i + 304, 60 * j + 3, GKey.img);
+			else if (map[j][i] == 25)
+				putimage(60 * i + 304, 60 * j + 3, Shield.img);
+			else if (map[j][i] == 26)
+				putimage(60 * i + 304, 60 * j + 3, Level_Up.img);
+			else if (map[j][i] == 27)
+				putimage(60 * i + 304, 60 * j + 3, GoldCoin.img);
+			else if (map[j][i] == 28)
+				putimage(60 * i + 304, 60 * j + 3, Cross.img);
+			else if (map[j][i] == 29)
+				putimage(60 * i + 304, 60 * j + 3, TreasureBox.img);
+			else if (map[j][i] == 30)
+				putimage(60 * i + 304, 60 * j + 3, GreenSlime.img);
+			else if (map[j][i] == 31)
+				putimage(60 * i + 304, 60 * j + 3, RedSlime.img);
+			else if (map[j][i] == 32)
+				putimage(60 * i + 304, 60 * j + 3, BoneMan.img);
+			else if (map[j][i] == 33)
+				putimage(60 * i + 304, 60 * j + 3, Witch_1.img);
+			else if (map[j][i] == 34)
+				putimage(60 * i + 304, 60 * j + 3, BlackSlime.img);
+			else if (map[j][i] == 35)
+				putimage(60 * i + 304, 60 * j + 3, SmallBat.img);
+			else if (map[j][i] == 36)
+				putimage(60 * i + 304, 60 * j + 3, Orc.img);
+			else if (map[j][i] == 37)
+				putimage(60 * i + 304, 60 * j + 3, BoneWarrior.img);
+			else if (map[j][i] == 38)
+				putimage(60 * i + 304, 60 * j + 3, BigBat.img);
+			else if (map[j][i] == 39)
+				putimage(60 * i + 304, 60 * j + 3, Guard_1.img);
+			else if (map[j][i] == 40)
+				putimage(60 * i + 304, 60 * j + 3, RBoss.img);
+			else if (map[j][i] == 41)
+				putimage(60 * i + 304, 60 * j + 3, GBoss.img);
+			else if (map[j][i] == 42)
+				putimage(60 * i + 304, 60 * j + 3, BoneGuard.img);
+			else if (map[j][i] == 43)
+				putimage(60 * i + 304, 60 * j + 3, MonsterKing.img);
+			else if (map[j][i] == 44)
+				putimage(60 * i + 304, 60 * j + 3, StoneMan.img);
+			else if (map[j][i] == 45)
+				putimage(60 * i + 304, 60 * j + 3, RedBat.img);
+			else if (map[j][i] == 46)
+				putimage(60 * i + 304, 60 * j + 3, Witch_R.img);
+			else if (map[j][i] == 47)
+				putimage(60 * i + 304, 60 * j + 3, Witch_2.img);
+			else if (map[j][i] == 48)
+				putimage(60 * i + 304, 60 * j + 3, WhiteWitch.img);
+			else if (map[j][i] == 49)
+				putimage(60 * i + 304, 60 * j + 3, Witch_Y.img);
+			else if (map[j][i] == 50)
+				putimage(60 * i + 304, 60 * j + 3, OrcWarrior.img);
+			else if (map[j][i] == 51)
+				putimage(60 * i + 304, 60 * j + 3, SwordMan.img);
+			else if (map[j][i] == 52)
+				putimage(60 * i + 304, 60 * j + 3, Guard_2.img);
+			else if (map[j][i] == 53)
+				putimage(60 * i + 304, 60 * j + 3, Guard_3.img);
+			/*else if (map[j][i] == 54)
+				putimage(60 * i + 304, 60 * j + 3, LINGWUSHI.img);
+			else if (map[j][i] == 55)
+				putimage(60 * i + 304, 60 * j + 3, MINGZHANSHI.img);
+			else if (map[j][i] == 56)
+				putimage(60 * i + 304, 60 * j + 3, LINGFASHI.img);
+			else if (map[j][i] == 57)
+				putimage(60 * i + 304, 60 * j + 3, MINGDUIZHANG.img);*/
+		}
+	}
+}
+
 void VersusWindow()//战斗界面(RPG形式)
 {
 
