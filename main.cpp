@@ -1,5 +1,5 @@
 /*version1
-1、窗口 
+1、窗口
 2、素材导入
 定义变量：IMAGE img
 变量赋值：loadimage(&img,"路径")
@@ -7,38 +7,42 @@
 地图：使用二维数组
 3、交互（上下左右，触碰）
 4、关卡优化*/
-#define _CRT_SECURE_NO_WARNINGS//去除警告
-#include <conio.h>
+#define  _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <graphics.h>						  //来自ege库
-FILE *fp;									  //全局文件指针
-int map_order_now = 1, int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
+#include <graphics.h>	//来自ege库
+#include <conio.h>
+#include <string>
+
+
+FILE* fp;									  //全局文件指针
+int map_order_now = 1; int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
 int map[13][13] =
-	{
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
-		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
-		{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
-		{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
-		{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
-		{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
-		{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
-		{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
-		{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
-		{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+{
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
+	{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
+	{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
+	{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
+	{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
+	{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
+	{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
+	{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
+	{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
+	{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 }; //初始地图 地图1
 typedef struct
 {
 	int Map[13][13];
 } MAP;
 MAP M[15]; //十五层地图（临时）
+
 typedef struct Actor
 {
-	char *name = "打工人"; //名称
+	char name[20] = "打工人"; //名称; //名称
 	int level = 1;		   //初始等级
 	int hp = 1000;		   //初始血量
 	int Attack = 30;	   //初始攻击力
@@ -50,11 +54,11 @@ typedef struct Actor
 	int Ykey = 1;		   //黄钥匙 初始为1
 	int Rkey = 1;		   //红钥匙 初始为1
 	int Bkey = 1;		   //蓝钥匙 初始为1
-	PIMAGE img;			   //角色对象图片
+	PIMAGE img;	   //角色对象图片
 } role, actor;			   //全局结构体 玩家角色
 typedef struct Object
 {
-	char name[20] = {0};
+	char name[20] = { 0 };
 	int hp;		 //血量
 	int exp;	 //经验值
 	int Attack;	 //攻击力
@@ -79,7 +83,7 @@ enemy Orc, OrcWarrior;
 enemy StoneMan;																																	   //敌人 兽人类
 actors OldMan, SwordMan, Warrior, Witch_R, Witch_Y, WhiteWitch, RedMan;																			   //任务 角色类
 object RKey, BKey, YKey, GKey, Sword, Shield, TreasureBox, WindOrient, GoldCoin, Level_Up, Cross, CrossEmblem, HP, BigHP, BlueDiamond, RedDiamond; //道具类
-background Background, Blcok, Floor, Wall, YellowDoor, GreenDoor, RedDoor, BlueDoor, Upstairs, Downstairs, Shop, Stars;							   //地图 背景模块类
+background Background, Block, Floor, Wall, YellowDoor, GreenDoor, RedDoor, BlueDoor, Upstairs, Downstairs, Shop, Stars;							   //地图 背景模块类
 role People;																																	   //主角
 push CrossEmblem_PUSH, Shop_PUSH[4], Versus, Warrior_PUSH[16], OldMan_PUSH[4], RedMan_PUSH[4], WindOrient_PUSH, End;							   //弹出窗口类
 //地图切换核心函数（待完善）
@@ -134,7 +138,7 @@ void initImage() //图像初始化函数
 	CrossEmblem.img = newimage();
 	Level_Up.img = newimage();
 	Background.img = newimage();
-	Blcok.img = newimage();
+	Block.img = newimage();
 	Floor.img = newimage();
 	Wall.img = newimage();
 	YellowDoor.img = newimage();
@@ -180,91 +184,91 @@ void initImage() //图像初始化函数
 	RedMan_PUSH[2].img = newimage();
 	RedMan_PUSH[3].img = newimage();
 	//获取图像
-	getimage(GreenSlime.img, "/picture1/GreenSlime.png");
-	getimage(BlueSlime.img, "/picture1/BlueSlime.png");
-	getimage(RedSlime.img, "/picture1/RedSlime.png");
-	getimage(SmallBat.img, "/picture1/SmallBat.png");
-	getimage(BigBat.img, "/picture1/BigBat.png");
-	getimage(RedBat.img, "/picture1/RedBat.png");
-	getimage(Witch_1.img, "/picture1/Witch_1.png");
-	getimage(Witch_2.img, "/picture1/Witch_2.png");
-	getimage(Guard_1.img, "/picture1/Guard_1.png");
-	getimage(Guard_2.img, "/picture1/Guard_2.png");
-	getimage(Guard_3.img, "/picture1/Guard_3.png");
-	getimage(BoneMan.img, "/picture1/BoneMan.png");
-	getimage(BoneWarrior.img, "/picture1/BoneWarrior.png");
-	getimage(BoneGuard.img, "/picture1/BoneGuard.png");
-	getimage(GBoss.img, "/picture1/GBoss.png");
-	getimage(MonsterKing.img, "/picture1/MonsterKing.png");
-	getimage(RBoss.img, "/picture1/RBoss.png");
-	getimage(Orc.img, "/picture1/Orc.png");
-	getimage(OrcWarrior.img, "/picture1/OrcWarrior.png");
-	getimage(OldMan.img, "/picture1/OldMan.png");
-	getiamge(RedMan.img, "/picture1/RedMan.png");
-	getimage(SwordMan.img, "/picture1/SwordMan.png");
-	getimage(Warrior.img, "/picture1/Warrior.png");
-	getimage(Witch_R.img, "/picture1/Witch_R.png");
-	getimage(Witch_Y.img, "/picture1/Witch_Y.png");
-	getimage(WhiteWitch.img, "/picture1/WhiteWitch.png");
-	getimage(RKey.img, "/picture1/RKey.png");
-	getimage(YKey.img, "/picture1/YKey.png");
-	getimage(BKey.img, "/picture1/BKey.png");
-	getimage(GKey.img, "/picture1/GKey.png");
-	getimage(Sword.img, "/picture1/Sword.png");
-	getimage(Shield.img, "/picture1/Shield.png");
-	getimage(TreasureBox.img, "/picture1/TreasureBox.png");
-	getimage(WindOrient.img, "/picture1/WindOrient.png");
-	getimage(Level_Up.img, "/picture1/Level_Up.png");
-	getimage(GoldCoin.img, "/picture1/GoldCoin.png");
-	getimage(HP.img, "/picture1/HP.png");
-	getimage(BigHP.img, "/picture1/BigHP.png");
-	getimage(CrossEmblem.img, "/picture1/CrossEmblem.png");
-	getimage(Block.img, "/picture1/Block.png");
-	getimage(Background.img, "/picture1/Background.png");
-	getimage(Floor.img, "/picture1/Floor.png");
-	getimage(Wall.img, "/picture1/Wall.png");
-	getimage(YellowDoor.img, "/picture1/YellowDoor.png");
-	getimage(BlueDoor.img, "/picture1/BlueDoor.png");
-	getimage(GreenDoor.img, "/picture1/GreenDoor.png");
-	getimage(Upstairs.img, "/picture1/Upstairs.png");
-	getimage(Downstairs.img, "/picture1/Downstairs.png");
-	getimage(Shop.img, "/picture1/Shop.png");
-	getimage(Stars.img, "/picture1/Stars.png");
-	getimage(People.img, "/picture1/actor.png");
-	getimage(StoneMan.img, "/picture1/StoneMan.png")
-		//弹窗图片
-	getimage(CrossEmblem_PUSH.img, "/picture1/CrossEmblem_PUSH.png");
-	getimage(Shop_PUSH[0].img, "/picture1/Shop1.png");
-	getimage(Shop_PUSH[1].img, "/picture1/Shop2.png");
-	getimage(Shop_PUSH[2].img, "/picture1/Shop3.png");
-	getimage(Shop_PUSH[3].img, "/picture1/Shop4.png");
-	getimage(Versus.img, "/picture1/Versus.png");
-	getimage(OldMan_PUSH[0], "/picture1/OldManOption1.png");
-	getimage(OldMan_PUSH[1], "/picture1/OldManOption2.png");
-	getimage(OldMan_PUSH[2], "/picture1/OldManOption3.png");
-	getimage(OldMan_PUSH[3], "/picture1/OldManOption4.png");
-	getinmage(End.img, "/picture1/End.png");
-	getimage(WindOrient_PUSH.img, "/picture1/WindOrient.png");
-	getiage(RedMan_PUSH[0].img, "/picture1/RedManOption1.png");
-	getiage(RedMan_PUSH[1].img, "/picture1/RedManOption2.png");
-	getiage(RedMan_PUSH[2].img, "/picture1/RedManOption3.png");
-	getiage(RedMan_PUSH[3].img, "/picture1/RedManOption4.png");
-	getimage(Warrior_PUSH[0].img, "/picture1/Warrior1.png");
-	getimage(Warrior_PUSH[1].img, "/picture1/Warrior2.png");
-	getimage(Warrior_PUSH[2].img, "/picture1/Warrior3.png");
-	getimage(Warrior_PUSH[3].img, "/picture1/Warrior4.png");
-	getimage(Warrior_PUSH[4].img, "/picture1/Warrior5.png");
-	getimage(Warrior_PUSH[5].img, "/picture1/Warrior6.png");
-	getimage(Warrior_PUSH[6].img, "/picture1/Warrior7.png");
-	getimage(Warrior_PUSH[7].img, "/picture1/Warrior8.png");
-	getimage(Warrior_PUSH[8].img, "/picture1/Warrior9.png");
-	getimage(Warrior_PUSH[9].img, "/picture1/Warrior10.png");
-	getimage(Warrior_PUSH[10].img, "/picture1/Warrior11.png");
-	getimage(Warrior_PUSH[11].img, "/picture1/Warrior12.png");
-	getimage(Warrior_PUSH[12].img, "/picture1/Warrior13.png");
-	getimage(Warrior_PUSH[13].img, "/picture1/Warrior14.png");
-	getimage(Warrior_PUSH[14].img, "/picture1/Warrior15.png");
-	getimage(Warrior_PUSH[15].img, "/picture1/Warrior16.png");
+	getimage(GreenSlime.img, "picture1/GreenSlime.png");
+	getimage(BlackSlime.img, "picture1/BlueSlime.png");
+	getimage(RedSlime.img, "picture1/RedSlime.png");
+	getimage(SmallBat.img, "picture1/SmallBat.png");
+	getimage(BigBat.img, "picture1/BigBat.png");
+	getimage(RedBat.img, "picture1/RedBat.png");
+	getimage(Witch_1.img, "picture1/Witch_1.png");
+	getimage(Witch_2.img, "picture1/Witch_2.png");
+	getimage(Guard_1.img, "picture1/Guard_1.png");
+	getimage(Guard_2.img, "picture1/Guard_2.png");
+	getimage(Guard_3.img, "picture1/Guard_3.png");
+	getimage(BoneMan.img, "picture1/BoneMan.png");
+	getimage(BoneWarrior.img, "picture1/BoneWarrior.png");
+	getimage(BoneGuard.img, "picture1/BoneGuard.png");
+	getimage(GBoss.img, "picture1/GBoss.png");
+	getimage(MonsterKing.img, "picture1/MonsterKing.png");
+	getimage(RBoss.img, "picture1/RBoss.png");
+	getimage(Orc.img, "picture1/Orc.png");
+	getimage(OrcWarrior.img, "picture1/OrcWarrior.png");
+	getimage(OldMan.img, "picture1/OldMan.png");
+	getimage(RedMan.img, "picture1/RedMan.png");
+	getimage(SwordMan.img, "picture1/SwordMan.png");
+	getimage(Warrior.img, "picture1/Warrior.png");
+	getimage(Witch_R.img, "picture1/Witch_R.png");
+	getimage(Witch_Y.img, "picture1/Witch_Y.png");
+	getimage(WhiteWitch.img, "picture1/WhiteWitch.png");
+	getimage(RKey.img, "picture1/RKey.png");
+	getimage(YKey.img, "picture1/YKey.png");
+	getimage(BKey.img, "picture1/BKey.png");
+	getimage(GKey.img, "picture1/GKey.png");
+	getimage(Sword.img, "picture1/Sword.png");
+	getimage(Shield.img, "picture1/Shield.png");
+	getimage(TreasureBox.img, "picture1/TreasureBox.png");
+	getimage(WindOrient.img, "picture1/WindOrient.png");
+	getimage(Level_Up.img, "picture1/Level_Up.png");
+	getimage(GoldCoin.img, "picture1/GoldCoin.png");
+	getimage(HP.img, "picture1/HP.png");
+	getimage(BigHP.img, "picture1/BigHP.png");
+	getimage(CrossEmblem.img, "picture1/CrossEmblem.png");
+	getimage(Block.img, "picture1/Block.png");
+	getimage(Background.img, "picture1/Background.png");
+	getimage(Floor.img, "picture1/Floor.png");
+	getimage(Wall.img, "picture1/Wall.png");
+	getimage(YellowDoor.img, "picture1/YellowDoor.png");
+	getimage(BlueDoor.img, "picture1/BlueDoor.png");
+	getimage(GreenDoor.img, "picture1/GreenDoor.png");
+	getimage(Upstairs.img, "picture1/Upstairs.png");
+	getimage(Downstairs.img, "picture1/Downstairs.png");
+	getimage(Shop.img, "picture1/Shop.png");
+	getimage(Stars.img, "picture1/Stars.png");
+	getimage(People.img, "picture1/actor.png");
+	getimage(StoneMan.img, "picture1/StoneMan.png");
+	//弹窗图片
+	getimage(CrossEmblem_PUSH.img, "picture1/CrossEmblem_PUSH.png");
+	getimage(Shop_PUSH[0].img, "picture1/Shop1.png");
+	getimage(Shop_PUSH[1].img, "picture1/Shop2.png");
+	getimage(Shop_PUSH[2].img, "picture1/Shop3.png");
+	getimage(Shop_PUSH[3].img, "picture1/Shop4.png");
+	getimage(Versus.img, "picture1/Versus.png");
+	getimage(OldMan_PUSH[0].img, "picture1/OldManOption1.png");
+	getimage(OldMan_PUSH[1].img, "picture1/OldManOption2.png");
+	getimage(OldMan_PUSH[2].img, "picture1/OldManOption3.png");
+	getimage(OldMan_PUSH[3].img, "picture1/OldManOption4.png");
+	getimage(End.img, "picture1/End.png");
+	getimage(WindOrient_PUSH.img, "picture1/WindOrient.png");
+	getimage(RedMan_PUSH[0].img, "picture1/RedManOption1.png");
+	getimage(RedMan_PUSH[1].img, "picture1/RedManOption2.png");
+	getimage(RedMan_PUSH[2].img, "picture1/RedManOption3.png");
+	getimage(RedMan_PUSH[3].img, "picture1/RedManOption4.png");
+	getimage(Warrior_PUSH[0].img, "picture1/Warrior1.png");
+	getimage(Warrior_PUSH[1].img, "picture1/Warrior2.png");
+	getimage(Warrior_PUSH[2].img, "picture1/Warrior3.png");
+	getimage(Warrior_PUSH[3].img, "picture1/Warrior4.png");
+	getimage(Warrior_PUSH[4].img, "picture1/Warrior5.png");
+	getimage(Warrior_PUSH[5].img, "picture1/Warrior6.png");
+	getimage(Warrior_PUSH[6].img, "picture1/Warrior7.png");
+	getimage(Warrior_PUSH[7].img, "picture1/Warrior8.png");
+	getimage(Warrior_PUSH[8].img, "picture1/Warrior9.png");
+	getimage(Warrior_PUSH[9].img, "picture1/Warrior10.png");
+	getimage(Warrior_PUSH[10].img, "picture1/Warrior11.png");
+	getimage(Warrior_PUSH[11].img, "picture1/Warrior12.png");
+	getimage(Warrior_PUSH[12].img, "picture1/Warrior13.png");
+	getimage(Warrior_PUSH[13].img, "picture1/Warrior14.png");
+	getimage(Warrior_PUSH[14].img, "picture1/Warrior15.png");
+	getimage(Warrior_PUSH[15].img, "picture1/Warrior16.png");
 }
 void InitEnemy() //敌人角色初始化
 {
@@ -281,7 +285,7 @@ void InitEnemy() //敌人角色初始化
 	RedSlime.Defence = 2;
 	RedSlime.exp = 5;
 	RedSlime.money = 5;
-	strcpy(RedSlime.Name, "红史莱姆");
+	strcpy(RedSlime.name, "红史莱姆");
 	//黑史莱姆
 	BlackSlime.hp = 50;
 	BlackSlime.Attack = 10;
@@ -295,7 +299,7 @@ void InitEnemy() //敌人角色初始化
 	BoneMan.Defence = 10;
 	BoneMan.money = 5;
 	BoneMan.exp = 5;
-	strcpy(BoneMan.Name, "骷髅人");
+	strcpy(BoneMan.name, "骷髅人");
 	//骷髅士兵
 	BoneWarrior.hp = 150;
 	BoneWarrior.Attack = 40;
@@ -356,7 +360,8 @@ void InitEnemy() //敌人角色初始化
 	RedBat.Attack = 150;
 	RedBat.Defence = 60;
 	RedBat.money = 30;
-	RedBat.exp = 30 strcpy(RedBat.name, "红蝙蝠");
+	RedBat.exp = 30;
+	strcpy(RedBat.name, "红蝙蝠");
 	//兽人
 	Orc.hp = 250;
 	Orc.Attack = 80;
@@ -419,9 +424,9 @@ void InitEnemy() //敌人角色初始化
 	SwordMan.Defence = 300;
 	SwordMan.exp = 200;
 	SwordMan.money = 400;
-	strcpy(SwordMan.name, "剑士")
-		//白衣巫师
-		WhiteWitch.hp = 1500;
+	strcpy(SwordMan.name, "剑士");
+	//白衣巫师
+	WhiteWitch.hp = 1500;
 	WhiteWitch.Attack = 2000;
 	WhiteWitch.Defence = 200;
 	WhiteWitch.exp = 200;
@@ -435,10 +440,146 @@ void InitEnemy() //敌人角色初始化
 	MonsterKing.money = 30;
 	strcpy(MonsterKing.name, "史莱姆王");
 }
-void VersusWindow() //战斗界面(RPG形式)
+void Show_Map()
 {
+	/*memcpy(map, map1, sizeof(map));
+	map[PEOPLE.x][PEOPLE.y] = 15;
+	putimage(0, 0, BEIJING.img);*/
+
+	for (int i = 0;i < 13;i++)
+	{
+		for (int j = 0;j < 13;j++)
+		{
+			if (map[j][i] == 0)
+				putimage(60 * i + 304, 60 * j + 3, Floor.img);
+			else if (map[j][i] == 2)
+				putimage(60 * i + 304, 60 * j + 3, Wall.img);
+			else if (map[j][i] == 3)
+				putimage(60 * i + 304, 60 * j + 3, RedDoor.img);
+			else if (map[j][i] == 4)
+				putimage(60 * i + 304, 60 * j + 3, YellowDoor.img);
+			else if (map[j][i] == 5)
+				putimage(60 * i + 304, 60 * j + 3, BlueDoor.img);
+			else if (map[j][i] == 6)
+				putimage(60 * i + 304, 60 * j + 3, HP.img);
+			else if (map[j][i] == 7)
+				putimage(60 * i + 304, 60 * j + 3, BigHP.img);
+			else if (map[j][i] == 8)
+				putimage(60 * i + 304, 60 * j + 3, CrossEmblem.img);
+			else if (map[j][i] == 9)
+				putimage(60 * i + 304, 60 * j + 3, WindOrient.img);
+			else if (map[j][i] == 10)
+				putimage(60 * i + 304, 60 * j + 3, Upstairs.img);
+			else if (map[j][i] == 11)
+				putimage(60 * i + 304, 60 * j + 3, Downstairs.img);
+			else if (map[j][i] == 12)
+				putimage(60 * i + 304, 60 * j + 3, YKey.img);
+			else if (map[j][i] == 13)
+				putimage(60 * i + 304, 60 * j + 3, RKey.img);
+			else if (map[j][i] == 14)
+				putimage(60 * i + 304, 60 * j + 3, BKey.img);
+			else if (map[j][i] == 15)
+				putimage(60 * i + 304, 60 * j + 3, People.img);
+			else if (map[j][i] == 16)
+				putimage(60 * i + 304, 60 * j + 3, RedDiamond.img);
+			else if (map[j][i] == 17)
+				putimage(60 * i + 304, 60 * j + 3, BlueDiamond.img);
+			else if (map[j][i] == 18)
+				putimage(60 * i + 304, 60 * j + 3, OldMan.img);
+			else if (map[j][i] == 19)
+				putimage(60 * i + 304, 60 * j + 3, RedMan.img);
+			else if (map[j][i] == 20)
+				putimage(60 * i + 304, 60 * j + 3, GreenDoor.img);
+			else if (map[j][i] == 21)
+				putimage(60 * i + 304, 60 * j + 3, Sword.img);
+			else if (map[j][i] == 22)
+				putimage(60 * i + 304, 60 * j + 3, Shop.img);
+			else if (map[j][i] == 23)
+				putimage(60 * i + 304, 60 * j + 3, Warrior.img);
+			else if (map[j][i] == 24)
+				putimage(60 * i + 304, 60 * j + 3, GKey.img);
+			else if (map[j][i] == 25)
+				putimage(60 * i + 304, 60 * j + 3, Shield.img);
+			else if (map[j][i] == 26)
+				putimage(60 * i + 304, 60 * j + 3, Level_Up.img);
+			else if (map[j][i] == 27)
+				putimage(60 * i + 304, 60 * j + 3, GoldCoin.img);
+			else if (map[j][i] == 28)
+				putimage(60 * i + 304, 60 * j + 3, Cross.img);
+			else if (map[j][i] == 29)
+				putimage(60 * i + 304, 60 * j + 3, TreasureBox.img);
+			else if (map[j][i] == 30)
+				putimage(60 * i + 304, 60 * j + 3, GreenSlime.img);
+			else if (map[j][i] == 31)
+				putimage(60 * i + 304, 60 * j + 3, RedSlime.img);
+			else if (map[j][i] == 32)
+				putimage(60 * i + 304, 60 * j + 3, BoneMan.img);
+			else if (map[j][i] == 33)
+				putimage(60 * i + 304, 60 * j + 3, Witch_1.img);
+			else if (map[j][i] == 34)
+				putimage(60 * i + 304, 60 * j + 3, BlackSlime.img);
+			else if (map[j][i] == 35)
+				putimage(60 * i + 304, 60 * j + 3, SmallBat.img);
+			else if (map[j][i] == 36)
+				putimage(60 * i + 304, 60 * j + 3, Orc.img);
+			else if (map[j][i] == 37)
+				putimage(60 * i + 304, 60 * j + 3, BoneWarrior.img);
+			else if (map[j][i] == 38)
+				putimage(60 * i + 304, 60 * j + 3, BigBat.img);
+			else if (map[j][i] == 39)
+				putimage(60 * i + 304, 60 * j + 3, Guard_1.img);
+			else if (map[j][i] == 40)
+				putimage(60 * i + 304, 60 * j + 3, RBoss.img);
+			else if (map[j][i] == 41)
+				putimage(60 * i + 304, 60 * j + 3, GBoss.img);
+			else if (map[j][i] == 42)
+				putimage(60 * i + 304, 60 * j + 3, BoneGuard.img);
+			else if (map[j][i] == 43)
+				putimage(60 * i + 304, 60 * j + 3, MonsterKing.img);
+			else if (map[j][i] == 44)
+				putimage(60 * i + 304, 60 * j + 3, StoneMan.img);
+			else if (map[j][i] == 45)
+				putimage(60 * i + 304, 60 * j + 3, RedBat.img);
+			else if (map[j][i] == 46)
+				putimage(60 * i + 304, 60 * j + 3, Witch_R.img);
+			else if (map[j][i] == 47)
+				putimage(60 * i + 304, 60 * j + 3, Witch_2.img);
+			else if (map[j][i] == 48)
+				putimage(60 * i + 304, 60 * j + 3, WhiteWitch.img);
+			else if (map[j][i] == 49)
+				putimage(60 * i + 304, 60 * j + 3, Witch_Y.img);
+			else if (map[j][i] == 50)
+				putimage(60 * i + 304, 60 * j + 3, OrcWarrior.img);
+			else if (map[j][i] == 51)
+				putimage(60 * i + 304, 60 * j + 3, SwordMan.img);
+			else if (map[j][i] == 52)
+				putimage(60 * i + 304, 60 * j + 3, Guard_2.img);
+			else if (map[j][i] == 53)
+				putimage(60 * i + 304, 60 * j + 3, Guard_3.img);
+			/*else if (map[j][i] == 54)
+				putimage(60 * i + 304, 60 * j + 3, LINGWUSHI.img);
+			else if (map[j][i] == 55)
+				putimage(60 * i + 304, 60 * j + 3, MINGZHANSHI.img);
+			else if (map[j][i] == 56)
+				putimage(60 * i + 304, 60 * j + 3, LINGFASHI.img);
+			else if (map[j][i] == 57)
+				putimage(60 * i + 304, 60 * j + 3, MINGDUIZHANG.img);*/
+		}
+	}
 }
-void Control_Move() //控制人物移动函数
+
+
+
+
+
+
+
+
+void VersusWindow()//战斗界面(RPG形式)
+{
+
+}
+void Control_Move()//控制人物移动函数
 {
 	if (kbhit())
 	{
@@ -449,26 +590,28 @@ void Control_Move() //控制人物移动函数
 			if (map[People.x - 1][People.y] == 0)
 			{
 				People.x -= 1;
-				getimage(People.img, "/picture1/actorB.png"); //人物向前走，后视图
+				getimage(People.img, "/picture1/actorB.png");//人物向前走，后视图
 			}
 		}
 	}
-}
-//整型转换为字符串(待用)
-char str[20]="";
-char *intToString(int i)
-{
-	sprintf(str,"%d",i);
-	return str;
+
+
 }
 int main()
 {
 	initgraph(1080, 780, 0); //创建窗口 800*600 ege库函数
 	setcaption("Magic_Tower");
-	//PIMAGE xxx = newimage();
+	initImage();
+	Show_Map();
 
+	/*PIMAGE a = newimage();
+	getimage(a, "picture1/BoneGuard.png");
+	putimage(0, 0, a);*/
+
+	//PIMAGE xxx = newimage();
 	//getimage(xxx, "/testResources/0_1.jpg");
 	//putimage(0, 0, xxx);
+
 
 	getch();
 	closegraph(); //窗口关闭 ege库函数
