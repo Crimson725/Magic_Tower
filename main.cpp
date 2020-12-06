@@ -97,7 +97,10 @@ void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
 }
 void initImage() //图像初始化函数
 {
+	Background.img = newimage();
 	GreenSlime.img = newimage();
+	RedDiamond.img = newimage();
+	RedDoor.img = newimage();
 	RedSlime.img = newimage();
 	BlackSlime.img = newimage();
 	BigBat.img = newimage();
@@ -144,6 +147,7 @@ void initImage() //图像初始化函数
 	YellowDoor.img = newimage();
 	GreenDoor.img = newimage();
 	BlueDoor.img = newimage();
+	BlueDiamond.img = newimage();
 	Upstairs.img = newimage();
 	Downstairs.img = newimage();
 	Shop.img = newimage();
@@ -185,8 +189,11 @@ void initImage() //图像初始化函数
 	RedMan_PUSH[3].img = newimage();
 	//获取图像
 	getimage(GreenSlime.img, "picture1/GreenSlime.png");
-	getimage(BlackSlime.img, "picture1/BlueSlime.png");
+	getimage(Background.img, "picture1/Background.png");
+	getimage(BlackSlime.img, "picture1/BlackSlime.png");
 	getimage(RedSlime.img, "picture1/RedSlime.png");
+	getimage(RedDoor.img, "picture1/RedDoor.png");
+	getimage(RedDiamond.img, "picture1/RedDiamond.png");
 	getimage(SmallBat.img, "picture1/SmallBat.png");
 	getimage(BigBat.img, "picture1/BigBat.png");
 	getimage(RedBat.img, "picture1/RedBat.png");
@@ -229,6 +236,7 @@ void initImage() //图像初始化函数
 	getimage(Wall.img, "picture1/Wall.png");
 	getimage(YellowDoor.img, "picture1/YellowDoor.png");
 	getimage(BlueDoor.img, "picture1/BlueDoor.png");
+	getimage(BlueDiamond.img, "picture1/BlueDiamond.png");
 	getimage(GreenDoor.img, "picture1/GreenDoor.png");
 	getimage(Upstairs.img, "picture1/Upstairs.png");
 	getimage(Downstairs.img, "picture1/Downstairs.png");
@@ -442,13 +450,13 @@ void InitEnemy() //敌人角色初始化
 }
 void Show_Map()
 {
-	/*memcpy(map, map1, sizeof(map));
-	map[PEOPLE.x][PEOPLE.y] = 15;
-	putimage(0, 0, BEIJING.img);*/
+	//memcpy(map, map1, sizeof(map));
+	map[People.x][People.y] = 15;
+	putimage(0, 0, Background.img);
 
-	for (int i = 0; i < 13; i++)
+	for (int i = 0;i < 13;i++)
 	{
-		for (int j = 0; j < 13; j++)
+		for (int j = 0;j < 13;j++)
 		{
 			if (map[j][i] == 0)
 				putimage(60 * i + 304, 60 * j + 3, Floor.img);
@@ -509,7 +517,7 @@ void Show_Map()
 			else if (map[j][i] == 29)
 				putimage(60 * i + 304, 60 * j + 3, TreasureBox.img);
 			else if (map[j][i] == 30)
-				putimage(60 * i + 304, 60 * j + 3, GreenSlime.img);
+				putimage(60 * i + 304, 60 * j + 3, BlackSlime.img);
 			else if (map[j][i] == 31)
 				putimage(60 * i + 304, 60 * j + 3, RedSlime.img);
 			else if (map[j][i] == 32)
@@ -517,7 +525,7 @@ void Show_Map()
 			else if (map[j][i] == 33)
 				putimage(60 * i + 304, 60 * j + 3, Witch_1.img);
 			else if (map[j][i] == 34)
-				putimage(60 * i + 304, 60 * j + 3, BlackSlime.img);
+				putimage(60 * i + 304, 60 * j + 3, GreenSlime.img);
 			else if (map[j][i] == 35)
 				putimage(60 * i + 304, 60 * j + 3, SmallBat.img);
 			else if (map[j][i] == 36)
@@ -565,8 +573,58 @@ void Show_Map()
 			else if (map[j][i] == 57)
 				putimage(60 * i + 304, 60 * j + 3, MINGDUIZHANG.img);*/
 		}
+		/*///下面是打印人物属性栏
+		setcolor(RGB(255, 255, 255));///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
+		char YELLOWKEYNUM[3], REDKEYNUM[3], LEVELNUM[3], BLUEKEYNUM[3], ATACKNUM[5], HPNUM[10], EXNUM[5], MONEYNUM[5], DEFNUM[5];
+		sprintf(YELLOWKEYNUM, "%d", PEOPLE.YELLOWKEY);///头文件cstdio或stdio.h
+		sprintf(REDKEYNUM, "%d", PEOPLE.REDKEY);
+		sprintf(BLUEKEYNUM, "%d", PEOPLE.BLUEKEY);
+		sprintf(LEVELNUM, "%d", PEOPLE.level);
+		sprintf(ATACKNUM, "%d", PEOPLE.ATACK);
+		sprintf(HPNUM, "%d", PEOPLE.hp);
+		sprintf(EXNUM, "%d", PEOPLE.ex);
+		sprintf(MONEYNUM, "%d", PEOPLE.money);
+		sprintf(DEFNUM, "%d", PEOPLE.DEF);
+		outtextxy(210, 405, YELLOWKEYNUM);///黄钥匙打印
+		outtextxy(210, 530, REDKEYNUM);///红钥匙打印
+		outtextxy(210, 465, BLUEKEYNUM);///蓝钥匙打印
+		outtextxy(210, 90, LEVELNUM);///等级打印
+		setfont(-35, 0, "黑体");///字体变小
+		outtextxy(210, 165, HPNUM);///血量打印
+		outtextxy(210, 208, ATACKNUM);///攻击力打印
+		outtextxy(210, 250, DEFNUM);///防御力打印
+		outtextxy(210, 295, MONEYNUM);///金钱打印
+		outtextxy(210, 340, EXNUM);///经验打印
+	}
+	///下面是打印人物属性栏
+	setcolor(RGB(255, 255, 255));///白色文字
+	setbkmode(TRANSPARENT);///文字背景透明
+	setfont(-55, 0, "黑体");///黑体字
+	char YELLOWKEYNUM[3], REDKEYNUM[3], LEVELNUM[3], BLUEKEYNUM[3], ATACKNUM[5], HPNUM[10], EXNUM[5], MONEYNUM[5], DEFNUM[5];
+	sprintf(YELLOWKEYNUM, "%d", PEOPLE.YELLOWKEY);///头文件cstdio或stdio.h
+	sprintf(REDKEYNUM, "%d", PEOPLE.REDKEY);
+	sprintf(BLUEKEYNUM, "%d", PEOPLE.BLUEKEY);
+	sprintf(LEVELNUM, "%d", PEOPLE.level);
+	sprintf(ATACKNUM, "%d", PEOPLE.ATACK);
+	sprintf(HPNUM, "%d", PEOPLE.hp);
+	sprintf(EXNUM, "%d", PEOPLE.ex);
+	sprintf(MONEYNUM, "%d", PEOPLE.money);
+	sprintf(DEFNUM, "%d", PEOPLE.DEF);
+	outtextxy(210, 405, YELLOWKEYNUM);///黄钥匙打印
+	outtextxy(210, 530, REDKEYNUM);///红钥匙打印
+	outtextxy(210, 465, BLUEKEYNUM);///蓝钥匙打印
+	outtextxy(210, 90, LEVELNUM);///等级打印
+	setfont(-35, 0, "黑体");///字体变小
+	outtextxy(210, 165, HPNUM);///血量打印
+	outtextxy(210, 208, ATACKNUM);///攻击力打印
+	outtextxy(210, 250, DEFNUM);///防御力打印
+	outtextxy(210, 295, MONEYNUM);///金钱打印
+	outtextxy(210, 340, EXNUM);///经验打印*/
 	}
 }
+
 
 void VersusWindow() //战斗界面(RPG形式)
 {
