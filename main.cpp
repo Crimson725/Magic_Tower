@@ -7,32 +7,32 @@
 地图：使用二维数组
 3、交互（上下左右，触碰）
 4、关卡优化*/
-#define _CRT_SECURE_NO_WARNINGS
+#define  _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <graphics.h> //来自ege库
+#include <graphics.h>	//来自ege库
 #include <conio.h>
 #include <string>
 
-FILE *fp; //全局文件指针
-int map_order_now = 1;
-int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
+
+FILE* fp;									  //全局文件指针
+int map_order_now = 1; int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
 int map[13][13] =
-	{
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
-		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
-		{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
-		{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
-		{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
-		{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
-		{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
-		{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
-		{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
-		{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+{
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
+	{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
+	{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
+	{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
+	{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
+	{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
+	{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
+	{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
+	{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
+	{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 }; //初始地图 地图1
 typedef struct
 {
@@ -40,25 +40,26 @@ typedef struct
 } MAP;
 MAP M[15]; //十五层地图（临时）
 
+int map1[13][13];
 typedef struct Actor
 {
 	char name[20] = "打工人"; //名称; //名称
-	int level = 1;			  //初始等级
-	int hp = 1000;			  //初始血量
-	int Attack = 30;		  //初始攻击力
-	int Defence = 30;		  ///初始防御力
-	int money = 0;			  //初始金钱
-	int exp = 0;			  //初始经验
-	int x;					  //位置坐标x
-	int y;					  //位置坐标y
-	int Ykey = 1;			  //黄钥匙 初始为1
-	int Rkey = 1;			  //红钥匙 初始为1
-	int Bkey = 1;			  //蓝钥匙 初始为1
-	PIMAGE img;				  //角色对象图片
-} role, actor;				  //全局结构体 玩家角色
+	int level = 1;		   //初始等级
+	int hp = 1000;		   //初始血量
+	int Attack = 30;	   //初始攻击力
+	int Defence = 30;	   ///初始防御力
+	int money = 0;		   //初始金钱
+	int exp = 0;		   //初始经验
+	int x;				   //位置坐标x
+	int y;				   //位置坐标y
+	int Ykey = 1;		   //黄钥匙 初始为1
+	int Rkey = 1;		   //红钥匙 初始为1
+	int Bkey = 1;		   //蓝钥匙 初始为1
+	PIMAGE img;	   //角色对象图片
+} role, actor;			   //全局结构体 玩家角色
 typedef struct Object
 {
-	char name[20] = {0};
+	char name[20] = { 0 };
 	int hp;		 //血量
 	int exp;	 //经验值
 	int Attack;	 //攻击力
@@ -92,9 +93,110 @@ void changemap()
 	memcpy(M[map_order_now - 1].Map, map, sizeof(map)); //string.h 函数 地图切换函数
 }
 //任务位置切换核心函数(待完善)
-void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
+
+void refresh()
 {
 }
+//刷新函数，待研究
+void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
+{
+	if (map_order_now >= map_order_pre)///上楼情况
+		switch (map_order_now)
+		{
+		case 1:///上楼到1楼(或初始化开局)
+			People.x = 10;
+			People.y = 6;
+			break;
+		case 2:///上楼到2楼
+			People.x = 2;
+			People.y = 1;
+			break;
+		case 3:
+			People.x = 11;
+			People.y = 2;
+			break;
+		case 4:
+			People.x = 10;
+			People.y = 11;
+			break;
+		case 5:
+			People.x = 10;
+			People.y = 1;
+			break;
+		case 6:
+			People.x = 10;
+			People.y = 10;
+			break;
+		case 7:
+			People.x = 11;
+			People.y = 6;
+			break;
+		case 8:
+			People.x = 2;
+			People.y = 1;
+			break;
+		case 9:
+			People.x = 4;
+			People.y = 7;
+			break;
+		case 10:
+			People.x = 7;
+			People.y = 5;
+			break;
+		case 11:
+			People.x = 11;
+			People.y = 2;
+			break;
+		}
+	else ///下楼情况
+		switch (map_order_now)
+		{
+		case 1:///下楼到1楼
+			People.x = 1;
+			People.y = 2;
+			break;
+		case 2:///下楼到2楼
+			People.x = 10;
+			People.y = 1;
+			break;
+		case 3:
+			People.x = 10;
+			People.y = 11;
+			break;
+		case 4:
+			People.x = 10;
+			People.y = 1;
+			break;
+		case 5:
+			People.x = 10;
+			People.y = 10;
+			break;
+		case 6:
+			People.x = 10;
+			People.y = 5;
+			break;
+		case 7:
+			People.x = 1;
+			People.y = 2;
+			break;
+		case 8:
+			People.x = 5;
+			People.y = 8;
+			break;
+		case 9:
+			People.x = 8;
+			People.y = 7;
+			break;
+		case 10:
+			People.x = 10;
+			People.y = 1;
+			break;
+		}
+	Sleep(300);///去除上下楼无限换图BUG
+	map_order_pre = map_order_now;
+	//refresh();
+}
+
 void initImage() //图像初始化函数
 {
 	Background.img = newimage();
@@ -573,61 +675,43 @@ void Show_Map()
 			else if (map[j][i] == 57)
 				putimage(60 * i + 304, 60 * j + 3, MINGDUIZHANG.img);*/
 		}
-		/*///下面是打印人物属性栏
+		///下面是打印人物属性栏
 		setcolor(RGB(255, 255, 255));///白色文字
 		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setfont(-55, 0, "宋体");///黑体字
 		char YELLOWKEYNUM[3], REDKEYNUM[3], LEVELNUM[3], BLUEKEYNUM[3], ATACKNUM[5], HPNUM[10], EXNUM[5], MONEYNUM[5], DEFNUM[5];
-		sprintf(YELLOWKEYNUM, "%d", PEOPLE.YELLOWKEY);///头文件cstdio或stdio.h
-		sprintf(REDKEYNUM, "%d", PEOPLE.REDKEY);
-		sprintf(BLUEKEYNUM, "%d", PEOPLE.BLUEKEY);
-		sprintf(LEVELNUM, "%d", PEOPLE.level);
-		sprintf(ATACKNUM, "%d", PEOPLE.ATACK);
-		sprintf(HPNUM, "%d", PEOPLE.hp);
-		sprintf(EXNUM, "%d", PEOPLE.ex);
-		sprintf(MONEYNUM, "%d", PEOPLE.money);
-		sprintf(DEFNUM, "%d", PEOPLE.DEF);
+		sprintf(YELLOWKEYNUM, "%d", People.Ykey);///头文件cstdio或stdio.h
+		sprintf(REDKEYNUM, "%d", People.Rkey);
+		sprintf(BLUEKEYNUM, "%d", People.Bkey);
+		sprintf(LEVELNUM, "%d", People.level);
+		sprintf(ATACKNUM, "%d", People.Attack);
+		sprintf(HPNUM, "%d", People.hp);
+		sprintf(EXNUM, "%d", People.exp);
+		sprintf(MONEYNUM, "%d", People.money);
+		sprintf(DEFNUM, "%d", People.Defence);
 		outtextxy(210, 405, YELLOWKEYNUM);///黄钥匙打印
 		outtextxy(210, 530, REDKEYNUM);///红钥匙打印
 		outtextxy(210, 465, BLUEKEYNUM);///蓝钥匙打印
 		outtextxy(210, 90, LEVELNUM);///等级打印
-		setfont(-35, 0, "黑体");///字体变小
+		setfont(-35, 0, "宋体");///字体变小
 		outtextxy(210, 165, HPNUM);///血量打印
 		outtextxy(210, 208, ATACKNUM);///攻击力打印
 		outtextxy(210, 250, DEFNUM);///防御力打印
 		outtextxy(210, 295, MONEYNUM);///金钱打印
 		outtextxy(210, 340, EXNUM);///经验打印
 	}
-	///下面是打印人物属性栏
-	setcolor(RGB(255, 255, 255));///白色文字
-	setbkmode(TRANSPARENT);///文字背景透明
-	setfont(-55, 0, "黑体");///黑体字
-	char YELLOWKEYNUM[3], REDKEYNUM[3], LEVELNUM[3], BLUEKEYNUM[3], ATACKNUM[5], HPNUM[10], EXNUM[5], MONEYNUM[5], DEFNUM[5];
-	sprintf(YELLOWKEYNUM, "%d", PEOPLE.YELLOWKEY);///头文件cstdio或stdio.h
-	sprintf(REDKEYNUM, "%d", PEOPLE.REDKEY);
-	sprintf(BLUEKEYNUM, "%d", PEOPLE.BLUEKEY);
-	sprintf(LEVELNUM, "%d", PEOPLE.level);
-	sprintf(ATACKNUM, "%d", PEOPLE.ATACK);
-	sprintf(HPNUM, "%d", PEOPLE.hp);
-	sprintf(EXNUM, "%d", PEOPLE.ex);
-	sprintf(MONEYNUM, "%d", PEOPLE.money);
-	sprintf(DEFNUM, "%d", PEOPLE.DEF);
-	outtextxy(210, 405, YELLOWKEYNUM);///黄钥匙打印
-	outtextxy(210, 530, REDKEYNUM);///红钥匙打印
-	outtextxy(210, 465, BLUEKEYNUM);///蓝钥匙打印
-	outtextxy(210, 90, LEVELNUM);///等级打印
-	setfont(-35, 0, "黑体");///字体变小
-	outtextxy(210, 165, HPNUM);///血量打印
-	outtextxy(210, 208, ATACKNUM);///攻击力打印
-	outtextxy(210, 250, DEFNUM);///防御力打印
-	outtextxy(210, 295, MONEYNUM);///金钱打印
-	outtextxy(210, 340, EXNUM);///经验打印*/
-	}
+	
 }
 
 
-void VersusWindow() //战斗界面(RPG形式)
+
+
+
+
+
+void VersusWindow()//战斗界面(RPG形式)
 {
+
 }
 void Control_Move() //控制人物移动函数
 {
@@ -683,35 +767,14 @@ void Control_Move() //控制人物移动函数
 		}
 	}
 }
-void Push_Warrior() //勇士对话弹窗 第四层
-{
-	//勇士对话图像已经初始化
-	for (int i = 1; i < = 16; i++)
-	{
-		if (i == 1 || i == 7 || i == 9 || i == 14) //对话情况1
-		{
-			putimage(400, 400, Warrior_PUSH[i - 1].img);
-			getch();
-			cleardevice(); //清屏
-			Show_Map();	   //地图再现
-		}
-		else //对话情况2
-		{
-			putimage(200, 200, Warrior_PUSH[i - 1].img);
-			getch();
-			cleardevice(); //清屏
-			Show_Map();	   //地图再现
-		}
-	}
-	M[1].Map[7][2]=0;//对话效果 青门消失
-	Warrior.hp=-1;//勇士生命值作为判断标志
-}
 int main()
 {
-	initgraph(1080, 780, 0); //创建窗口 800*600 ege库函数
+	initgraph(1080, 780); //创建窗口 800*600 ege库函数
 	setcaption("Magic_Tower");
 	initImage();
+	floor_changes_role_xy();
 	Show_Map();
+	
 
 	/*PIMAGE a = newimage();
 	getimage(a, "picture1/BoneGuard.png");
@@ -720,6 +783,7 @@ int main()
 	//PIMAGE xxx = newimage();
 	//getimage(xxx, "/testResources/0_1.jpg");
 	//putimage(0, 0, xxx);
+
 
 	getch();
 	closegraph(); //窗口关闭 ege库函数
