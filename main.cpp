@@ -7,32 +7,32 @@
 地图：使用二维数组
 3、交互（上下左右，触碰）
 4、关卡优化*/
-#define  _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <graphics.h>	//来自ege库
+#include <graphics.h> //来自ege库
 #include <conio.h>
 #include <string>
 
-
-FILE* fp;									  //全局文件指针
-int map_order_now = 1; int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
+FILE *fp; //全局文件指针
+int map_order_now = 1;
+int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
 int map[13][13] =
-{
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
-	{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
-	{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
-	{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
-	{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
-	{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
-	{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
-	{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
-	{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
-	{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
+		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
+		{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
+		{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
+		{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
+		{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
+		{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
+		{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
+		{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
+		{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 }; //初始地图 地图1
 typedef struct
 {
@@ -43,22 +43,22 @@ MAP M[15]; //十五层地图（临时）
 typedef struct Actor
 {
 	char name[20] = "打工人"; //名称; //名称
-	int level = 1;		   //初始等级
-	int hp = 1000;		   //初始血量
-	int Attack = 30;	   //初始攻击力
-	int Defence = 30;	   ///初始防御力
-	int money = 0;		   //初始金钱
-	int exp = 0;		   //初始经验
-	int x;				   //位置坐标x
-	int y;				   //位置坐标y
-	int Ykey = 1;		   //黄钥匙 初始为1
-	int Rkey = 1;		   //红钥匙 初始为1
-	int Bkey = 1;		   //蓝钥匙 初始为1
-	PIMAGE img;	   //角色对象图片
-} role, actor;			   //全局结构体 玩家角色
+	int level = 1;			  //初始等级
+	int hp = 1000;			  //初始血量
+	int Attack = 30;		  //初始攻击力
+	int Defence = 30;		  ///初始防御力
+	int money = 0;			  //初始金钱
+	int exp = 0;			  //初始经验
+	int x;					  //位置坐标x
+	int y;					  //位置坐标y
+	int Ykey = 1;			  //黄钥匙 初始为1
+	int Rkey = 1;			  //红钥匙 初始为1
+	int Bkey = 1;			  //蓝钥匙 初始为1
+	PIMAGE img;				  //角色对象图片
+} role, actor;				  //全局结构体 玩家角色
 typedef struct Object
 {
-	char name[20] = { 0 };
+	char name[20] = {0};
 	int hp;		 //血量
 	int exp;	 //经验值
 	int Attack;	 //攻击力
@@ -446,9 +446,9 @@ void Show_Map()
 	map[PEOPLE.x][PEOPLE.y] = 15;
 	putimage(0, 0, BEIJING.img);*/
 
-	for (int i = 0;i < 13;i++)
+	for (int i = 0; i < 13; i++)
 	{
-		for (int j = 0;j < 13;j++)
+		for (int j = 0; j < 13; j++)
 		{
 			if (map[j][i] == 0)
 				putimage(60 * i + 304, 60 * j + 3, Floor.img);
@@ -568,34 +568,85 @@ void Show_Map()
 	}
 }
 
-
-
-
-
-
-
-
-void VersusWindow()//战斗界面(RPG形式)
+void VersusWindow() //战斗界面(RPG形式)
 {
-
 }
-void Control_Move()//控制人物移动函数
+void Control_Move() //控制人物移动函数
 {
 	if (kbhit())
 	{
 		char move = getch();
 		switch (move)
 		{
-		case 72:
+		case 72: //向前移动
 			if (map[People.x - 1][People.y] == 0)
 			{
 				People.x -= 1;
-				getimage(People.img, "/picture1/actorB.png");//人物向前走，后视图
+				getimage(People.img, "/picture1/actorB.png"); //人物向前走，后视图
 			}
+			else
+			{
+				/* code */
+			}
+			break;
+		case 80: //向后移动
+			if (map[People.x + 1][People.y] == 0)
+			{
+				People.x += 1;
+				getimage(People.img, "/picture1/actor.png");
+			}
+			else
+			{
+				/* code */
+			}
+			break;
+		case 75: // 向左移动
+			if (map[People.x][People.y - 1] == 0)
+			{
+				People.y -= 1;
+				getimage(People.img, "/picture1/actorL.png");
+			}
+			else
+			{
+				/* code */
+			}
+			break;
+		case 77: //向右移动
+			if (map[People.x][People.y + 1] == 0)
+			{
+				People.y += 1;
+				getimage(People.img, "/picture1/actorR.png");
+			}
+			else
+			{
+				/* code */
+			}
+			break;
 		}
 	}
-
-
+}
+void Push_Warrior() //勇士对话弹窗 第四层
+{
+	//勇士对话图像已经初始化
+	for (int i = 1; i < = 16; i++)
+	{
+		if (i == 1 || i == 7 || i == 9 || i == 14) //对话情况1
+		{
+			putimage(400, 400, Warrior_PUSH[i - 1].img);
+			getch();
+			cleardevice(); //清屏
+			Show_Map();	   //地图再现
+		}
+		else //对话情况2
+		{
+			putimage(200, 200, Warrior_PUSH[i - 1].img);
+			getch();
+			cleardevice(); //清屏
+			Show_Map();	   //地图再现
+		}
+	}
+	M[1].Map[7][2]=0;//对话效果 青门消失
+	Warrior.hp=-1;//勇士生命值作为判断标志
 }
 int main()
 {
@@ -611,7 +662,6 @@ int main()
 	//PIMAGE xxx = newimage();
 	//getimage(xxx, "/testResources/0_1.jpg");
 	//putimage(0, 0, xxx);
-
 
 	getch();
 	closegraph(); //窗口关闭 ege库函数
