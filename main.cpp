@@ -700,8 +700,1087 @@ void Show_Map()
 		outtextxy(210, 295, MONEYNUM);///金钱打印
 		outtextxy(210, 340, EXNUM);///经验打印
 	}
-	
 }
+void show_attack_monster(PIMAGE img, int hp, int atack, int def)
+{
+	putimage(300, 200, Versus.img);
+	putimage(325, 240, 80, 80, img, 0, 0, 60, 60);
+	setcolor(RGB(255, 255, 255));///白色文字
+	setbkmode(TRANSPARENT);///文字背景透明
+	setfont(-35, 0, "黑体");///黑体字
+	char HP[10], ATACK[10], DEF[10], PEOPLEHP[10], PEOPLEATACK[10], PEOPLEDEF[10];
+	sprintf(HP, "%d", hp);
+	sprintf(ATACK, "%d", atack);
+	sprintf(DEF, "%d", def);
+	sprintf(PEOPLEHP, "%d", People.hp);
+	sprintf(PEOPLEATACK, "%d", People.Attack);
+	sprintf(PEOPLEDEF, "%d", People.Defence);
+	outtextxy(450, 261, HP);
+	outtextxy(450, 320, ATACK);
+	outtextxy(450, 380, DEF);
+	outtextxy(700, 261, PEOPLEHP);
+	outtextxy(700, 320, PEOPLEATACK);
+	outtextxy(700, 380, PEOPLEDEF);
+}///打怪界面
+
+void atack_monster_hp(int EXCLE, int x, int y, int temhp)
+{
+	map[x][y] = EXCLE;
+	changemap();
+	People.hp += temhp;
+}///修复人物HP可以为负数的BUG
+
+
+void atack_monster(int EXCLE, int x, int y)
+{
+    ///打怪函数
+    switch (EXCLE)
+    {
+        ///青头怪
+    case 30:
+        if (People.Attack > GreenSlime.Defence)
+        {
+            if ((People.hp - ((GreenSlime.hp / (People.Attack - GreenSlime.Defence)) * (GreenSlime.Attack - People.Defence))) > 0)
+            {
+                int hp = GreenSlime.hp;
+                int temhp = 0;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= GreenSlime.Attack - People.Defence;
+                    hp -= People.Attack - GreenSlime.Defence;
+                    temhp += GreenSlime.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(GreenSlime.img, hp, GreenSlime.Attack, GreenSlime.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                //People.hp-=GreenSlime.hp/(People.Attack-GreenSlime.Defence)*(GreenSlime.Attack-People.Defence);
+                else
+                {
+                    People.money += GreenSlime.money;
+                    People.exp += GreenSlime.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+            break;
+            ///红头怪
+    case 31:
+        if (People.Attack > RedSlime.Defence)
+            if ((People.hp - ((RedSlime.hp / (People.Attack - RedSlime.Defence)) * (RedSlime.Attack - People.Defence))) > 0)
+            {
+                int hp = RedSlime.hp;
+                int temhp = 0;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= RedSlime.Attack - People.Defence;
+                    hp -= People.Attack - RedSlime.Defence;
+                    temhp += RedSlime.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(RedSlime.img, hp, RedSlime.Attack, RedSlime.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=RedSlime.hp/(People.Attack-RedSlime.Defence)*(RedSlime.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += RedSlime.money;
+                    People.exp += RedSlime.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+        break;
+        ///骷髅人
+    case 32:
+        if (People.Attack > BoneMan.Defence)
+            if ((People.hp - (BoneMan.hp / (People.Attack - BoneMan.Defence) * (BoneMan.Attack - People.Defence))) > 0)
+            {
+                int hp = BoneMan.hp;
+                int temhp = 0;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= BoneMan.Attack - People.Defence;
+                    hp -= People.Attack - BoneMan.Defence;
+                    temhp += BoneMan.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(BoneMan.img, hp, BoneMan.Attack, BoneMan.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=BoneMan.hp/(People.Attack-BoneMan.Defence)*(BoneMan.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += BoneMan.money;
+                    People.exp += BoneMan.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///初级法师
+    case 33:
+        if (People.Attack > Witch_1.Defence)
+            if ((People.hp - ((Witch_1.hp / (People.Attack - Witch_1.Defence)) * (Witch_1.Attack - People.Defence))) > 0)
+            {
+                int hp = Witch_1.hp;
+                int temhp = 0;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Witch_1.Attack - People.Defence;
+                    hp -= People.Attack - Witch_1.Defence;
+                    temhp += Witch_1.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Witch_1.img, hp, Witch_1.Attack, Witch_1.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Witch_1.hp/(People.Attack-Witch_1.Defence)*(Witch_1.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Witch_1.money;
+                    People.exp += Witch_1.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///绿头怪
+    case 34:
+        if (People.Attack > GreenSlime.Defence)
+            if ((People.hp - ((GreenSlime.hp / (People.Attack - GreenSlime.Defence)) * (GreenSlime.Attack - People.Defence))) > 0)
+            {
+                int hp = GreenSlime.hp;
+                int temhp = 0;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= GreenSlime.Attack - People.Defence;
+                    hp -= People.Attack - GreenSlime.Defence;
+                    temhp += GreenSlime.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(GreenSlime.img, hp, GreenSlime.Attack, GreenSlime.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=GreenSlime.hp/(People.Attack-GreenSlime.Defence)*(GreenSlime.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += GreenSlime.money;
+                    People.exp += GreenSlime.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///小蝙蝠
+    case 35:
+        if (People.Attack > SmallBat.Defence)
+            if ((People.hp - ((SmallBat.hp / (People.Attack - SmallBat.Defence)) * (SmallBat.Attack - People.Defence))) > 0)
+            {
+                int hp = SmallBat.hp;
+                int temhp = 0;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= SmallBat.Attack - People.Defence;
+                    hp -= People.Attack - SmallBat.Defence;
+                    temhp += SmallBat.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(SmallBat.img, hp, SmallBat.Attack, SmallBat.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=SmallBat.hp/(People.Attack-SmallBat.Defence)*(SmallBat.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += SmallBat.money;
+                    People.exp += SmallBat.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///兽面人
+    case 36:
+        if (People.Attack > Orc.Defence)
+            if ((People.hp - ((Orc.hp / (People.Attack - Orc.Defence)) * (Orc.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = Orc.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Orc.Attack - People.Defence;
+                    hp -= People.Attack - Orc.Defence;
+                    temhp += Orc.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Orc.img, hp, Orc.Attack, Orc.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Orc.hp/(People.Attack-Orc.Defence)*(Orc.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Orc.money;
+                    People.exp += Orc.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///骷髅士兵
+    case 37:
+        if (People.Attack > BoneWarrior.Defence)
+            if ((People.hp - ((BoneWarrior.hp / (People.Attack - BoneWarrior.Defence)) * (BoneWarrior.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = BoneWarrior.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= BoneWarrior.Attack - People.Defence;
+                    hp -= People.Attack - BoneWarrior.Defence;
+                    temhp += BoneWarrior.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(BoneWarrior.img, hp, BoneWarrior.Attack, BoneWarrior.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=BoneWarrior.hp/(People.Attack-BoneWarrior.Defence)*(BoneWarrior.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += BoneWarrior.money;
+                    People.exp += BoneWarrior.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///大蝙蝠
+    case 38:
+        if (People.Attack > BigBat.Defence)
+            if ((People.hp - ((BigBat.hp / (People.Attack - BigBat.Defence)) * (BigBat.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = BigBat.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= BigBat.Attack - People.Defence;
+                    hp -= People.Attack - BigBat.Defence;
+                    temhp += BigBat.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(BigBat.img, hp, BigBat.Attack, BigBat.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=BigBat.hp/(People.Attack-BigBat.Defence)*(BigBat.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += BigBat.money;
+                    People.exp += BigBat.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///初级卫兵
+    case 39:
+        if (People.Attack > Guard_1.Defence)
+            if ((People.hp - ((Guard_1.hp / (People.Attack - Guard_1.Defence)) * (Guard_1.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = Guard_1.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Guard_1.Attack - People.Defence;
+                    hp -= People.Attack - Guard_1.Defence;
+                    temhp += Guard_1.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Guard_1.img, hp, Guard_1.Attack, Guard_1.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Guard_1.hp/(People.Attack-Guard_1.Defence)*(Guard_1.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Guard_1.money;
+                    People.exp += Guard_1.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///金队长
+    case 40:
+        if (People.Attack > GBoss.Defence)
+            if ((People.hp - ((GBoss.hp / (People.Attack - GBoss.Defence)) * (GBoss.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = GBoss.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= GBoss.Attack - People.Defence;
+                    hp -= People.Attack - GBoss.Defence;
+                    temhp += GBoss.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(GBoss.img, hp, GBoss.Attack, GBoss.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=GBoss.hp/(People.Attack-GBoss.Defence)*(GBoss.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += GBoss.money;
+                    People.exp += GBoss.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///金卫士
+    case 41:
+        if (People.Attack > Guard_3.Defence)
+            if ((People.hp - ((Guard_3.hp / (People.Attack - Guard_3.Defence)) * (Guard_3.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = Guard_3.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Guard_3.Attack - People.Defence;
+                    hp -= People.Attack - Guard_3.Defence;
+                    temhp += Guard_3.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Guard_3.img, hp, Guard_3.Attack, Guard_3.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Guard_3.hp/(People.Attack-Guard_3.Defence)*(Guard_3.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Guard_3.money;
+                    People.exp += Guard_3.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///骷髅队长
+    case 42:
+        if (People.Attack > BoneGuard.Defence)
+            if ((People.hp - ((BoneGuard.hp / (People.Attack - BoneGuard.Defence)) * (BoneGuard.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = BoneGuard.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= BoneGuard.Attack - People.Defence;
+                    hp -= People.Attack - BoneGuard.Defence;
+                    temhp += BoneGuard.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(BoneGuard.img, hp, BoneGuard.Attack, BoneGuard.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=BoneGuard.hp/(People.Attack-BoneGuard.Defence)*(BoneGuard.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += BoneGuard.money;
+                    People.exp += BoneGuard.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+
+            }
+        break;
+        ///怪王
+    case 43:
+        if (People.Attack > MonsterKing.Defence)
+            if ((People.hp - ((MonsterKing.hp / (People.Attack - MonsterKing.Defence)) * (MonsterKing.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = MonsterKing.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= MonsterKing.Attack - People.Defence;
+                    hp -= People.Attack - MonsterKing.Defence;
+                    temhp += MonsterKing.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(MonsterKing.img, hp, MonsterKing.Attack, MonsterKing.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=MonsterKing.hp/(People.Attack-MonsterKing.Defence)*(MonsterKing.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += MonsterKing.money;
+                    People.exp += MonsterKing.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+
+            }
+        break;
+        ///石头怪人
+    case 44:
+        if (People.Attack > StoneMan.Defence)
+            if ((People.hp - ((StoneMan.hp / (People.Attack - StoneMan.Defence)) * (StoneMan.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = StoneMan.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= StoneMan.Attack - People.Defence;
+                    hp -= People.Attack - StoneMan.Defence;
+                    temhp += StoneMan.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(StoneMan.img, hp, StoneMan.Attack, StoneMan.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=StoneMan.hp/(People.Attack-StoneMan.Defence)*(StoneMan.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += StoneMan.money;
+                    People.exp += StoneMan.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///红蝙蝠
+    case 45:
+        if (People.Attack > RedBat.Defence)
+            if ((People.hp - ((RedBat.hp / (People.Attack - RedBat.Defence)) * (RedBat.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = RedBat.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= RedBat.Attack - People.Defence;
+                    hp -= People.Attack - RedBat.Defence;
+                    temhp += RedBat.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(RedBat.img, hp, RedBat.Attack, RedBat.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=RedBat.hp/(People.Attack-RedBat.Defence)*(RedBat.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += RedBat.money;
+                    People.exp += RedBat.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///红衣法师
+    case 46:
+        if (People.Attack > Witch_R.Defence)
+            if ((People.hp - ((Witch_R.hp / (People.Attack - Witch_R.Defence)) * (Witch_R.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = Witch_R.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Witch_R.Attack - People.Defence;
+                    hp -= People.Attack - Witch_R.Defence;
+                    temhp += Witch_R.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Witch_R.img, hp, Witch_R.Attack, Witch_R.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Witch_R.hp/(People.Attack-Witch_R.Defence)*(Witch_R.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Witch_R.money;
+                    People.exp += Witch_R.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///高级法师
+    case 47:
+        if (People.Attack > Witch_2.Defence)
+            if ((People.hp - ((Witch_2.hp / (People.Attack - Witch_2.Defence)) * (Witch_2.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = Witch_2.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Witch_2.Attack - People.Defence;
+                    hp -= People.Attack - Witch_2.Defence;
+                    temhp += Witch_2.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Witch_2.img, hp, Witch_2.Attack, Witch_2.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Witch_2.hp/(People.Attack-Witch_2.Defence)*(Witch_2.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Witch_2.money;
+                    People.exp += Witch_2.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///白衣武士
+    case 48:
+        if (People.Attack > WhiteWitch.Defence)
+            if ((People.hp - ((WhiteWitch.hp / (People.Attack - WhiteWitch.Defence)) * (WhiteWitch.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = WhiteWitch.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= WhiteWitch.Attack - People.Defence;
+                    hp -= People.Attack - WhiteWitch.Defence;
+                    temhp += WhiteWitch.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(WhiteWitch.img, hp, WhiteWitch.Attack, WhiteWitch.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=WhiteWitch.hp/(People.Attack-WhiteWitch.Defence)*(WhiteWitch.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += WhiteWitch.money;
+                    People.exp += WhiteWitch.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///麻衣法师
+    case 49:
+        if (People.Attack > Witch_Y.Defence)
+            if ((People.hp - ((Witch_Y.hp / (People.Attack - Witch_Y.Defence)) * (Witch_Y.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = Witch_Y.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Witch_Y.Attack - People.Defence;
+                    hp -= People.Attack - Witch_Y.Defence;
+                    temhp += Witch_Y.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Witch_Y.img, hp, Witch_Y.Attack, Witch_Y.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Witch_Y.hp/(People.Attack-Witch_Y.Defence)*(Witch_Y.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Witch_Y.money;
+                    People.exp += Witch_Y.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+    //    ///兽面武士
+    //case 50:
+    //    if (People.Attack > SHOUMIANWUSHI.Defence)
+    //        if ((People.hp - ((SHOUMIANWUSHI.hp / (People.Attack - SHOUMIANWUSHI.Defence)) * (SHOUMIANWUSHI.Attack - People.Defence))) > 0)
+    //        {
+    //            int temhp = 0, hp = SHOUMIANWUSHI.hp;
+    //            for (int i = 0; i < 20000; i++)
+    //            {
+    //                People.hp -= SHOUMIANWUSHI.Attack - People.Defence;
+    //                hp -= People.Attack - SHOUMIANWUSHI.Defence;
+    //                temhp += SHOUMIANWUSHI.Attack - People.Defence;
+    //                //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+    //                if (hp < 0)
+    //                    hp = 0;
+    //                show_attack_monster(SHOUMIANWUSHI.img, hp, SHOUMIANWUSHI.Attack, SHOUMIANWUSHI.Defence);
+    //                Sleep(300);
+    //                if (hp == 0)
+    //                    break;
+    //            }
+    //            //People.hp-=SHOUMIANWUSHI.hp/(People.Attack-SHOUMIANWUSHI.Defence)*(SHOUMIANWUSHI.Attack-People.Defence);
+    //            if (People.hp <= 0)
+    //                atack_monster_hp(EXCLE, x, y, temhp);
+    //            else
+    //            {
+    //                People.money += SHOUMIANWUSHI.money;
+    //                People.exp += SHOUMIANWUSHI.exp;
+
+    //                map[x][y] = 0;
+    //            }
+    //            map[People.x][People.y] = 0;
+    //            changemap();
+    //            refresh();
+    //            cleardevice();
+    //            Show_Map();
+    //        }
+
+    //    break;
+        ///双手剑士
+    case 51:
+        if (People.Attack > SwordMan.Defence)
+            if ((People.hp - ((SwordMan.hp / (People.Attack - SwordMan.Defence)) * (SwordMan.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = SwordMan.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= SwordMan.Attack - People.Defence;
+                    hp -= People.Attack - SwordMan.Defence;
+                    temhp += SwordMan.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(SwordMan.img, hp, SwordMan.Attack, SwordMan.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=SwordMan.hp/(People.Attack-SwordMan.Defence)*(SwordMan.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += SwordMan.money;
+                    People.exp += SwordMan.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+        ///高级卫兵
+    case 52:
+        if (People.Attack > Guard_2.Defence)
+            if ((People.hp - ((Guard_2.hp / (People.Attack - Guard_2.Defence)) * (Guard_2.Attack - People.Defence))) > 0)
+            {
+                int temhp = 0, hp = Guard_2.hp;
+                for (int i = 0; i < 20000; i++)
+                {
+                    People.hp -= Guard_2.Attack - People.Defence;
+                    hp -= People.Attack - Guard_2.Defence;
+                    temhp += Guard_2.Attack - People.Defence;
+                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+                    if (hp < 0)
+                        hp = 0;
+                    show_attack_monster(Guard_2.img, hp, Guard_2.Attack, Guard_2.Defence);
+                    Sleep(300);
+                    if (hp == 0)
+                        break;
+                }
+                //People.hp-=Guard_2.hp/(People.Attack-Guard_2.Defence)*(Guard_2.Attack-People.Defence);
+                if (People.hp <= 0)
+                    atack_monster_hp(EXCLE, x, y, temhp);
+                else
+                {
+                    People.money += Guard_2.money;
+                    People.exp += Guard_2.exp;
+
+                    map[x][y] = 0;
+                }
+                map[People.x][People.y] = 0;
+                changemap();
+                refresh();
+                cleardevice();
+                Show_Map();
+            }
+
+        break;
+//        ///冥卫兵
+//    case 53:
+//        if (People.Attack > MINGWEIBING.Defence)
+//            if ((People.hp - ((MINGWEIBING.hp / (People.Attack - MINGWEIBING.Defence)) * (MINGWEIBING.Attack - People.Defence))) > 0)
+//            {
+//                int temhp = 0, hp = MINGWEIBING.hp;
+//                for (int i = 0; i < 20000; i++)
+//                {
+//                    People.hp -= MINGWEIBING.Attack - People.Defence;
+//                    hp -= People.Attack - MINGWEIBING.Defence;
+//                    temhp += MINGWEIBING.Attack - People.Defence;
+//                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+//                    if (hp < 0)
+//                        hp = 0;
+//                    show_attack_monster(MINGWEIBING.img, hp, MINGWEIBING.Attack, MINGWEIBING.Defence);
+//                    Sleep(300);
+//                    if (hp == 0)
+//                        break;
+//                }
+//                //People.hp-=MINGWEIBING.hp/(People.Attack-MINGWEIBING.Defence)*(MINGWEIBING.Attack-People.Defence);
+//                if (People.hp <= 0)
+//                    atack_monster_hp(EXCLE, x, y, temhp);
+//                else
+//                {
+//                    People.money += MINGWEIBING.money;
+//                    People.exp += MINGWEIBING.exp;
+//
+//                    map[x][y] = 0;
+//                }
+//                map[People.x][People.y] = 0;
+//                changemap();
+//                refresh();
+//                cleardevice();
+//                Show_Map();
+//
+//            }
+//        break;
+//        ///灵武士
+//    case 54:
+//        if (People.Attack > LINGWUSHI.Defence)
+//            if ((People.hp - ((LINGWUSHI.hp / (People.Attack - LINGWUSHI.Defence)) * (LINGWUSHI.Attack - People.Defence))) > 0)
+//            {
+//                int temhp = 0, hp = LINGWUSHI.hp;
+//                for (int i = 0; i < 20000; i++)
+//                {
+//                    People.hp -= LINGWUSHI.Attack - People.Defence;
+//                    hp -= People.Attack - LINGWUSHI.Defence;
+//                    temhp += LINGWUSHI.Attack - People.Defence;
+//                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+//                    if (hp < 0)
+//                        hp = 0;
+//                    show_attack_monster(LINGWUSHI.img, hp, LINGWUSHI.Attack, LINGWUSHI.Defence);
+//                    Sleep(300);
+//                    if (hp == 0)
+//                        break;
+//                }
+//                //People.hp-=LINGWUSHI.hp/(People.Attack-LINGWUSHI.Defence)*(LINGWUSHI.Attack-People.Defence);
+//                if (People.hp <= 0)
+//                    atack_monster_hp(EXCLE, x, y, temhp);
+//                else
+//                {
+//                    People.money += LINGWUSHI.money;
+//                    People.exp += LINGWUSHI.exp;
+//
+//                    map[x][y] = 0;
+//                }
+//                map[People.x][People.y] = 0;
+//                changemap();
+//                refresh();
+//                cleardevice();
+//                Show_Map();
+//            }
+//
+//        break;
+//        ///冥战士
+//    case 55:
+//        if (People.Attack > MINGZHANSHI.Defence)
+//            if ((People.hp - ((MINGZHANSHI.hp / (People.Attack - MINGZHANSHI.Defence)) * (MINGZHANSHI.Attack - People.Defence))) > 0)
+//            {
+//                int temhp = 0, hp = MINGZHANSHI.hp;
+//                for (int i = 0; i < 20000; i++)
+//                {
+//                    People.hp -= MINGZHANSHI.Attack - People.Defence;
+//                    hp -= People.Attack - MINGZHANSHI.Defence;
+//                    temhp += MINGZHANSHI.Attack - People.Defence;
+//                    mciSendString("play audio\\Attack.wav", "", 0, NULL);
+//                    if (hp < 0)
+//                        hp = 0;
+//                    show_attack_monster(MINGZHANSHI.img, hp, MINGZHANSHI.Attack, MINGZHANSHI.Defence);
+//                    Sleep(300);
+//                    if (hp == 0)
+//                        break;
+//                }
+//                //People.hp-=MINGZHANSHI.hp/(People.Attack-MINGZHANSHI.Defence)*(MINGZHANSHI.Attack-People.Defence);
+//                if (People.hp <= 0)
+//                    atack_monster_hp(EXCLE, x, y, temhp);
+//                else
+//                {
+//                    People.money += MINGZHANSHI.money;
+//                    People.exp += MINGZHANSHI.exp;
+//
+//                    map[x][y] = 0;
+//                }
+//                map[People.x][People.y] = 0;
+//                changemap();
+//                refresh();
+//                cleardevice();
+//                Show_Map();
+//            }
+//
+//        break;
+//        ///灵法师
+//    case 56:
+//        if (People.Attack > LINGFASHI.Defence)
+//            if ((People.hp - ((LINGFASHI.hp / (People.Attack - LINGFASHI.Defence)) * (LINGFASHI.Attack - People.Defence))) > 0)
+//            {
+//                int temhp = 0, hp = LINGFASHI.hp;
+//                for (int i = 0; i < 20000; i++)
+//                {
+//                    People.hp -= LINGFASHI.Attack - People.Defence;
+//                    hp -= People.Attack - LINGFASHI.Defence;
+//                    temhp += LINGFASHI.Attack - People.Defence;
+//                    mciSendString("play audio\\Attack.wav", "", 0, NULL);
+//                    if (hp < 0)
+//                        hp = 0;
+//                    show_attack_monster(LINGFASHI.img, hp, LINGFASHI.Attack, LINGFASHI.Defence);
+//                    Sleep(300);
+//                    if (hp == 0)
+//                        break;
+//                }
+//                //People.hp-=LINGFASHI.hp/(People.Attack-LINGFASHI.Defence)*(LINGFASHI.Attack-People.Defence);
+//                if (People.hp <= 0)
+//                    atack_monster_hp(EXCLE, x, y, temhp);
+//                else
+//                {
+//                    People.money += LINGFASHI.money;
+//                    People.exp += LINGFASHI.exp;
+//
+//                    map[x][y] = 0;
+//                }
+//                map[People.x][People.y] = 0;
+//                changemap();
+//                refresh();
+//                cleardevice();
+//                Show_Map();
+//            }
+//
+//        break;
+//        ///冥队长
+//    case 57:
+//        if (People.Attack > MINGDUIZHANG.Defence)
+//            if ((People.hp - ((MINGDUIZHANG.hp / (People.Attack - MINGDUIZHANG.Defence)) * (MINGDUIZHANG.Attack - People.Defence))) > 0)
+//            {
+//                int temhp = 0, hp = MINGDUIZHANG.hp;
+//                for (int i = 0; i < 20000; i++)
+//                {
+//                    People.hp -= MINGDUIZHANG.Attack - People.Defence;
+//                    hp -= People.Attack - MINGDUIZHANG.Defence;
+//                    temhp += MINGDUIZHANG.Attack - People.Defence;
+//                    mciSendString("play audio\\Attack.wav", "", 0, NULL);
+//                    if (hp < 0)
+//                        hp = 0;
+//                    show_attack_monster(MINGDUIZHANG.img, hp, MINGDUIZHANG.Attack, MINGDUIZHANG.Defence);
+//                    Sleep(300);
+//                    if (hp == 0)
+//                        break;
+//                }
+//                //People.hp-=MINGDUIZHANG.hp/(People.Attack-MINGDUIZHANG.Defence)*(MINGDUIZHANG.Attack-People.Defence);
+//                if (People.hp <= 0)
+//                    atack_monster_hp(EXCLE, x, y, temhp);
+//                else
+//                {
+//                    People.money += MINGDUIZHANG.money;
+//                    People.exp += MINGDUIZHANG.exp;
+//
+//                    map[x][y] = 0;
+//                }
+//                map[People.x][People.y] = 0;
+//                changemap();
+//                refresh();
+//                cleardevice();
+//                Show_Map();
+//            }
+//
+//        break;
+        }
+   }
+}
+
 
 
 
@@ -711,8 +1790,8 @@ void Show_Map()
 
 void VersusWindow()//战斗界面(RPG形式)
 {
-
 }
+
 void Control_Move() //控制人物移动函数
 {
 	if (kbhit())
