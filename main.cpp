@@ -1193,7 +1193,12 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊıÓÃÓÚ¸Ä±ä(x,y)µ
          setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
          char WORDS[40];
          char words[40];
+<<<<<<< HEAD
          strcpy(WORDS,"ÎŞ·¨ÏÂÂ¥£¡");
+=======
+         strcpy(WORDS,"ÒÑµ½µÚ1²ãÎŞ·¨ÏÂÂ¥£¡°´ÈÎÒâ");
+         strcpy(words,"¼ü·µ»ØÓÎÏ·£¡");
+>>>>>>> parent of b2f4824... Update main.cpp
          outtextxy(340,340,WORDS);
          outtextxy(500,420,words);
          Sleep(200);
