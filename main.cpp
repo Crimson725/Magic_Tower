@@ -18,6 +18,7 @@
 FILE *fp; //È«¾ÖÎÄ¼þÖ¸Õë
 int map_order_now = 1;
 int map_order_pre = 0; //µØÍ¼²ÎÊý µ±Ç°Îª1 Ç°Ò»µØÍ¼Îª0 Ëæ¹Ø¿¨½øÐÐ×ÔÔö
+
 int map[13][13] =
 	{
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -96,9 +97,13 @@ void changemap()
 
 void refresh()
 {
-	memcpy(map1,M[map_order_now-1].Map,sizeof(map));
+	memcpy(map1, M[map_order_now - 1].Map, sizeof(map));
 }
 //Ë¢ÐÂº¯Êý£¬´ýÑÐ¾¿
+int get_x_y(int x, int y)
+{
+	return map[x][y];
+}
 void floor_changes_role_xy() //²»Í¬²ãÂ¥Ö®¼äµÄÈÎÎñµØÍ¼ÇÐ»»(³õÊ¼Î»ÖÃ´ý¶¨£©
 {
 	if (map_order_now >= map_order_pre) ///ÉÏÂ¥Çé¿ö
@@ -704,160 +709,162 @@ void Show_Map()
 }
 void VersusWindow(PIMAGE img, int hp, int attack, int def) //Õ½¶·½çÃæ(RPGÐÎÊ½)
 {
-	putimage(300,200,Versus.img);
-	putimage(325,240,80,80,img,0,0,60,60);//Í¼Æ¬·ÅÖÃ ½ØÈ¡
-	setcolor(RGB(255,240,245));//µ­ºì
-	setfont(-35,0,"¿¬Ìå");
+	putimage(300, 200, Versus.img);
+	putimage(325, 240, 80, 80, img, 0, 0, 60, 60); //Í¼Æ¬·ÅÖÃ ½ØÈ¡
+	setcolor(RGB(255, 240, 245));				   //µ­ºì
+	setfont(-35, 0, "¿¬Ìå");
 	// setbkmode(TRANSPARENT);Í¸Ã÷±³¾°ÎÄ×Ö
-	char HP[10],ATTACK[10],DEF[10],People_HP[10],People_ATTACK[10],People_DEF[10];//×Ö·ûÐÍÊý×é£¬¶¨Òå´òÓ¡ÄÚÈÝ
-	sprintf(HP,"%d",hp);
-	sprintf(ATTACK,"%d",attack);
-	sprintf(DEF,"%d",def);
-	sprintf(People_HP,"%d",People.hp);
-	sprintf(People_DEF,"%d",People.Defence);
-	sprintf(People_ATTACK,"%d",People.Attack);
-	outtextxy(450,250,HP);
-	outtextxy(450,320,ATTACK);
-	outtextxy(450,380,DEF);
-	outtextxy(700,250,People_HP);
-	outtextxy(700,320,People_ATTACK);
-	outtextxy(700,380,People_DEF);
+	char HP[10], ATTACK[10], Defence[10], People_HP[10], People_ATTACK[10], People_DEF[10]; //×Ö·ûÐÍÊý×é£¬¶¨Òå´òÓ¡ÄÚÈÝ
+	sprintf(HP, "%d", hp);
+	sprintf(ATTACK, "%d", attack);
+	sprintf(Defence, "%d", def);
+	sprintf(People_HP, "%d", People.hp);
+	sprintf(People_DEF, "%d", People.Defence);
+	sprintf(People_ATTACK, "%d", People.Attack);
+	outtextxy(450, 250, HP);
+	outtextxy(450, 320, ATTACK);
+	outtextxy(450, 380, Defence);
+	outtextxy(700, 250, People_HP);
+	outtextxy(700, 320, People_ATTACK);
+	outtextxy(700, 380, People_DEF);
 	//´ý²âÊÔ
 }
-void key_down()//±¸ÓÃ
-{
-	char userkey;
-	for (int i = 0; i <13;i++)
-	{
-		for (int j =0;j<13;j++)
-			{
-				if (map[i][j]==15);
-				break;
-			}
-		if (map[i][j]==15);
-				break;
-	}
-	 userkey =getch();
-	 switch (userkey)
-	 {
-		 case 'A':
-		 case 'a':
-		 case 75:
-		 	break;
-		case 'D':
-		case 'd':
-		case 77:
-			break;
-		case 'W':
-		case 'w':
-		case 72:
-			break;
-		case 'S':
-		case 's':
-		case 80£º
-			break;
-	 }
-}
+//void key_down() //±¸ÓÃ
+//{
+//	char userkey;
+//	for (int i = 0; i < 13; i++)
+//	{
+//		for (int j = 0; j < 13; j++)
+//		{
+//			if (map[i][j] == 15)
+//				;
+//			break;
+//		}
+//		if (map[i][j] == 15)
+//			;
+//		break;
+//	}
+//	userkey = getch();
+//	switch (userkey)
+//	{
+//	case 'A':
+//	case 'a':
+//	case 75:
+//		break;
+//	case 'D':
+//	case 'd':
+//	case 77:
+//		break;
+//	case 'W':
+//	case 'w':
+//	case 72:
+//		break;
+//	case 'S':
+//	case 's':
+//		case 80£º
+//			break;
+//	 }
+//}
 void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µÄ×´Ì¬
 {
    ///ÒÔÏÂÉÌµêµ÷ÓÃº¯Êý
-   if(map[x][y] == -2 && mapnum == 3)///µÚÈý²ãÉÌµêÒòÎª·ÃÎÊÉÌµêÖ»ÄÜ´ÓÕýÖÐ¼ä·ÃÎÊÓÃ-2±íÊ¾
+   if(map[x][y] == -2 && map_order_now == 3)///µÚÈý²ãÉÌµêÒòÎª·ÃÎÊÉÌµêÖ»ÄÜ´ÓÕýÖÐ¼ä·ÃÎÊÓÃ-2±íÊ¾
    {
-      push_SHANGDIAN();
+    //   push_SHANGDIAN();
    }
-   else if(map[x][y] == -2 && mapnum == 11)
+   else if(map[x][y] == -2 && map_order_now == 11)
    {
-      putimage(430,210,THEEND.img);
+      putimage(430,210,End.img);
       Sleep(500);
       getch();
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
       cleardevice();
-      show_map();
+      Show_Map();
    }
 
 
    ///ÒÔÏÂ°üº¬¿ªÃÅºÍ¸÷ÀàµÀ¾ßµÄ»ñÈ¡
-   else if(map[x][y] == 3 && People.REDKEY>0)
+   else if(map[x][y] == 3 && People.Rkey>0)
    {
-      mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
+    //   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      People.REDKEY--;
+      People.Rkey--;
    }
-   else if(map[x][y] == 4 && People.YELLOWKEY>0)
+   else if(map[x][y] == 4 && People.Ykey>0)
    {
-      mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
+    //   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      People.YELLOWKEY--;
+      People.Ykey--;
    }
-   else if(map[x][y] == 5 && People.BLUEKEY>0)
+   else if(map[x][y] == 5 && People.Bkey>0)
    {
-      mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
+    //   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      People.BLUEKEY--;
+      People.Bkey--;
    }
    else if(map[x][y] == 6)
    {
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
       People.hp+=200;
    }
    else if(map[x][y] == 7)
    {
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
       People.hp+=500;
    }
    else if(map[x][y] == 8)
    {
       map[x][y] = 0;   ///´òÓ¡Ê¥¹â»ÕÍ¼Æ¬
-      putimage(260,230,SHENGGUANGHUI_PUSH.img);
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+      putimage(260,230,CrossEmblem_PUSH.img);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       Sleep(200);
       getch();
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
    }
    else if(map[x][y] == 9)
    {
       map[x][y] = 0;   ///´òÓ¡·çÖ®ÂÞÅÌÍ¼Æ¬
-      putimage(260,230,FENGZHILUOPAN_PUSH.img);
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+      putimage(260,230,WindOrient_PUSH.img);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       Sleep(200);
       getch();
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
    }
    else if(map[x][y] == 10)///ÉÏÂ¥ÌÝ
    {
-      mapnum++;
+      map_order_now++;
       refresh();
-      change_Peoplexy();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+      floor_changes_role_xy();
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
    }
    else if(map[x][y] == 11)///ÏÂÂ¥ÌÝ
    {
-      if(mapnum == 1)
+      if(map_order_now == 1)
       {
-         mciSendString("play audio\\PICK.wav","",0,NULL);
+        //  mciSendString("play audio\\PICK.wav","",0,NULL);
          setcolor(YELLOW);///°×É«ÎÄ×Ö
          setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
          setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
@@ -870,112 +877,112 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
          Sleep(200);
          getch();
          cleardevice();
-         show_map();
+         Show_Map();
       }
       else
       {
-         mapnum--;
+         map_order_now--;
          refresh();
-         change_Peoplexy();
-         mciSendString("play audio\\PICK.wav","",0,NULL);
+         floor_changes_role_xy();
+        //  mciSendString("play audio\\PICK.wav","",0,NULL);
       }
    }
    else if(map[x][y] == 12)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      People.YELLOWKEY++;
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Ykey++;
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
    }
    else if(map[x][y] == 13)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      People.REDKEY++;
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Rkey++;
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
    }
    else if(map[x][y] == 14)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      People.BLUEKEY++;
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Bkey++;
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
    }
    else if(map[x][y] == 16)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
       People.Attack+=3;
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
    }
    else if(map[x][y] == 17)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      People.DEF+=3;
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Defence+=3;
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
    }
-   else if(map[x][y] == 21 && mapnum == 2)
+   else if(map[x][y] == 21 && map_order_now == 2)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
       setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
       char WORDS[40];
-      strcpy(WORDS,"»ñµÃ×ÏÉ°½££¡¹¥»÷¼Ó60£¡");
+      strcpy(WORDS,"»ñµÃ½££¡¹¥»÷¼Ó60£¡");
       outtextxy(340,340,WORDS);
       Sleep(200);
       getch();
       cleardevice();
       People.Attack+=60;
-      show_map();
+      Show_Map();
    }///µ±Â¥²ãÎª2Ê±ÈÃ°×·¢ÀÏÈËÏûÊ§(ÒÑ¾­¸Ä³ÉÒ»°Ñ½£)
-   else if(map[x][y] == 18 && mapnum == 5)
+   else if(map[x][y] == 18 && map_order_now == 5)
    {
-      mciSendString("play audio\\PICK.wav","",0,NULL);
-      push_BAIFALAOREN();
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
+//      push_BAIFALAOREN();
    }///µ±Â¥²ãÎª5Ê±µ¯³ö°×·¢ÀÏÈË¹ºÂò²Ëµ¥
-   else if(map[x][y] == 25 && mapnum == 2)
+   else if(map[x][y] == 25 && map_order_now == 2)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
       setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
       char WORDS[40];
-      strcpy(WORDS,"»ñµÃÇàÍ­¶Ü£¡·ÀÓù¼Ó60£¡");
+      strcpy(WORDS,"»ñµÃ¶Ü£¡·ÀÓù¼Ó60£¡");
       outtextxy(340,340,WORDS);
       Sleep(200);
       getch();
       cleardevice();
-      People.DEF+=60;
-      show_map();
+      People.Defence+=60;
+      Show_Map();
    }///µ±Â¥²ãÎª2Ê±ÈÃºìÒÂÀÏÈËÏûÊ§(ÒÑ¾­¸Ä³ÉÒ»¶ÜÅÆ)
-   else if(map[x][y] == 19 && mapnum == 5)
+   else if(map[x][y] == 19 && map_order_now == 5)
    {
-      mciSendString("play audio\\PICK.wav","",0,NULL);
-      push_HONGYILAOREN();
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
+     // push_HONGYILAOREN();
    }///µ±Â¥²ãÎª5Ê±µ¯³öºìÒÂÀÏÈË¹ºÂò²Ëµ¥
    else if(map[x][y] == 20)
    {
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
       setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
@@ -985,16 +992,16 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
       ///Åöµ½ÇàÃÅÎÞ¶¯×÷
    }
-   else if(map[x][y] == 21 && mapnum == 3)///µÚÈý²ãµÄ±¦½£
+   else if(map[x][y] == 21 && map_order_now == 3)///µÚÈý²ãµÄ±¦½£
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       People.Attack+=10;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
@@ -1005,15 +1012,15 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
    }
-   else if(map[x][y] == 21 && mapnum == 9)///µÚ¾Å²ãµÄ±¦½£
+   else if(map[x][y] == 21 && map_order_now == 9)///µÚ¾Å²ãµÄ±¦½£
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       People.Attack+=60;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
@@ -1024,20 +1031,20 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
    }
-   else if(map[x][y] == 23 && YONGSHI.hp == 0)///ÓÂÊ¿
+   else if(map[x][y] == 23 && Warrior.hp == 0)///ÓÂÊ¿
    {
-      mciSendString("play audio\\PICK.wav","",0,NULL);
-      push_YONGSHI();
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   push_YONGSHI();
    }
    else if(map[x][y] == 24)///½ðÔ¿³×
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       People.Attack+=10;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
@@ -1048,19 +1055,19 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      People.REDKEY++;
-      People.BLUEKEY++;
-      People.YELLOWKEY++;
-      show_map();
+      People.Rkey++;
+      People.Bkey++;
+      People.Ykey++;
+      Show_Map();
    }
-   else if(map[x][y] == 25 && mapnum == 5)
+   else if(map[x][y] == 25 && map_order_now == 5)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
-      People.DEF+=10;
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Defence+=10;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
       setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
@@ -1070,19 +1077,19 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
    }
    else if(map[x][y] == 26)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       People.level+=1;
       People.hp+=800;
       People.Attack+=3;
-      People.DEF+=3;
+      People.Defence+=3;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
       setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
@@ -1092,15 +1099,15 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
    }
    else if(map[x][y] == 27)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       People.money+=300;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
@@ -1111,18 +1118,18 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
    }
    else if(map[x][y] == 28)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       People.hp*=1.5;
       People.Attack*=1.5;
-      People.DEF*=1.5;
+      People.Defence*=1.5;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
       setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
@@ -1135,39 +1142,43 @@ void change_state(int EXCLE,int x,int y)///EXCLE´ú±í±êºÅÖµÕâ¸öº¯ÊýÓÃÓÚ¸Ä±ä(x,y)µ
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
    }
    else if(map[x][y] == 29)
    {
       map[x][y] = 0;
       map[People.x][People.y] = 0;
-      change_map();
+    //   change_map();
       refresh();
-      mciSendString("play audio\\PICK.wav","",0,NULL);
+    //   mciSendString("play audio\\PICK.wav","",0,NULL);
       People.level+=3;
       People.hp+=2400;
       People.Attack+=9;
-      People.DEF+=9;
+      People.Defence+=9;
       setcolor(YELLOW);///°×É«ÎÄ×Ö
       setbkmode(TRANSPARENT);///ÎÄ×Ö±³¾°Í¸Ã÷
       setfont(-55,0,"ºÚÌå");///ºÚÌå×Ö
       char WORDS[40];
-      strcpy(WORDS,"È¡µÃ¾­ÑéºÐ£¡µÈ¼¶¼Ó3¼¶£¡");
+      strcpy(WORDS,"È¡µÃ¾­ÑéºÐ£¬µÈ¼¶¼Ó3¼¶£¡");
       outtextxy(350,350,WORDS);
       Sleep(200);
       getch();
       cleardevice();
-      show_map();
+      Show_Map();
    }
-
-   ///ÒÔÏÂÖ»°üº¬´ò¹ÖÒÔ¼°µ÷ÓÃ´ò¹Öº¯Êý
-   else if(map[x][y] == 1);///×²Í¸Ã÷Ç½
-   else
-      atack_monster(EXCLE,x,y);
+   else if(map[x][y] == 1);//×²Ç½
+   //else
+     // atack_monster(EXCLE,x,y);
 }
+/*Âß¼­£º1¡¢ÅÐ¶ÏÈËÎïÇ°²¿ÊÇÊ²Ã´
+		2¡¢ÈËÎï×ø±êÒÆ¶¯ Í¼Æ¬¸Ä±ä£¨ÊµÊ±£©
+		3¡¢Ô­Î»ÖÃÍ¼Æ¬»Ö¸´Îª1
+		*/
 void control_move()
 {
-	char userkey;
+	if(kbhit())
+	{
+		char userkey;
 	// for (int i = 0; i <13;i++)
 	// {
 	// 	for (int j =0;j<13;j++)
@@ -1182,27 +1193,64 @@ void control_move()
 	 switch (userkey)
 	 {
 		 case 'A':
-		 case 'a':
-		 case 75:
-		 	break;
+		case 'a':
+		case 75:
+			if (map[People.x][People.y - 1] == 0)
+			{
+				People.y -= 1;
+				getimage(People.img, "picture1/actorL.png");
+			}
+			else
+			{
+				change_state(get_x_y(People.x, People.y - 1), People.x, People.y - 1);
+			}
+
+			break;
 		case 'D':
 		case 'd':
 		case 77:
+			if (map[People.x][People.y + 1] == 0)
+			{
+				People.y += 1;
+				getimage(People.img, "picture1/actorR.png");
+			}
+			else
+			{
+				change_state(get_x_y(People.x, People.y + 1), People.x, People.y + 1);
+			}
+
 			break;
 		case 'W':
 		case 'w':
 		case 72:
+			if (map[People.x - 1][People.y] == 0)
+			{
+				People.x -= 1;
+				getimage(People.img, "picture1/actorB.png");
+			}
+			else
+			{
+				change_state(get_x_y(People.x - 1, People.y), People.x - 1, People.y);
+			}
 			break;
 		case 'S':
 		case 's':
-		case 80£º
+		case 80:
+			if (map[People.x + 1][People.y] == 0)
+			{
+				People.x += 1;
+				getimage(People.img, "picture1/actor.png");
+			}
+			else
+			{
+				change_state(get_x_y(People.x + 1, People.y), People.x + 1, People.y);
+			}
+
 			break;
-	 }
+		}
 }
-int get_x_y(int x, int y)
-{
-	return map[x][y];
 }
+
 int main()
 {
 	initgraph(1080, 780); //´´½¨´°¿Ú 800*600 ege¿âº¯Êý
@@ -1210,9 +1258,9 @@ int main()
 	initImage();
 	floor_changes_role_xy();
 	Show_Map();
-	while(1)
+	while (1)
 	{
-		Control_Move();
+		control_move();
 		Sleep(20);
 	}
 
