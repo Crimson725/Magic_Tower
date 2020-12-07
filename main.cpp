@@ -724,59 +724,480 @@ void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
 	outtextxy(700,380,People_DEF);
 	//待测试
 }
-void Control_Move() //控制人物移动函数
+void key_down()//备用
 {
-	if (kbhit())
+	char userkey;
+	for (int i = 0; i <13;i++)
 	{
-		char move = getch();
-		switch (move)
-		{
-		case 'w': //向前移动
-			if (map[People.x - 1][People.y] == 0)//人物面前必须是地面才能行走
+		for (int j =0;j<13;j++)
 			{
-				People.x -= 1;
-				getimage(People.img, "/picture1/actorB.png"); //人物向前走，后视图
+				if (map[i][j]==15);
+				break;
 			}
-			else
-			{
-				/* code */
-			}
-			break;
-		case 80: //向后移动
-			if (map[People.x + 1][People.y] == 0)
-			{
-				People.x += 1;
-				getimage(People.img, "/picture1/actor.png");
-			}
-			else
-			{
-				/* code */
-			}
-			break;
-		case 'a': // 向左移动
-			if (map[People.x][People.y - 1] == 0)
-			{
-				People.y -= 1;
-				getimage(People.img, "/picture1/actorL.png");
-			}
-			else
-			{
-				return;
-			}
-			break;
-		case 77: //向右移动
-			if (map[People.x][People.y + 1] == 0)
-			{
-				People.y += 1;
-				getimage(People.img, "/picture1/actorR.png");
-			}
-			else
-			{
-				system("pause");
-			}
-			break;
-		}
+		if (map[i][j]==15);
+				break;
 	}
+	 userkey =getch();
+	 switch (userkey)
+	 {
+		 case 'A':
+		 case 'a':
+		 case 75:
+		 	break;
+		case 'D':
+		case 'd':
+		case 77:
+			break;
+		case 'W':
+		case 'w':
+		case 72:
+			break;
+		case 'S':
+		case 's':
+		case 80：
+			break;
+	 }
+}
+void change_state(int EXCLE,int x,int y)///EXCLE代表标号值这个函数用于改变(x,y)的状态
+{
+   ///以下商店调用函数
+   if(map[x][y] == -2 && mapnum == 3)///第三层商店因为访问商店只能从正中间访问用-2表示
+   {
+      push_SHANGDIAN();
+   }
+   else if(map[x][y] == -2 && mapnum == 11)
+   {
+      putimage(430,210,THEEND.img);
+      Sleep(500);
+      getch();
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      cleardevice();
+      show_map();
+   }
+
+
+   ///以下包含开门和各类道具的获取
+   else if(map[x][y] == 3 && People.REDKEY>0)
+   {
+      mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.REDKEY--;
+   }
+   else if(map[x][y] == 4 && People.YELLOWKEY>0)
+   {
+      mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.YELLOWKEY--;
+   }
+   else if(map[x][y] == 5 && People.BLUEKEY>0)
+   {
+      mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.BLUEKEY--;
+   }
+   else if(map[x][y] == 6)
+   {
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.hp+=200;
+   }
+   else if(map[x][y] == 7)
+   {
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.hp+=500;
+   }
+   else if(map[x][y] == 8)
+   {
+      map[x][y] = 0;   ///打印圣光徽图片
+      putimage(260,230,SHENGGUANGHUI_PUSH.img);
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      Sleep(200);
+      getch();
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+   }
+   else if(map[x][y] == 9)
+   {
+      map[x][y] = 0;   ///打印风之罗盘图片
+      putimage(260,230,FENGZHILUOPAN_PUSH.img);
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      Sleep(200);
+      getch();
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+   }
+   else if(map[x][y] == 10)///上楼梯
+   {
+      mapnum++;
+      refresh();
+      change_Peoplexy();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+   }
+   else if(map[x][y] == 11)///下楼梯
+   {
+      if(mapnum == 1)
+      {
+         mciSendString("play audio\\PICK.wav","",0,NULL);
+         setcolor(YELLOW);///白色文字
+         setbkmode(TRANSPARENT);///文字背景透明
+         setfont(-55,0,"黑体");///黑体字
+         char WORDS[40];
+         char words[40];
+         strcpy(WORDS,"已到第1层无法下楼！按任意");
+         strcpy(words,"键返回游戏！");
+         outtextxy(340,340,WORDS);
+         outtextxy(500,420,words);
+         Sleep(200);
+         getch();
+         cleardevice();
+         show_map();
+      }
+      else
+      {
+         mapnum--;
+         refresh();
+         change_Peoplexy();
+         mciSendString("play audio\\PICK.wav","",0,NULL);
+      }
+   }
+   else if(map[x][y] == 12)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.YELLOWKEY++;
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+   }
+   else if(map[x][y] == 13)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.REDKEY++;
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+   }
+   else if(map[x][y] == 14)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.BLUEKEY++;
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+   }
+   else if(map[x][y] == 16)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.Attack+=3;
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+   }
+   else if(map[x][y] == 17)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      People.DEF+=3;
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+   }
+   else if(map[x][y] == 21 && mapnum == 2)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"获得紫砂剑！攻击加60！");
+      outtextxy(340,340,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      People.Attack+=60;
+      show_map();
+   }///当楼层为2时让白发老人消失(已经改成一把剑)
+   else if(map[x][y] == 18 && mapnum == 5)
+   {
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      push_BAIFALAOREN();
+   }///当楼层为5时弹出白发老人购买菜单
+   else if(map[x][y] == 25 && mapnum == 2)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"获得青铜盾！防御加60！");
+      outtextxy(340,340,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      People.DEF+=60;
+      show_map();
+   }///当楼层为2时让红衣老人消失(已经改成一盾牌)
+   else if(map[x][y] == 19 && mapnum == 5)
+   {
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      push_HONGYILAOREN();
+   }///当楼层为5时弹出红衣老人购买菜单
+   else if(map[x][y] == 20)
+   {
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"你没有打开此门的钥匙！");
+      outtextxy(350,350,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+      ///碰到青门无动作
+   }
+   else if(map[x][y] == 21 && mapnum == 3)///第三层的宝剑
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Attack+=10;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"取得宝剑！攻击力加10！");
+      outtextxy(350,350,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+   }
+   else if(map[x][y] == 21 && mapnum == 9)///第九层的宝剑
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Attack+=60;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"取得大宝剑！攻击力加60！");
+      outtextxy(350,350,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+   }
+   else if(map[x][y] == 23 && YONGSHI.hp == 0)///勇士
+   {
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      push_YONGSHI();
+   }
+   else if(map[x][y] == 24)///金钥匙
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.Attack+=10;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"取得金钥匙！每种钥匙数量加1！");
+      outtextxy(340,340,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      People.REDKEY++;
+      People.BLUEKEY++;
+      People.YELLOWKEY++;
+      show_map();
+   }
+   else if(map[x][y] == 25 && mapnum == 5)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.DEF+=10;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"取得盾牌！防御力加10！");
+      outtextxy(350,350,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+   }
+   else if(map[x][y] == 26)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.level+=1;
+      People.hp+=800;
+      People.Attack+=3;
+      People.DEF+=3;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"取得等级翅膀！等级加1级！");
+      outtextxy(350,350,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+   }
+   else if(map[x][y] == 27)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.money+=300;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"取得开心金币！金币加300！");
+      outtextxy(350,350,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+   }
+   else if(map[x][y] == 28)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.hp*=1.5;
+      People.Attack*=1.5;
+      People.DEF*=1.5;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      char words[40];
+      strcpy(WORDS,"获得十字架！所有属性变为");
+      strcpy(words,"原来的1.5倍!");
+      outtextxy(340,340,WORDS);
+      outtextxy(500,420,words);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+   }
+   else if(map[x][y] == 29)
+   {
+      map[x][y] = 0;
+      map[People.x][People.y] = 0;
+      change_map();
+      refresh();
+      mciSendString("play audio\\PICK.wav","",0,NULL);
+      People.level+=3;
+      People.hp+=2400;
+      People.Attack+=9;
+      People.DEF+=9;
+      setcolor(YELLOW);///白色文字
+      setbkmode(TRANSPARENT);///文字背景透明
+      setfont(-55,0,"黑体");///黑体字
+      char WORDS[40];
+      strcpy(WORDS,"取得经验盒！等级加3级！");
+      outtextxy(350,350,WORDS);
+      Sleep(200);
+      getch();
+      cleardevice();
+      show_map();
+   }
+
+   ///以下只包含打怪以及调用打怪函数
+   else if(map[x][y] == 1);///撞透明墙
+   else
+      atack_monster(EXCLE,x,y);
+}
+void control_move()
+{
+	char userkey;
+	// for (int i = 0; i <13;i++)
+	// {
+	// 	for (int j =0;j<13;j++)
+	// 		{
+	// 			if (map[i][j]==15);
+	// 			break;
+	// 		}
+	// 	if (map[i][j]==15);
+	// 			break;
+	// }
+	 userkey =getch();
+	 switch (userkey)
+	 {
+		 case 'A':
+		 case 'a':
+		 case 75:
+		 	break;
+		case 'D':
+		case 'd':
+		case 77:
+			break;
+		case 'W':
+		case 'w':
+		case 72:
+			break;
+		case 'S':
+		case 's':
+		case 80：
+			break;
+	 }
 }
 int get_x_y(int x, int y)
 {
