@@ -92,10 +92,11 @@ void changemap()
 {
 	memcpy(M[map_order_now - 1].Map, map, sizeof(map)); //string.h 函数 地图切换函数
 }
-//任务位置切换核心函数(待完善)
+//人物位置切换核心函数(待完善)
 
 void refresh()
 {
+	memcpy(map1,M[map_order_now-1].Map,sizeof(map));
 }
 //刷新函数，待研究
 void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
@@ -730,8 +731,8 @@ void Control_Move() //控制人物移动函数
 		char move = getch();
 		switch (move)
 		{
-		case 72: //向前移动
-			if (map[People.x - 1][People.y] == 0)
+		case 'w': //向前移动
+			if (map[People.x - 1][People.y] == 0)//人物面前必须是地面才能行走
 			{
 				People.x -= 1;
 				getimage(People.img, "/picture1/actorB.png"); //人物向前走，后视图
@@ -752,7 +753,7 @@ void Control_Move() //控制人物移动函数
 				/* code */
 			}
 			break;
-		case 75: // 向左移动
+		case 'a': // 向左移动
 			if (map[People.x][People.y - 1] == 0)
 			{
 				People.y -= 1;
@@ -760,7 +761,7 @@ void Control_Move() //控制人物移动函数
 			}
 			else
 			{
-				/* code */
+				return;
 			}
 			break;
 		case 77: //向右移动
@@ -771,11 +772,15 @@ void Control_Move() //控制人物移动函数
 			}
 			else
 			{
-				/* code */
+				system("pause");
 			}
 			break;
 		}
 	}
+}
+int get_x_y(int x, int y)
+{
+	return map[x][y];
 }
 int main()
 {
@@ -784,6 +789,11 @@ int main()
 	initImage();
 	floor_changes_role_xy();
 	Show_Map();
+	while(1)
+	{
+		Control_Move();
+		Sleep(20);
+	}
 
 	/*PIMAGE a = newimage();
 	getimage(a, "picture1/BoneGuard.png");
