@@ -707,6 +707,330 @@ void Show_Map()
 		outtextxy(210, 340, EXNUM);		   ///经验打印
 	}
 }
+
+void push_OldMan()
+{
+    putimage(430, 210, OldMan_PUSH[0].img);
+    int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+    for (int i = 0; i < 20000; i++)
+    {
+        if (kbhit())
+        {
+            char b = getch();
+            if (b == 'e' || b == 'E')
+            {
+                //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                a++;
+                if (a > 4)
+                    a = 1;
+                cleardevice();
+                show_map();
+                putimage(430, 210, OldMan_PUSH[a - 1].img);
+            }
+            else if (b == 'q' || b == 'Q')
+            {
+                //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                a--;
+                if (a < 1)
+                    a = 4;
+                cleardevice();
+                show_map();
+                putimage(430, 210, OldMan_PUSH[a - 1].img);
+            }
+            else if (b == 'j' || b == 'J')
+            {
+                switch (a)
+                {
+                case 1:
+                    if (People.exp > 99)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.exp -= 100;
+                        People.hp += 800;
+                        People.Attack += 3;
+                        People.Defence += 3;
+                        People.level++;
+                    }
+                    else
+                    {
+                       // mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "经验不够！");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 2:
+                    if (People.exp > 29)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.exp -= 30;
+                        People.Attack += 5;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "经验不够");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 3:
+                    if (People.exp > 29)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.exp -= 30;
+                        People.Defence += 5;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "经验不够");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 4:
+                    //mciSendString("play audio\\PICK.wav", "", 0, NULL);
+                    break;
+                }
+                break;
+            }
+        }
+        Sleep(200);
+    }
+}
+void push_RedMan()
+{
+    putimage(430, 210, RedMan_PUSH[0].img);
+    int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+    for (int i = 0; i < 20000; i++)
+    {
+        if (kbhit())
+        {
+            char b = getch();
+            if (b == 'e' || b == 'E')
+            {
+               // mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                a++;
+                if (a > 4)
+                    a = 1;
+                cleardevice();
+                show_map();
+                putimage(430, 210, RedMan_PUSH[a - 1].img);
+            }
+            else if (b == 'q' || b == 'Q')
+            {
+                //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                a--;
+                if (a < 1)
+                    a = 4;
+                cleardevice();
+                show_map();
+                putimage(430, 210, RedMan_PUSH[a - 1].img);
+            }
+            else if (b == 'j' || b == 'J')
+            {
+                switch (a)
+                {
+                case 1:
+                    if (People.money > 9)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.money -= 10;
+                        People.Ykey++;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "金钱不够！");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 2:
+                    if (People.money > 50)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.money -= 50;
+                        People.Bkey++;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "金钱不够");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 3:
+                    if (People.money > 100)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.money -= 100;
+                        People.Rkey++;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "金钱不够");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 4:
+                    //mciSendString("play audio\\PICK.wav", "", 0, NULL);
+                    break;
+                }
+                break;
+            }
+        }
+        Sleep(200);
+    }
+}
+void push_Shop()///第三层商店
+{
+    putimage(430, 210, Shop_PUSH[0].img);
+    int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+    for (int i = 0; i < 20000; i++)
+    {
+        if (kbhit())
+        {
+            char b = getch();
+            if (b == 'e' || b == 'E')
+            {
+                //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                a++;
+                if (a > 4)
+                    a = 1;
+                cleardevice();
+                show_map();
+                putimage(430, 210, Shop_PUSH[a - 1].img);
+            }
+            else if (b == 'q' || b == 'Q')
+            {
+                //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                a--;
+                if (a < 1)
+                    a = 4;
+                cleardevice();
+                show_map();
+                putimage(430, 210, Shop_PUSH[a - 1].img);
+            }
+            else if (b == 'j' || b == 'J')
+            {
+                switch (a)
+                {
+                case 1:
+                    if (People.money > 24)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.money -= 25;
+                        People.hp += 800;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "金钱不够！");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 2:
+                    if (People.money > 24)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.money -= 25;
+                        People.Attack += 5;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "金钱不够");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 3:
+                    if (People.money > 24)
+                    {
+                        //mciSendString("play audio\\BUY.wav", "", 0, NULL);
+                        People.money -= 25;
+                        People.Defence += 5;
+                    }
+                    else
+                    {
+                        //mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+                        setcolor(RGB(255, 255, 255));///白色文字
+                        setbkmode(TRANSPARENT);///文字背景透明
+                        setfont(-55, 0, "黑体");///黑体字
+                        char WORDS[40];
+                        strcpy(WORDS, "金钱不够");
+                        cleardevice();
+                        outtextxy(0, 0, WORDS);
+                        getch();
+                        show_map();
+                    }
+                    break;
+                case 4:
+                    //mciSendString("play audio\\PICK.wav", "", 0, NULL);
+                    break;
+                }
+                break;
+            }
+        }
+        Sleep(200);
+    }
+}
+
+
 void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
 {
 	putimage(300, 200, Versus.img);
