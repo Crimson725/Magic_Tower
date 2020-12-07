@@ -1194,8 +1194,7 @@ void change_state(int EXCLE,int x,int y)///EXCLE╢З╠М╠Й╨еж╣уБ╦Ж╨╞йЩсцсз╦д╠Д(x,y)╣
          setfont(-55,0,"╨злЕ");///╨злЕвж
          char WORDS[40];
          char words[40];
-         strcpy(WORDS,"ря╣╫╣з1╡Цнч╥╗обб╔ё║╟╢хнрБ");
-         strcpy(words,"╪Э╥╣╩ьсно╥ё║");
+         strcpy(WORDS,"нч╥╗обб╔ гК╟╢хнрБ╪Э╥╣╩ьсно╥");
          outtextxy(340,340,WORDS);
          outtextxy(500,420,words);
          Sleep(200);
