@@ -86,19 +86,23 @@ background Background, Block, Floor, Wall, YellowDoor, GreenDoor, RedDoor, BlueD
 role People;																																	   //主角
 push CrossEmblem_PUSH, Shop_PUSH[4], Versus, Warrior_PUSH[16], OldMan_PUSH[4], RedMan_PUSH[4], WindOrient_PUSH, End;							   //弹出窗口类
 //地图切换核心函数（待完善）
+
 void changemap()
 {
 	memcpy(M[map_order_now - 1].Map, map, sizeof(map)); //string.h 函数 地图切换函数
 }//人物位置切换核心函数(待完善)
+
 void refresh()
 {
 	memcpy(map1, M[map_order_now - 1].Map, sizeof(map));
 }
 //刷新函数，待研究
+
 int get_x_y(int x, int y)
 {
 	return map[x][y];
 }
+
 void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
 {
 	if (map_order_now >= map_order_pre) ///上楼情况
@@ -156,7 +160,7 @@ void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
 			People.x = 1;
 			People.y = 2;
 			break;
-		case 2: ///下楼到2楼
+		case 2: ///下楼到2楼WW
 			People.x = 10;
 			People.y = 1;
 			break;
@@ -707,6 +711,7 @@ void Show_Map()
 		outtextxy(210, 295, MONEYNUM);	   ///金钱打印
 		outtextxy(210, 340, EXNUM);		   ///经验打印
 	}
+
 }
 
 void show_attack_monster(PIMAGE img, int hp, int atack, int def)
@@ -2574,9 +2579,11 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		cleardevice();
 		Show_Map();
 	}
-	else if (map[x][y] == 1);//撞墙
-	//else
-	  // atack_monster(EXCLE,x,y);
+	///以下只包含打怪以及调用打怪函数
+	else if (map[x][y] == 1);///撞透明墙
+	else
+	atack_monster(EXCLE, x, y);
+	
 }
 /*逻辑：1、判断人物前部是什么
 		2、人物坐标移动 图片改变（实时）
@@ -2603,7 +2610,7 @@ void control_move()
 		switch (userkey)
 		{
 		case 'A':
-			// case 'a':
+		 case 'a':
 			// case 75:
 			if (map[People.x][People.y - 1] == 0)
 			{
@@ -2617,7 +2624,7 @@ void control_move()
 
 			break;
 		case 'D':
-			// case 'd':
+		 case 'd':
 			// case 77:
 			if (map[People.x][People.y + 1] == 0)
 			{
@@ -2631,7 +2638,7 @@ void control_move()
 
 			break;
 		case 'W':
-			// case 'w':
+		 case 'w':
 			// case 72:
 			if (map[People.x - 1][People.y] == 0)
 			{
@@ -2644,7 +2651,7 @@ void control_move()
 			}
 			break;
 		case 'S':
-			// case 's':
+		 case 's':
 			// case 80:
 			if (map[People.x + 1][People.y] == 0)
 			{
@@ -2662,7 +2669,6 @@ void control_move()
 
 	}
 	Show_Map();
-
 }
 
 int main()
