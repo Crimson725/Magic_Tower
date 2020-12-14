@@ -5,7 +5,7 @@ int main()
 {
     char ch=getch();
     printf("%c\n", ch);
-    printf("If you have seen this, that means I love you so much.");
+    printf("If you see this, it means I love you. Mua");
     return 0;
     system("pause"); 
 }
