@@ -749,10 +749,9 @@ void atack_monster(int EXCLE, int x, int y)
 	///打怪函数
 	switch (EXCLE)
 	{
-		///青头怪
+		///绿史莱姆
 	case 30:
 		if (People.Attack > GreenSlime.Defence)
-		{
 			if ((People.hp - ((GreenSlime.hp / (People.Attack - GreenSlime.Defence)) * (GreenSlime.Attack - People.Defence))) > 0)
 			{
 				int hp = GreenSlime.hp;
@@ -787,6 +786,7 @@ void atack_monster(int EXCLE, int x, int y)
 				Show_Map();
 			}
 			break;
+			
 			///红头怪
 	case 31:
 		if (People.Attack > RedSlime.Defence)
@@ -1792,7 +1792,7 @@ void atack_monster(int EXCLE, int x, int y)
 		//        break;
 		}
 	}
-}
+
 
 void push_OldMan()
 {
