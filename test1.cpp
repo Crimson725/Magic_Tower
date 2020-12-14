@@ -4,6 +4,8 @@
 int main()
 {
     char ch=getch();
-    printf("%c", ch);
+    printf("%c\n", ch);
+    printf("If you have seen this, that means I love you so much.");
     return 0;
+    system("pause"); 
 }
