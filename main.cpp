@@ -2670,33 +2670,47 @@ void control_move()
 	}
 	Show_Map();
 }
+void Enter_Or_Not()
+{
+	
+	//文字颜色
+	setcolor(EGERGB(0x0, 0xFF, 0x0));
 
+	//文字背景色（注意setbkcolor函数也会同时改变文字背景色）
+	setfontbkcolor(EGERGB(0x80, 0x00, 0x80));
+	setfont(20, 5, "宋体");
+	outtextxy(100, 100, "Wanna play Magic Tower?");
+	outtextrect(100, 120, 200, 100, "\nPress Y to Enter or N to Quit");
+
+	while (!kbhit())
+	{
+		char ch;
+		ch = getch();
+		if (ch == 'Y')
+			break;
+		else if (ch == 'N')
+			closegraph();
+	}
+}
 int main()
 {
 	initgraph(1080, 780); //创建窗口 1080*780 ege库函数
 	setcaption("Magic_Tower");
-	//refresh();
-	//changemap();
 	initImage();
-	//refresh();
+	InitEnemy();
 	changemap();
 	floor_changes_role_xy();
+	Enter_Or_Not();
+	
 	while (1)
 	{
+		
+		
+		
 		control_move();
-
 		Sleep(60);
 	}
-
-	/*PIMAGE a = newimage();
-	getimage(a, "picture1/BoneGuard.png");
-	putimage(0, 0, a);*/
-
-	//PIMAGE xxx = newimage();
-	//getimage(xxx, "/testResources/0_1.jpg");
-	//putimage(0, 0, xxx);
-
-	getch();
+	//getch();
 	closegraph(); //窗口关闭 ege库函数
 	return 0;
 }
