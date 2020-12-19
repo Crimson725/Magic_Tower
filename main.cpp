@@ -11,25 +11,25 @@ version2
 #include <conio.h>
 #include <string>
 
-FILE* fp; //全局文件指针
+FILE *fp; //全局文件指针
 int map_order_now = 1;
 int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
 
 int map[13][13] =
-{
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
-	{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
-	{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
-	{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
-	{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
-	{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
-	{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
-	{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
-	{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
-	{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
+		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
+		{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
+		{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
+		{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
+		{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
+		{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
+		{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
+		{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
+		{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 }; //初始地图 地图1
 typedef struct
 {
@@ -57,7 +57,7 @@ typedef struct Actor
 } role, actor;				  //全局结构体 玩家角色
 typedef struct Object
 {
-	char name[20] = { 0 };
+	char name[20] = {0};
 	int hp;		 //血量
 	int exp;	 //经验值
 	int Attack;	 //攻击力
@@ -90,7 +90,7 @@ push CrossEmblem_PUSH, Shop_PUSH[4], Versus, Warrior_PUSH[16], OldMan_PUSH[4], R
 void changemap()
 {
 	memcpy(M[map_order_now - 1].Map, map, sizeof(map)); //string.h 函数 地图切换函数
-}//人物位置切换核心函数(待完善)
+} //人物位置切换核心函数(待完善)
 
 void refresh()
 {
@@ -558,7 +558,6 @@ void InitEnemy() //敌人角色初始化
 void Show_Map()
 {
 
-
 	// changemap();
 	// refresh();
 	memcpy(map, map1, sizeof(map));
@@ -711,16 +710,15 @@ void Show_Map()
 		outtextxy(210, 295, MONEYNUM);	   ///金钱打印
 		outtextxy(210, 340, EXNUM);		   ///经验打印
 	}
-
 }
 
 void show_attack_monster(PIMAGE img, int hp, int atack, int def)
 {
 	putimage(300, 200, Versus.img);
 	putimage(325, 240, 80, 80, img, 0, 0, 60, 60);
-	setcolor(RGB(255, 255, 255));///白色文字
-	setbkmode(TRANSPARENT);///文字背景透明
-	setfont(-35, 0, "黑体");///黑体字
+	setcolor(RGB(255, 255, 255)); ///白色文字
+	setbkmode(TRANSPARENT);		  ///文字背景透明
+	setfont(-35, 0, "黑体");	  ///黑体字
 	char HP[10], Attack[10], Defence[10], PeopleHP[10], PeopleAttack[10], PeopleDefence[10];
 	sprintf(HP, "%d", hp);
 	sprintf(Attack, "%d", atack);
@@ -734,15 +732,14 @@ void show_attack_monster(PIMAGE img, int hp, int atack, int def)
 	outtextxy(700, 261, PeopleHP);
 	outtextxy(700, 320, PeopleAttack);
 	outtextxy(700, 380, PeopleDefence);
-}///打怪界面
+} ///打怪界面
 
 void atack_monster_hp(int EXCLE, int x, int y, int temhp)
 {
 	map[x][y] = EXCLE;
 	changemap();
 	People.hp += temhp;
-}///修复人物HP可以为负数的BUG
-
+} ///修复人物HP可以为负数的BUG
 
 void atack_monster(int EXCLE, int x, int y)
 {
@@ -1232,7 +1229,6 @@ void atack_monster(int EXCLE, int x, int y)
 				refresh();
 				cleardevice();
 				Show_Map();
-
 			}
 		break;
 		///怪王
@@ -1269,7 +1265,6 @@ void atack_monster(int EXCLE, int x, int y)
 				refresh();
 				cleardevice();
 				Show_Map();
-
 			}
 		break;
 		///石头怪人
@@ -1531,7 +1526,7 @@ void atack_monster(int EXCLE, int x, int y)
 		//        }
 
 		//    break;
-			///双手剑士
+		///双手剑士
 	case 51:
 		if (People.Attack > SwordMan.Defence)
 			if ((People.hp - ((SwordMan.hp / (People.Attack - SwordMan.Defence)) * (SwordMan.Attack - People.Defence))) > 0)
@@ -1793,11 +1788,10 @@ void atack_monster(int EXCLE, int x, int y)
 	}
 }
 
-
 void push_OldMan()
 {
 	putimage(430, 210, OldMan_PUSH[0].img);
-	int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+	int choice = 1; ///记录选择的选项,字母e往下走,字母q往上走,字母j确定
 	for (int i = 0; i < 20000; i++)
 	{
 		if (kbhit())
@@ -1805,32 +1799,29 @@ void push_OldMan()
 			char b = getch();
 			if (b == 'e' || b == 'E')
 			{
-				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-				a++;
-				if (a > 4)
-					a = 1;
+				choice++;
+				if (choice > 4)
+					choice = 1;
 				cleardevice();
 				Show_Map();
-				putimage(430, 210, OldMan_PUSH[a - 1].img);
+				putimage(430, 210, OldMan_PUSH[choice - 1].img);
 			}
 			else if (b == 'q' || b == 'Q')
 			{
-				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-				a--;
-				if (a < 1)
-					a = 4;
+				choice--;
+				if (choice < 1)
+					choice = 4;
 				cleardevice();
 				Show_Map();
-				putimage(430, 210, OldMan_PUSH[a - 1].img);
+				putimage(430, 210, OldMan_PUSH[choice - 1].img);
 			}
 			else if (b == 'j' || b == 'J')
 			{
-				switch (a)
+				switch (choice)
 				{
 				case 1:
 					if (People.exp > 99)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.exp -= 100;
 						People.hp += 800;
 						People.Attack += 3;
@@ -1839,10 +1830,9 @@ void push_OldMan()
 					}
 					else
 					{
-						// mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "经验不够！");
 						cleardevice();
@@ -1854,16 +1844,14 @@ void push_OldMan()
 				case 2:
 					if (People.exp > 29)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.exp -= 30;
 						People.Attack += 5;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "经验不够");
 						cleardevice();
@@ -1875,16 +1863,14 @@ void push_OldMan()
 				case 3:
 					if (People.exp > 29)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.exp -= 30;
 						People.Defence += 5;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "经验不够");
 						cleardevice();
@@ -1894,7 +1880,6 @@ void push_OldMan()
 					}
 					break;
 				case 4:
-					//mciSendString("play audio\\PICK.wav", "", 0, NULL);
 					break;
 				}
 				break;
@@ -1906,49 +1891,45 @@ void push_OldMan()
 void push_RedMan()
 {
 	putimage(430, 210, RedMan_PUSH[0].img);
-	int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+	int choice = 1; ///记录选择的选项,字母e往下走,字母q往上走,字母j确定
 	for (int i = 0; i < 20000; i++)
 	{
 		if (kbhit())
 		{
 			char b = getch();
-			if (b == 'e' || b == 'E')
+			if (b == 'g' || b == 'G')
 			{
-				// mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-				a++;
-				if (a > 4)
-					a = 1;
+				choice++;
+				if (choice > 4)
+					choice = 1;
 				cleardevice();
 				Show_Map();
-				putimage(430, 210, RedMan_PUSH[a - 1].img);
+				putimage(430, 210, RedMan_PUSH[choice - 1].img);
 			}
-			else if (b == 'q' || b == 'Q')
+			else if (b == 't' || b == 'T')
 			{
-				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-				a--;
-				if (a < 1)
-					a = 4;
+				choice--;
+				if (choice < 1)
+					choice = 4;
 				cleardevice();
 				Show_Map();
-				putimage(430, 210, RedMan_PUSH[a - 1].img);
+				putimage(430, 210, RedMan_PUSH[choice - 1].img);
 			}
 			else if (b == 'j' || b == 'J')
 			{
-				switch (a)
+				switch (choice)
 				{
 				case 1:
 					if (People.money > 9)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 10;
 						People.Ykey++;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够，无法购买");
 						cleardevice();
@@ -1960,16 +1941,14 @@ void push_RedMan()
 				case 2:
 					if (People.money > 50)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 50;
 						People.Bkey++;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够，无法购买");
 						cleardevice();
@@ -1981,16 +1960,14 @@ void push_RedMan()
 				case 3:
 					if (People.money > 100)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 100;
 						People.Rkey++;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够");
 						cleardevice();
@@ -2000,7 +1977,6 @@ void push_RedMan()
 					}
 					break;
 				case 4:
-					//mciSendString("play audio\\PICK.wav", "", 0, NULL);
 					break;
 				}
 				break;
@@ -2009,10 +1985,10 @@ void push_RedMan()
 		Sleep(200);
 	}
 }
-void push_Shop()///第三层商店
+void push_Shop() ///第三层商店
 {
 	putimage(430, 210, Shop_PUSH[0].img);
-	int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+	int choice = 1; ///记录选择的选项,字母e往下走,字母q往上走,字母j确定
 	for (int i = 0; i < 20000; i++)
 	{
 		if (kbhit())
@@ -2020,41 +1996,37 @@ void push_Shop()///第三层商店
 			char b = getch();
 			if (b == 'e' || b == 'E')
 			{
-				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-				a++;
-				if (a > 4)
-					a = 1;
+				choice++;
+				if (choice > 4)
+					choice = 1;
 				cleardevice();
 				Show_Map();
-				putimage(430, 210, Shop_PUSH[a - 1].img);
+				putimage(430, 210, Shop_PUSH[choice - 1].img);
 			}
 			else if (b == 'q' || b == 'Q')
 			{
-				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-				a--;
-				if (a < 1)
-					a = 4;
+				choice--;
+				if (choice < 1)
+					choice = 4;
 				cleardevice();
 				Show_Map();
-				putimage(430, 210, Shop_PUSH[a - 1].img);
+				putimage(430, 210, Shop_PUSH[choice - 1].img);
 			}
 			else if (b == 'j' || b == 'J')
 			{
-				switch (a)
+				switch (choice)
 				{
 				case 1:
 					if (People.money > 24)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 25;
 						People.hp += 800;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够！");
 						cleardevice();
@@ -2066,16 +2038,14 @@ void push_Shop()///第三层商店
 				case 2:
 					if (People.money > 24)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 25;
 						People.Attack += 5;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够");
 						cleardevice();
@@ -2087,16 +2057,14 @@ void push_Shop()///第三层商店
 				case 3:
 					if (People.money > 24)
 					{
-						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 25;
 						People.Defence += 5;
 					}
 					else
 					{
-						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
-						setcolor(RGB(255, 255, 255));///白色文字
-						setbkmode(TRANSPARENT);///文字背景透明
-						setfont(-55, 0, "黑体");///黑体字
+						setcolor(RGB(255, 255, 255)); ///白色文字
+						setbkmode(TRANSPARENT);		  ///文字背景透明
+						setfont(-55, 0, "黑体");	  ///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够");
 						cleardevice();
@@ -2106,7 +2074,6 @@ void push_Shop()///第三层商店
 					}
 					break;
 				case 4:
-					//mciSendString("play audio\\PICK.wav", "", 0, NULL);
 					break;
 				}
 				break;
@@ -2115,7 +2082,48 @@ void push_Shop()///第三层商店
 		Sleep(200);
 	}
 }
-
+void push_Warrior()
+{
+	for (int i = 0; i < 16; i++)
+	{
+		Warrior_PUSH[i].img = newimage(); //初始化
+	}
+	getimage(Warrior_PUSH[0].img, "picture1\\Warrior1.png");
+	getimage(Warrior_PUSH[1].img, "picture1\\Warrior2.png");
+	getimage(Warrior_PUSH[2].img, "picture1\\Warrior3.png");
+	getimage(Warrior_PUSH[3].img, "picture1\\Warrior4.png");
+	getimage(Warrior_PUSH[4].img, "picture1\\Warrior5.png");
+	getimage(Warrior_PUSH[5].img, "picture1\\Warrior6.png");
+	getimage(Warrior_PUSH[6].img, "picture1\\Warrior7.png");
+	getimage(Warrior_PUSH[7].img, "picture1\\Warrior8.png");
+	getimage(Warrior_PUSH[8].img, "picture1\\Warrior9.png");
+	getimage(Warrior_PUSH[9].img, "picture1\\Warrior10.png");
+	getimage(Warrior_PUSH[10].img, "picture1\\Warrior11.png");
+	getimage(Warrior_PUSH[11].img, "picture1\\Warrior12.png");
+	getimage(Warrior_PUSH[12].img, "picture1\\Warrior13.png");
+	getimage(Warrior_PUSH[13].img, "picture1\\Warrior14.png");
+	getimage(Warrior_PUSH[14].img, "picture1\\Warrior15.png");
+	getimage(Warrior_PUSH[15].img, "picture1\\Warrior16.png");
+	for (int i = 1; i <= 16; i++)
+	{
+		if (i == 1 || 7 || 9 || 11 || 14)
+		{
+			putimage(400, 400, Warrior_PUSH[i - 1].img);
+			getch();
+			cleardevice();
+			Show_Map();
+		}
+		else
+		{
+			putimage(200, 200, Warrior_PUSH[i - 1].img);
+			getch();
+			cleardevice();
+			Show_Map();
+		}
+	}
+	M[1].Map[7][2] = 0; ///青门消失
+	Warrior.hp = 1;		///判断是否已经和勇士说过话
+}
 
 void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
 {
@@ -2123,7 +2131,6 @@ void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
 	putimage(325, 240, 80, 80, img, 0, 0, 60, 60); //图片放置 截取
 	setcolor(RGB(255, 240, 245));				   //淡红
 	setfont(-35, 0, "楷体");
-	// setbkmode(TRANSPARENT);透明背景文字
 	char HP[10], ATTACK[10], Defence[10], People_HP[10], People_ATTACK[10], People_DEF[10]; //字符型数组，定义打印内容
 	sprintf(HP, "%d", hp);
 	sprintf(ATTACK, "%d", attack);
@@ -2137,49 +2144,13 @@ void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
 	outtextxy(700, 250, People_HP);
 	outtextxy(700, 320, People_ATTACK);
 	outtextxy(700, 380, People_DEF);
-	//待测试
 }
-//void key_down() //备用
-//{
-//	char userkey;
-//	for (int i = 0; i < 13; i++)
-//	{
-//		for (int j = 0; j < 13; j++)
-//		{
-//			if (map[i][j] == 15)
-//				;
-//			break;
-//		}
-//		if (map[i][j] == 15)
-//			;
-//		break;
-//	}
-//	userkey = getch();
-//	switch (userkey)
-//	{
-//	case 'A':
-//	case 'a':
-//	case 75:
-//		break;
-//	case 'D':
-//	case 'd':
-//	case 77:
-//		break;
-//	case 'W':
-//	case 'w':
-//	case 72:
-//		break;
-//	case 'S':
-//	case 's':
-//		case 80：
-//			break;
-//	 }
-//}
-void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y)的状态
+
+void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,y)的状态
 {
-	if (map[x][y] == -2 && map_order_now == 3)///第三层商店因为访问商店只能从正中间访问用-2表示
+	if (map[x][y] == -2 && map_order_now == 3) ///第三层商店因为访问商店只能从正中间访问用-2表示
 	{
-		//   push_SHANGDIAN();
+		push_Shop();
 	}
 	else if (map[x][y] == -2 && map_order_now == 11)
 	{
@@ -2193,11 +2164,9 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		Show_Map();
 	}
 
-
 	///以下包含开门和各类道具的获取
 	else if (map[x][y] == 3 && People.Rkey > 0)
 	{
-		//   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -2206,7 +2175,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 	}
 	else if (map[x][y] == 4 && People.Ykey > 0)
 	{
-		//   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -2215,7 +2183,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 	}
 	else if (map[x][y] == 5 && People.Bkey > 0)
 	{
-		//   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -2224,7 +2191,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 	}
 	else if (map[x][y] == 6)
 	{
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -2233,7 +2199,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 	}
 	else if (map[x][y] == 7)
 	{
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -2242,9 +2207,8 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 	}
 	else if (map[x][y] == 8)
 	{
-		map[x][y] = 0;   ///打印圣光徽图片
+		map[x][y] = 0; ///打印圣光徽图片
 		putimage(260, 230, CrossEmblem_PUSH.img);
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		Sleep(200);
 		getch();
 		map[People.x][People.y] = 0;
@@ -2253,38 +2217,32 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 	}
 	else if (map[x][y] == 9)
 	{
-		map[x][y] = 0;   ///打印风之罗盘图片
+		map[x][y] = 0; ///打印风之罗盘图片
 		putimage(260, 230, WindOrient_PUSH.img);
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		Sleep(200);
 		getch();
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
 	}
-	else if (map[x][y] == 10)///上楼梯
+	else if (map[x][y] == 10) ///上楼梯
 	{
 		map_order_now++;
 		refresh();
 		floor_changes_role_xy();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
-	else if (map[x][y] == 11)///下楼梯
+	else if (map[x][y] == 11) ///下楼梯
 	{
 		if (map_order_now == 1)
 		{
-			//  mciSendString("play audio\\PICK.wav","",0,NULL);
-			setcolor(YELLOW);///白色文字
-			setbkmode(TRANSPARENT);///文字背景透明
-			setfont(-55, 0, "黑体");///黑体字
+			setcolor(YELLOW);		 ///白色文字
+			setbkmode(TRANSPARENT);	 ///文字背景透明
+			setfont(-55, 0, "黑体"); ///黑体字
 			char WORDS[40];
 			char words[40];
-			//<<<<<< < HEAD
 			strcpy(WORDS, "无法下楼！");
-			//====== =
 			strcpy(WORDS, "已到第1层无法下楼！按任意");
 			strcpy(words, "键返回游戏！");
-			//>>>>>> > parent of b2f4824... Update main.cpp
 			outtextxy(340, 340, WORDS);
 			outtextxy(500, 420, words);
 			Sleep(200);
@@ -2297,7 +2255,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 			map_order_now--;
 			refresh();
 			floor_changes_role_xy();
-			//  mciSendString("play audio\\PICK.wav","",0,NULL);
 		}
 	}
 	else if (map[x][y] == 12)
@@ -2307,7 +2264,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		changemap();
 		refresh();
 		People.Ykey++;
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 13)
 	{
@@ -2316,7 +2272,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		changemap();
 		refresh();
 		People.Rkey++;
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 14)
 	{
@@ -2325,7 +2280,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		changemap();
 		refresh();
 		People.Bkey++;
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 16)
 	{
@@ -2334,7 +2288,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		changemap();
 		refresh();
 		People.Attack += 3;
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 17)
 	{
@@ -2343,7 +2296,6 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		changemap();
 		refresh();
 		People.Defence += 3;
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 21 && map_order_now == 2)
 	{
@@ -2351,10 +2303,9 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "获得剑！攻击加60！");
 		outtextxy(340, 340, WORDS);
@@ -2363,22 +2314,20 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		cleardevice();
 		People.Attack += 60;
 		Show_Map();
-	}///当楼层为2时让白发老人消失(已经改成一把剑)
+	} ///当楼层为2时让白发老人消失(已经改成一把剑)
 	else if (map[x][y] == 18 && map_order_now == 5)
 	{
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
-	//      push_BAIFALAOREN();
-	}///当楼层为5时弹出白发老人购买菜单
+		push_OldMan();
+	} ///当楼层为5时弹出白发老人购买菜单
 	else if (map[x][y] == 25 && map_order_now == 2)
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "获得盾！防御加60！");
 		outtextxy(340, 340, WORDS);
@@ -2387,18 +2336,16 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		cleardevice();
 		People.Defence += 60;
 		Show_Map();
-	}///当楼层为2时让红衣老人消失(已经改成一盾牌)
+	} ///当楼层为2时让红衣老人消失(已经改成一盾牌)
 	else if (map[x][y] == 19 && map_order_now == 5)
 	{
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
-		 // push_HONGYILAOREN();
-	}///当楼层为5时弹出红衣老人购买菜单
+		push_RedMan();
+	} ///当楼层为5时弹出红衣老人购买菜单
 	else if (map[x][y] == 20)
 	{
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "你没有打开此门的钥匙！");
 		outtextxy(350, 350, WORDS);
@@ -2408,17 +2355,16 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		Show_Map();
 		///碰到青门无动作
 	}
-	else if (map[x][y] == 21 && map_order_now == 3)///第三层的宝剑
+	else if (map[x][y] == 21 && map_order_now == 3) ///第三层的宝剑
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Attack += 10;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得宝剑！攻击力加10！");
 		outtextxy(350, 350, WORDS);
@@ -2427,17 +2373,16 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		cleardevice();
 		Show_Map();
 	}
-	else if (map[x][y] == 21 && map_order_now == 9)///第九层的宝剑
+	else if (map[x][y] == 21 && map_order_now == 9) ///第九层的宝剑
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Attack += 60;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得大宝剑！攻击力加60！");
 		outtextxy(350, 350, WORDS);
@@ -2446,22 +2391,20 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		cleardevice();
 		Show_Map();
 	}
-	else if (map[x][y] == 23 && Warrior.hp == 0)///勇士
+	else if (map[x][y] == 23 && Warrior.hp == 0) ///勇士
 	{
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		//   push_YONGSHI();
 	}
-	else if (map[x][y] == 24)///金钥匙
+	else if (map[x][y] == 24) ///金钥匙
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Attack += 10;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得金钥匙！每种钥匙数量加1！");
 		outtextxy(340, 340, WORDS);
@@ -2479,11 +2422,10 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Defence += 10;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得盾牌！防御力加10！");
 		outtextxy(350, 350, WORDS);
@@ -2498,14 +2440,13 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.level += 1;
 		People.hp += 800;
 		People.Attack += 3;
 		People.Defence += 3;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得等级翅膀！等级加1级！");
 		outtextxy(350, 350, WORDS);
@@ -2520,11 +2461,10 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.money += 300;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得开心金币！金币加300！");
 		outtextxy(350, 350, WORDS);
@@ -2539,13 +2479,12 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.hp *= 1.5;
 		People.Attack *= 1.5;
 		People.Defence *= 1.5;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		char words[40];
 		strcpy(WORDS, "获得十字架！所有属性变为");
@@ -2563,14 +2502,13 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.level += 3;
 		People.hp += 2400;
 		People.Attack += 9;
 		People.Defence += 9;
-		setcolor(YELLOW);///白色文字
-		setbkmode(TRANSPARENT);///文字背景透明
-		setfont(-55, 0, "黑体");///黑体字
+		setcolor(YELLOW);		 ///白色文字
+		setbkmode(TRANSPARENT);	 ///文字背景透明
+		setfont(-55, 0, "黑体"); ///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得经验盒，等级加3级！");
 		outtextxy(350, 350, WORDS);
@@ -2580,10 +2518,10 @@ void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y
 		Show_Map();
 	}
 	///以下只包含打怪以及调用打怪函数
-	else if (map[x][y] == 1);///撞透明墙
+	else if (map[x][y] == 1)
+		; ///撞透明墙
 	else
 		atack_monster(EXCLE, x, y);
-
 }
 /*逻辑：1、判断人物前部是什么
 		2、人物坐标移动 图片改变（实时）
@@ -2596,16 +2534,6 @@ void control_move()
 	if (kbhit())
 	{
 		char userkey;
-		// for (int i = 0; i <13;i++)
-		// {
-		// 	for (int j =0;j<13;j++)
-		// 		{
-		// 			if (map[i][j]==15);
-		// 			break;
-		// 		}
-		// 	if (map[i][j]==15);
-		// 			break;
-		// }
 		userkey = getch();
 		switch (userkey)
 		{
@@ -2665,24 +2593,21 @@ void control_move()
 
 			break;
 		}
-
-
 	}
 	Show_Map();
 }
 void Enter_Or_Not()
 {
-	setcolor(RED);
-	setfont(100,50, "黑体");
-	outtextxy(400, 200, "Wanna play Magic Tower? Y OR N");
-
+	setcolor(WHITE);
+	setfont(30, 30, "黑体");
+	outtextxy(100, 100, "Wanna play Magic Tower? Y OR N");
 	while (!kbhit())
 	{
 		char ch;
 		ch = getch();
-		if (ch == 'Y')
+		if (ch == 'Y' || ch == 'y')
 			break;
-		else if (ch == 'N')
+		else if (ch == 'N' || ch == 'n')
 			closegraph();
 	}
 }
@@ -2698,8 +2623,6 @@ int main()
 
 	while (1)
 	{
-
-
 
 		control_move();
 		Sleep(60);

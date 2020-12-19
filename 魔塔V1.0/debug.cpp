@@ -2086,7 +2086,7 @@ void push_YONGSHI()///第四层开门勇士对话
 {
    for(int i = 0 ; i < 16 ; i++)
       YONGSHIDUIHUA[i].img = newimage();
-   getimage(YONGSHIDUIHUA[0].img,"picture\\YONGSHI1.png");
+   getimage(YONGSHIDUIHUA[0].img,"picture\\YONGSHI.png");
    getimage(YONGSHIDUIHUA[1].img,"picture\\YONGSHI2.png");
    getimage(YONGSHIDUIHUA[2].img,"picture\\YONGSHI3.png");
    getimage(YONGSHIDUIHUA[3].img,"picture\\YONGSHI4.png");
