@@ -1,9 +1,7 @@
 /*
-version3
-1、关卡切换
-2、弹窗正常显示
-3、作弊模式
-4、一键通关（演示用）
+version2
+1、人物移动优化
+2、关卡切换
 */
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -11,28 +9,27 @@ version3
 #include <string.h>
 #include <graphics.h> //来自ege库
 #include <conio.h>
-#include <string.h>
-#include <ege.h>
+#include <string>
 
-FILE *fp; //全局文件指针
+FILE* fp; //全局文件指针
 int map_order_now = 1;
 int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
 
 int map[13][13] =
-	{
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
-		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
-		{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
-		{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
-		{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
-		{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
-		{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
-		{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
-		{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
-		{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+{
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
+	{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
+	{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
+	{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
+	{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
+	{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
+	{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
+	{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
+	{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
+	{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 }; //初始地图 地图1
 typedef struct
 {
@@ -40,8 +37,8 @@ typedef struct
 } MAP;
 MAP M[15]; //十五层地图（临时）
 
-int map1[13][13]; //临时用
-//角色 结构体
+int map1[13][13];
+
 typedef struct Actor
 {
 	char name[20] = "打工人"; //名称; //名称
@@ -58,10 +55,9 @@ typedef struct Actor
 	int Bkey = 1;			  //蓝钥匙 初始为1
 	PIMAGE img;				  //角色对象图片
 } role, actor;				  //全局结构体 玩家角色
-//物件 结构体
 typedef struct Object
 {
-	char name[20] = {0};
+	char name[20] = { 0 };
 	int hp;		 //血量
 	int exp;	 //经验值
 	int Attack;	 //攻击力
@@ -71,10 +67,10 @@ typedef struct Object
 	int y;		 //y坐标
 	PIMAGE img;	 //对象图片
 } enemy, object, actors, background;
-//弹窗结构体
 typedef struct PUSH
 {
 	PIMAGE img;
+	//img_index;
 } push;
 enemy GreenSlime, RedSlime, BlackSlime; //敌人 史莱姆类
 enemy BigBat, SmallBat, RedBat;			//敌人 蝙蝠类
@@ -86,19 +82,21 @@ enemy Orc, OrcWarrior;
 enemy StoneMan;																																	   //敌人 兽人类
 actors OldMan, SwordMan, Warrior, Witch_R, Witch_Y, WhiteWitch, RedMan;																			   //任务 角色类
 object RKey, BKey, YKey, GKey, Sword, Shield, TreasureBox, WindOrient, GoldCoin, Level_Up, Cross, CrossEmblem, HP, BigHP, BlueDiamond, RedDiamond; //道具类
-background Background, Block, Floor, Wall, YellowDoor, GreenDoor, RedDoor, BlueDoor, Upstairs, Downstairs, Shop, Stars, StartImage;				   //地图 背景模块类
+background Background, Block, Floor, Wall, YellowDoor, GreenDoor, RedDoor, BlueDoor, Upstairs, Downstairs, Shop, Stars;							   //地图 背景模块类
 role People;																																	   //主角
 push CrossEmblem_PUSH, Shop_PUSH[4], Versus, Warrior_PUSH[16], OldMan_PUSH[4], RedMan_PUSH[4], WindOrient_PUSH, End;							   //弹出窗口类
+//地图切换核心函数（待完善）
 
 void changemap()
 {
 	memcpy(M[map_order_now - 1].Map, map, sizeof(map)); //string.h 函数 地图切换函数
-}
+}//人物位置切换核心函数(待完善)
 
 void refresh()
 {
 	memcpy(map1, M[map_order_now - 1].Map, sizeof(map));
 }
+//刷新函数，待研究
 
 int get_x_y(int x, int y)
 {
@@ -158,11 +156,11 @@ void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
 	else ///下楼情况
 		switch (map_order_now)
 		{
-		case 1:
+		case 1: ///下楼到1楼
 			People.x = 1;
 			People.y = 2;
 			break;
-		case 2:
+		case 2: ///下楼到2楼WW
 			People.x = 10;
 			People.y = 1;
 			break;
@@ -199,8 +197,8 @@ void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
 			People.y = 1;
 			break;
 		}
-	Sleep(300);					   //debug
-	map_order_pre = map_order_now; //存储前一层的信息
+	Sleep(300); ///去除上下楼无限换图BUG
+	map_order_pre = map_order_now;
 	refresh();
 };
 
@@ -296,7 +294,6 @@ void initImage() //图像初始化函数
 	RedMan_PUSH[1].img = newimage();
 	RedMan_PUSH[2].img = newimage();
 	RedMan_PUSH[3].img = newimage();
-	StartImage.img = newimage();
 	//获取图像
 	getimage(GreenSlime.img, "picture1/GreenSlime.png");
 	getimage(Background.img, "picture1/Background.png");
@@ -355,7 +352,6 @@ void initImage() //图像初始化函数
 	getimage(People.img, "picture1/actor.png");
 	getimage(StoneMan.img, "picture1/StoneMan.png");
 	//弹窗图片
-	getimage(StartImage.img, "picture1/StartImage.jpg");
 	getimage(CrossEmblem_PUSH.img, "picture1/CrossEmblem_PUSH.png");
 	getimage(Shop_PUSH[0].img, "picture1/Shop1.png");
 	getimage(Shop_PUSH[1].img, "picture1/Shop2.png");
@@ -559,18 +555,18 @@ void InitEnemy() //敌人角色初始化
 	MonsterKing.money = 30;
 	strcpy(MonsterKing.name, "史莱姆王");
 }
-/*地图的打印
-1、拷贝临时存储的地图到map
-2、放置主背景
-3、根据地图坐标依次判断对象的类型（已编号）
-4、根据窗口大小换算坐标 放置在对应位置
-*/
 void Show_Map()
 {
 
+
+	// changemap();
+	// refresh();
 	memcpy(map, map1, sizeof(map));
 	map[People.x][People.y] = 15;
 	putimage(0, 0, Background.img);
+	//changemap();
+	//refresh();
+
 	for (int i = 0; i < 13; i++)
 	{
 		for (int j = 0; j < 13; j++)
@@ -715,15 +711,16 @@ void Show_Map()
 		outtextxy(210, 295, MONEYNUM);	   ///金钱打印
 		outtextxy(210, 340, EXNUM);		   ///经验打印
 	}
+
 }
 
 void show_attack_monster(PIMAGE img, int hp, int atack, int def)
 {
 	putimage(300, 200, Versus.img);
 	putimage(325, 240, 80, 80, img, 0, 0, 60, 60);
-	setcolor(RGB(255, 255, 255)); ///白色文字
-	setbkmode(TRANSPARENT);		  ///文字背景透明
-	setfont(-35, 0, "黑体");	  ///黑体字
+	setcolor(RGB(255, 255, 255));///白色文字
+	setbkmode(TRANSPARENT);///文字背景透明
+	setfont(-35, 0, "黑体");///黑体字
 	char HP[10], Attack[10], Defence[10], PeopleHP[10], PeopleAttack[10], PeopleDefence[10];
 	sprintf(HP, "%d", hp);
 	sprintf(Attack, "%d", atack);
@@ -737,35 +734,37 @@ void show_attack_monster(PIMAGE img, int hp, int atack, int def)
 	outtextxy(700, 261, PeopleHP);
 	outtextxy(700, 320, PeopleAttack);
 	outtextxy(700, 380, PeopleDefence);
-} //打怪界面
+}///打怪界面
 
 void atack_monster_hp(int EXCLE, int x, int y, int temhp)
 {
 	map[x][y] = EXCLE;
 	changemap();
 	People.hp += temhp;
-} //修复人物HP可以为负数的BUG
+}///修复人物HP可以为负数的BUG
+
 
 void atack_monster(int EXCLE, int x, int y)
 {
 	///打怪函数
 	switch (EXCLE)
 	{
-		///黑史莱姆
+		///绿史莱姆
 	case 30:
-		if (People.Attack > BlackSlime.Defence)
-			if ((People.hp - ((BlackSlime.hp / (People.Attack - BlackSlime.Defence)) * (BlackSlime.Attack - People.Defence))) > 0)
+		if (People.Attack > GreenSlime.Defence)
+			if ((People.hp - ((GreenSlime.hp / (People.Attack - GreenSlime.Defence)) * (GreenSlime.Attack - People.Defence))) > 0)
 			{
-				int hp = BlackSlime.hp;
+				int hp = GreenSlime.hp;
 				int temhp = 0;
 				for (int i = 0; i < 20000; i++)
 				{
-					People.hp -= BlackSlime.Attack - People.Defence;
-					hp -= People.Attack - BlackSlime.Defence;
+					People.hp -= GreenSlime.Attack - People.Defence;
+					hp -= People.Attack - GreenSlime.Defence;
 					temhp += GreenSlime.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
-					show_attack_monster(BlackSlime.img, hp, BlackSlime.Attack, BlackSlime.Defence);
+					show_attack_monster(GreenSlime.img, hp, GreenSlime.Attack, GreenSlime.Defence);
 					Sleep(300);
 					if (hp == 0)
 						break;
@@ -788,7 +787,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 		break;
 
-		///红史莱姆
+		///红头怪
 	case 31:
 		if (People.Attack > RedSlime.Defence)
 			if ((People.hp - ((RedSlime.hp / (People.Attack - RedSlime.Defence)) * (RedSlime.Attack - People.Defence))) > 0)
@@ -800,6 +799,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= RedSlime.Attack - People.Defence;
 					hp -= People.Attack - RedSlime.Defence;
 					temhp += RedSlime.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(RedSlime.img, hp, RedSlime.Attack, RedSlime.Defence);
@@ -836,6 +836,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= BoneMan.Attack - People.Defence;
 					hp -= People.Attack - BoneMan.Defence;
 					temhp += BoneMan.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(BoneMan.img, hp, BoneMan.Attack, BoneMan.Defence);
@@ -873,6 +874,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Witch_1.Attack - People.Defence;
 					hp -= People.Attack - Witch_1.Defence;
 					temhp += Witch_1.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Witch_1.img, hp, Witch_1.Attack, Witch_1.Defence);
@@ -898,7 +900,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///绿史莱姆
+		///绿头怪
 	case 34:
 		if (People.Attack > GreenSlime.Defence)
 			if ((People.hp - ((GreenSlime.hp / (People.Attack - GreenSlime.Defence)) * (GreenSlime.Attack - People.Defence))) > 0)
@@ -910,6 +912,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= GreenSlime.Attack - People.Defence;
 					hp -= People.Attack - GreenSlime.Defence;
 					temhp += GreenSlime.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(GreenSlime.img, hp, GreenSlime.Attack, GreenSlime.Defence);
@@ -947,6 +950,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= SmallBat.Attack - People.Defence;
 					hp -= People.Attack - SmallBat.Defence;
 					temhp += SmallBat.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(SmallBat.img, hp, SmallBat.Attack, SmallBat.Defence);
@@ -972,7 +976,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///兽人
+		///兽面人
 	case 36:
 		if (People.Attack > Orc.Defence)
 			if ((People.hp - ((Orc.hp / (People.Attack - Orc.Defence)) * (Orc.Attack - People.Defence))) > 0)
@@ -983,6 +987,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Orc.Attack - People.Defence;
 					hp -= People.Attack - Orc.Defence;
 					temhp += Orc.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Orc.img, hp, Orc.Attack, Orc.Defence);
@@ -1019,7 +1024,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= BoneWarrior.Attack - People.Defence;
 					hp -= People.Attack - BoneWarrior.Defence;
 					temhp += BoneWarrior.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(BoneWarrior.img, hp, BoneWarrior.Attack, BoneWarrior.Defence);
@@ -1056,7 +1061,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= BigBat.Attack - People.Defence;
 					hp -= People.Attack - BigBat.Defence;
 					temhp += BigBat.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(BigBat.img, hp, BigBat.Attack, BigBat.Defence);
@@ -1093,6 +1098,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Guard_1.Attack - People.Defence;
 					hp -= People.Attack - Guard_1.Defence;
 					temhp += Guard_1.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Guard_1.img, hp, Guard_1.Attack, Guard_1.Defence);
@@ -1118,7 +1124,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///金色队长
+		///金队长
 	case 40:
 		if (People.Attack > GBoss.Defence)
 			if ((People.hp - ((GBoss.hp / (People.Attack - GBoss.Defence)) * (GBoss.Attack - People.Defence))) > 0)
@@ -1129,6 +1135,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= GBoss.Attack - People.Defence;
 					hp -= People.Attack - GBoss.Defence;
 					temhp += GBoss.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(GBoss.img, hp, GBoss.Attack, GBoss.Defence);
@@ -1154,7 +1161,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///金色卫士
+		///金卫士
 	case 41:
 		if (People.Attack > Guard_3.Defence)
 			if ((People.hp - ((Guard_3.hp / (People.Attack - Guard_3.Defence)) * (Guard_3.Attack - People.Defence))) > 0)
@@ -1165,6 +1172,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Guard_3.Attack - People.Defence;
 					hp -= People.Attack - Guard_3.Defence;
 					temhp += Guard_3.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Guard_3.img, hp, Guard_3.Attack, Guard_3.Defence);
@@ -1190,7 +1198,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///骷髅卫士
+		///骷髅队长
 	case 42:
 		if (People.Attack > BoneGuard.Defence)
 			if ((People.hp - ((BoneGuard.hp / (People.Attack - BoneGuard.Defence)) * (BoneGuard.Attack - People.Defence))) > 0)
@@ -1201,6 +1209,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= BoneGuard.Attack - People.Defence;
 					hp -= People.Attack - BoneGuard.Defence;
 					temhp += BoneGuard.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(BoneGuard.img, hp, BoneGuard.Attack, BoneGuard.Defence);
@@ -1223,9 +1232,10 @@ void atack_monster(int EXCLE, int x, int y)
 				refresh();
 				cleardevice();
 				Show_Map();
+
 			}
 		break;
-		///怪兽王
+		///怪王
 	case 43:
 		if (People.Attack > MonsterKing.Defence)
 			if ((People.hp - ((MonsterKing.hp / (People.Attack - MonsterKing.Defence)) * (MonsterKing.Attack - People.Defence))) > 0)
@@ -1236,7 +1246,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= MonsterKing.Attack - People.Defence;
 					hp -= People.Attack - MonsterKing.Defence;
 					temhp += MonsterKing.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(MonsterKing.img, hp, MonsterKing.Attack, MonsterKing.Defence);
@@ -1259,6 +1269,7 @@ void atack_monster(int EXCLE, int x, int y)
 				refresh();
 				cleardevice();
 				Show_Map();
+
 			}
 		break;
 		///石头怪人
@@ -1272,7 +1283,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= StoneMan.Attack - People.Defence;
 					hp -= People.Attack - StoneMan.Defence;
 					temhp += StoneMan.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(StoneMan.img, hp, StoneMan.Attack, StoneMan.Defence);
@@ -1309,7 +1320,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= RedBat.Attack - People.Defence;
 					hp -= People.Attack - RedBat.Defence;
 					temhp += RedBat.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(RedBat.img, hp, RedBat.Attack, RedBat.Defence);
@@ -1346,7 +1357,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Witch_R.Attack - People.Defence;
 					hp -= People.Attack - Witch_R.Defence;
 					temhp += Witch_R.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Witch_R.img, hp, Witch_R.Attack, Witch_R.Defence);
@@ -1383,7 +1394,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Witch_2.Attack - People.Defence;
 					hp -= People.Attack - Witch_2.Defence;
 					temhp += Witch_2.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Witch_2.img, hp, Witch_2.Attack, Witch_2.Defence);
@@ -1409,7 +1420,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///白衣巫师
+		///白衣武士
 	case 48:
 		if (People.Attack > WhiteWitch.Defence)
 			if ((People.hp - ((WhiteWitch.hp / (People.Attack - WhiteWitch.Defence)) * (WhiteWitch.Attack - People.Defence))) > 0)
@@ -1420,7 +1431,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= WhiteWitch.Attack - People.Defence;
 					hp -= People.Attack - WhiteWitch.Defence;
 					temhp += WhiteWitch.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(WhiteWitch.img, hp, WhiteWitch.Attack, WhiteWitch.Defence);
@@ -1446,7 +1457,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///黄衣法师
+		///麻衣法师
 	case 49:
 		if (People.Attack > Witch_Y.Defence)
 			if ((People.hp - ((Witch_Y.hp / (People.Attack - Witch_Y.Defence)) * (Witch_Y.Attack - People.Defence))) > 0)
@@ -1457,7 +1468,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Witch_Y.Attack - People.Defence;
 					hp -= People.Attack - Witch_Y.Defence;
 					temhp += Witch_Y.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Witch_Y.img, hp, Witch_Y.Attack, Witch_Y.Defence);
@@ -1483,6 +1494,44 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
+		//    ///兽面武士
+		//case 50:
+		//    if (People.Attack > SHOUMIANWUSHI.Defence)
+		//        if ((People.hp - ((SHOUMIANWUSHI.hp / (People.Attack - SHOUMIANWUSHI.Defence)) * (SHOUMIANWUSHI.Attack - People.Defence))) > 0)
+		//        {
+		//            int temhp = 0, hp = SHOUMIANWUSHI.hp;
+		//            for (int i = 0; i < 20000; i++)
+		//            {
+		//                People.hp -= SHOUMIANWUSHI.Attack - People.Defence;
+		//                hp -= People.Attack - SHOUMIANWUSHI.Defence;
+		//                temhp += SHOUMIANWUSHI.Attack - People.Defence;
+		//                //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+		//                if (hp < 0)
+		//                    hp = 0;
+		//                show_attack_monster(SHOUMIANWUSHI.img, hp, SHOUMIANWUSHI.Attack, SHOUMIANWUSHI.Defence);
+		//                Sleep(300);
+		//                if (hp == 0)
+		//                    break;
+		//            }
+		//            //People.hp-=SHOUMIANWUSHI.hp/(People.Attack-SHOUMIANWUSHI.Defence)*(SHOUMIANWUSHI.Attack-People.Defence);
+		//            if (People.hp <= 0)
+		//                atack_monster_hp(EXCLE, x, y, temhp);
+		//            else
+		//            {
+		//                People.money += SHOUMIANWUSHI.money;
+		//                People.exp += SHOUMIANWUSHI.exp;
+
+		//                map[x][y] = 0;
+		//            }
+		//            map[People.x][People.y] = 0;
+		//            changemap();
+		//            refresh();
+		//            cleardevice();
+		//            Show_Map();
+		//        }
+
+		//    break;
+			///双手剑士
 	case 51:
 		if (People.Attack > SwordMan.Defence)
 			if ((People.hp - ((SwordMan.hp / (People.Attack - SwordMan.Defence)) * (SwordMan.Attack - People.Defence))) > 0)
@@ -1493,6 +1542,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= SwordMan.Attack - People.Defence;
 					hp -= People.Attack - SwordMan.Defence;
 					temhp += SwordMan.Attack - People.Defence;
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(SwordMan.img, hp, SwordMan.Attack, SwordMan.Defence);
@@ -1518,7 +1568,7 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
-		///高级卫士
+		///高级卫兵
 	case 52:
 		if (People.Attack > Guard_2.Defence)
 			if ((People.hp - ((Guard_2.hp / (People.Attack - Guard_2.Defence)) * (Guard_2.Attack - People.Defence))) > 0)
@@ -1529,7 +1579,7 @@ void atack_monster(int EXCLE, int x, int y)
 					People.hp -= Guard_2.Attack - People.Defence;
 					hp -= People.Attack - Guard_2.Defence;
 					temhp += Guard_2.Attack - People.Defence;
-					("play audio\\Attack.wav", "", 0, NULL);
+					//mciSendString("play audio\\Attack.wav", "", 0, NULL);
 					if (hp < 0)
 						hp = 0;
 					show_attack_monster(Guard_2.img, hp, Guard_2.Attack, Guard_2.Defence);
@@ -1555,13 +1605,199 @@ void atack_monster(int EXCLE, int x, int y)
 			}
 
 		break;
+		//        ///冥卫兵
+		//    case 53:
+		//        if (People.Attack > MINGWEIBING.Defence)
+		//            if ((People.hp - ((MINGWEIBING.hp / (People.Attack - MINGWEIBING.Defence)) * (MINGWEIBING.Attack - People.Defence))) > 0)
+		//            {
+		//                int temhp = 0, hp = MINGWEIBING.hp;
+		//                for (int i = 0; i < 20000; i++)
+		//                {
+		//                    People.hp -= MINGWEIBING.Attack - People.Defence;
+		//                    hp -= People.Attack - MINGWEIBING.Defence;
+		//                    temhp += MINGWEIBING.Attack - People.Defence;
+		//                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+		//                    if (hp < 0)
+		//                        hp = 0;
+		//                    show_attack_monster(MINGWEIBING.img, hp, MINGWEIBING.Attack, MINGWEIBING.Defence);
+		//                    Sleep(300);
+		//                    if (hp == 0)
+		//                        break;
+		//                }
+		//                //People.hp-=MINGWEIBING.hp/(People.Attack-MINGWEIBING.Defence)*(MINGWEIBING.Attack-People.Defence);
+		//                if (People.hp <= 0)
+		//                    atack_monster_hp(EXCLE, x, y, temhp);
+		//                else
+		//                {
+		//                    People.money += MINGWEIBING.money;
+		//                    People.exp += MINGWEIBING.exp;
+		//
+		//                    map[x][y] = 0;
+		//                }
+		//                map[People.x][People.y] = 0;
+		//                changemap();
+		//                refresh();
+		//                cleardevice();
+		//                Show_Map();
+		//
+		//            }
+		//        break;
+		//        ///灵武士
+		//    case 54:
+		//        if (People.Attack > LINGWUSHI.Defence)
+		//            if ((People.hp - ((LINGWUSHI.hp / (People.Attack - LINGWUSHI.Defence)) * (LINGWUSHI.Attack - People.Defence))) > 0)
+		//            {
+		//                int temhp = 0, hp = LINGWUSHI.hp;
+		//                for (int i = 0; i < 20000; i++)
+		//                {
+		//                    People.hp -= LINGWUSHI.Attack - People.Defence;
+		//                    hp -= People.Attack - LINGWUSHI.Defence;
+		//                    temhp += LINGWUSHI.Attack - People.Defence;
+		//                    //mciSendString("play audio\\Attack.wav", "", 0, NULL);
+		//                    if (hp < 0)
+		//                        hp = 0;
+		//                    show_attack_monster(LINGWUSHI.img, hp, LINGWUSHI.Attack, LINGWUSHI.Defence);
+		//                    Sleep(300);
+		//                    if (hp == 0)
+		//                        break;
+		//                }
+		//                //People.hp-=LINGWUSHI.hp/(People.Attack-LINGWUSHI.Defence)*(LINGWUSHI.Attack-People.Defence);
+		//                if (People.hp <= 0)
+		//                    atack_monster_hp(EXCLE, x, y, temhp);
+		//                else
+		//                {
+		//                    People.money += LINGWUSHI.money;
+		//                    People.exp += LINGWUSHI.exp;
+		//
+		//                    map[x][y] = 0;
+		//                }
+		//                map[People.x][People.y] = 0;
+		//                changemap();
+		//                refresh();
+		//                cleardevice();
+		//                Show_Map();
+		//            }
+		//
+		//        break;
+		//        ///冥战士
+		//    case 55:
+		//        if (People.Attack > MINGZHANSHI.Defence)
+		//            if ((People.hp - ((MINGZHANSHI.hp / (People.Attack - MINGZHANSHI.Defence)) * (MINGZHANSHI.Attack - People.Defence))) > 0)
+		//            {
+		//                int temhp = 0, hp = MINGZHANSHI.hp;
+		//                for (int i = 0; i < 20000; i++)
+		//                {
+		//                    People.hp -= MINGZHANSHI.Attack - People.Defence;
+		//                    hp -= People.Attack - MINGZHANSHI.Defence;
+		//                    temhp += MINGZHANSHI.Attack - People.Defence;
+		//                    mciSendString("play audio\\Attack.wav", "", 0, NULL);
+		//                    if (hp < 0)
+		//                        hp = 0;
+		//                    show_attack_monster(MINGZHANSHI.img, hp, MINGZHANSHI.Attack, MINGZHANSHI.Defence);
+		//                    Sleep(300);
+		//                    if (hp == 0)
+		//                        break;
+		//                }
+		//                //People.hp-=MINGZHANSHI.hp/(People.Attack-MINGZHANSHI.Defence)*(MINGZHANSHI.Attack-People.Defence);
+		//                if (People.hp <= 0)
+		//                    atack_monster_hp(EXCLE, x, y, temhp);
+		//                else
+		//                {
+		//                    People.money += MINGZHANSHI.money;
+		//                    People.exp += MINGZHANSHI.exp;
+		//
+		//                    map[x][y] = 0;
+		//                }
+		//                map[People.x][People.y] = 0;
+		//                changemap();
+		//                refresh();
+		//                cleardevice();
+		//                Show_Map();
+		//            }
+		//
+		//        break;
+		//        ///灵法师
+		//    case 56:
+		//        if (People.Attack > LINGFASHI.Defence)
+		//            if ((People.hp - ((LINGFASHI.hp / (People.Attack - LINGFASHI.Defence)) * (LINGFASHI.Attack - People.Defence))) > 0)
+		//            {
+		//                int temhp = 0, hp = LINGFASHI.hp;
+		//                for (int i = 0; i < 20000; i++)
+		//                {
+		//                    People.hp -= LINGFASHI.Attack - People.Defence;
+		//                    hp -= People.Attack - LINGFASHI.Defence;
+		//                    temhp += LINGFASHI.Attack - People.Defence;
+		//                    mciSendString("play audio\\Attack.wav", "", 0, NULL);
+		//                    if (hp < 0)
+		//                        hp = 0;
+		//                    show_attack_monster(LINGFASHI.img, hp, LINGFASHI.Attack, LINGFASHI.Defence);
+		//                    Sleep(300);
+		//                    if (hp == 0)
+		//                        break;
+		//                }
+		//                //People.hp-=LINGFASHI.hp/(People.Attack-LINGFASHI.Defence)*(LINGFASHI.Attack-People.Defence);
+		//                if (People.hp <= 0)
+		//                    atack_monster_hp(EXCLE, x, y, temhp);
+		//                else
+		//                {
+		//                    People.money += LINGFASHI.money;
+		//                    People.exp += LINGFASHI.exp;
+		//
+		//                    map[x][y] = 0;
+		//                }
+		//                map[People.x][People.y] = 0;
+		//                changemap();
+		//                refresh();
+		//                cleardevice();
+		//                Show_Map();
+		//            }
+		//
+		//        break;
+		//        ///冥队长
+		//    case 57:
+		//        if (People.Attack > MINGDUIZHANG.Defence)
+		//            if ((People.hp - ((MINGDUIZHANG.hp / (People.Attack - MINGDUIZHANG.Defence)) * (MINGDUIZHANG.Attack - People.Defence))) > 0)
+		//            {
+		//                int temhp = 0, hp = MINGDUIZHANG.hp;
+		//                for (int i = 0; i < 20000; i++)
+		//                {
+		//                    People.hp -= MINGDUIZHANG.Attack - People.Defence;
+		//                    hp -= People.Attack - MINGDUIZHANG.Defence;
+		//                    temhp += MINGDUIZHANG.Attack - People.Defence;
+		//                    mciSendString("play audio\\Attack.wav", "", 0, NULL);
+		//                    if (hp < 0)
+		//                        hp = 0;
+		//                    show_attack_monster(MINGDUIZHANG.img, hp, MINGDUIZHANG.Attack, MINGDUIZHANG.Defence);
+		//                    Sleep(300);
+		//                    if (hp == 0)
+		//                        break;
+		//                }
+		//                //People.hp-=MINGDUIZHANG.hp/(People.Attack-MINGDUIZHANG.Defence)*(MINGDUIZHANG.Attack-People.Defence);
+		//                if (People.hp <= 0)
+		//                    atack_monster_hp(EXCLE, x, y, temhp);
+		//                else
+		//                {
+		//                    People.money += MINGDUIZHANG.money;
+		//                    People.exp += MINGDUIZHANG.exp;
+		//
+		//                    map[x][y] = 0;
+		//                }
+		//                map[People.x][People.y] = 0;
+		//                changemap();
+		//                refresh();
+		//                cleardevice();
+		//                Show_Map();
+		//            }
+		//
+		//        break;
 	}
 }
+
 
 void push_OldMan()
 {
 	putimage(430, 210, OldMan_PUSH[0].img);
-	int a = 1; ///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+	int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
 	for (int i = 0; i < 20000; i++)
 	{
 		if (kbhit())
@@ -1569,6 +1805,7 @@ void push_OldMan()
 			char b = getch();
 			if (b == 'e' || b == 'E')
 			{
+				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
 				a++;
 				if (a > 4)
 					a = 1;
@@ -1578,6 +1815,7 @@ void push_OldMan()
 			}
 			else if (b == 'q' || b == 'Q')
 			{
+				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
 				a--;
 				if (a < 1)
 					a = 4;
@@ -1592,6 +1830,7 @@ void push_OldMan()
 				case 1:
 					if (People.exp > 99)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.exp -= 100;
 						People.hp += 800;
 						People.Attack += 3;
@@ -1600,9 +1839,10 @@ void push_OldMan()
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						// mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "经验不够！");
 						cleardevice();
@@ -1614,14 +1854,16 @@ void push_OldMan()
 				case 2:
 					if (People.exp > 29)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.exp -= 30;
 						People.Attack += 5;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "经验不够");
 						cleardevice();
@@ -1633,14 +1875,16 @@ void push_OldMan()
 				case 3:
 					if (People.exp > 29)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.exp -= 30;
 						People.Defence += 5;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "经验不够");
 						cleardevice();
@@ -1650,6 +1894,7 @@ void push_OldMan()
 					}
 					break;
 				case 4:
+					//mciSendString("play audio\\PICK.wav", "", 0, NULL);
 					break;
 				}
 				break;
@@ -1661,7 +1906,7 @@ void push_OldMan()
 void push_RedMan()
 {
 	putimage(430, 210, RedMan_PUSH[0].img);
-	int a = 1; ///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+	int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
 	for (int i = 0; i < 20000; i++)
 	{
 		if (kbhit())
@@ -1669,6 +1914,7 @@ void push_RedMan()
 			char b = getch();
 			if (b == 'e' || b == 'E')
 			{
+				// mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
 				a++;
 				if (a > 4)
 					a = 1;
@@ -1678,6 +1924,7 @@ void push_RedMan()
 			}
 			else if (b == 'q' || b == 'Q')
 			{
+				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
 				a--;
 				if (a < 1)
 					a = 4;
@@ -1692,14 +1939,16 @@ void push_RedMan()
 				case 1:
 					if (People.money > 9)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 10;
 						People.Ykey++;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够，无法购买");
 						cleardevice();
@@ -1711,14 +1960,16 @@ void push_RedMan()
 				case 2:
 					if (People.money > 50)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 50;
 						People.Bkey++;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够，无法购买");
 						cleardevice();
@@ -1730,14 +1981,16 @@ void push_RedMan()
 				case 3:
 					if (People.money > 100)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 100;
 						People.Rkey++;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够");
 						cleardevice();
@@ -1747,6 +2000,7 @@ void push_RedMan()
 					}
 					break;
 				case 4:
+					//mciSendString("play audio\\PICK.wav", "", 0, NULL);
 					break;
 				}
 				break;
@@ -1755,33 +2009,10 @@ void push_RedMan()
 		Sleep(200);
 	}
 }
-void push_Shop(); ///第三层商店
-void push_Warrior()
-{
-	for (int i = 0; i < 16; i++)
-	{
-		Warrior_PUSH[i] = newimage(); //初始化
-	}
-	getimage(Warrior_PUSH[0].img, "picture1\\Warrior1.png");
-	getimage(Warrior_PUSH[1].img, "picture1\\Warrior2.png");
-	getimage(Warrior_PUSH[2].img, "picture1\\Warrior3.png");
-	getimage(Warrior_PUSH[3].img, "picture1\\Warrior4.png");
-	getimage(Warrior_PUSH[4].img, "picture1\\Warrior5.png");
-	getimage(Warrior_PUSH[5].img, "picture1\\Warrior6.png");
-	getimage(Warrior_PUSH[6].img, "picture1\\Warrior7.png");
-	getimage(Warrior_PUSH[7].img, "picture1\\Warrior8.png");
-	getimage(Warrior_PUSH[8].img, "picture1\\Warrior9.png");
-	getimage(Warrior_PUSH[9].img, "picture1\\Warrior10.png");
-	getimage(Warrior_PUSH[10].img, "picture1\\Warrior11.png");
-	getimage(Warrior_PUSH[11].img, "picture1\\Warrior12.png");
-	getimage(Warrior_PUSH[12].img, "picture1\\Warrior13.png");
-	getimage(Warrior_PUSH[13].img, "picture1\\Warrior14.png");
-	getimage(Warrior_PUSH[14].img, "picture1\\Warrior15.png");
-	getimage(Warrior_PUSH[15].img, "picture1\\Warrior16.png");
-}
+void push_Shop()///第三层商店
 {
 	putimage(430, 210, Shop_PUSH[0].img);
-	int a = 1; ///记录选择的选项,字母e往下走,字母q往上走,字母j确定
+	int a = 1;///记录选择的选项,字母e往下走,字母q往上走,字母j确定
 	for (int i = 0; i < 20000; i++)
 	{
 		if (kbhit())
@@ -1789,6 +2020,7 @@ void push_Warrior()
 			char b = getch();
 			if (b == 'e' || b == 'E')
 			{
+				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
 				a++;
 				if (a > 4)
 					a = 1;
@@ -1798,6 +2030,7 @@ void push_Warrior()
 			}
 			else if (b == 'q' || b == 'Q')
 			{
+				//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
 				a--;
 				if (a < 1)
 					a = 4;
@@ -1812,14 +2045,16 @@ void push_Warrior()
 				case 1:
 					if (People.money > 24)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 25;
 						People.hp += 800;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够！");
 						cleardevice();
@@ -1831,14 +2066,16 @@ void push_Warrior()
 				case 2:
 					if (People.money > 24)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 25;
 						People.Attack += 5;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够");
 						cleardevice();
@@ -1850,14 +2087,16 @@ void push_Warrior()
 				case 3:
 					if (People.money > 24)
 					{
+						//mciSendString("play audio\\BUY.wav", "", 0, NULL);
 						People.money -= 25;
 						People.Defence += 5;
 					}
 					else
 					{
-						setcolor(RGB(255, 255, 255)); ///白色文字
-						setbkmode(TRANSPARENT);		  ///文字背景透明
-						setfont(-55, 0, "黑体");	  ///黑体字
+						//mciSendString("play audio\\EXCHANGE.wav", "", 0, NULL);
+						setcolor(RGB(255, 255, 255));///白色文字
+						setbkmode(TRANSPARENT);///文字背景透明
+						setfont(-55, 0, "黑体");///黑体字
 						char WORDS[40];
 						strcpy(WORDS, "金钱不够");
 						cleardevice();
@@ -1867,6 +2106,7 @@ void push_Warrior()
 					}
 					break;
 				case 4:
+					//mciSendString("play audio\\PICK.wav", "", 0, NULL);
 					break;
 				}
 				break;
@@ -1875,12 +2115,15 @@ void push_Warrior()
 		Sleep(200);
 	}
 }
+
+
 void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
 {
 	putimage(300, 200, Versus.img);
 	putimage(325, 240, 80, 80, img, 0, 0, 60, 60); //图片放置 截取
 	setcolor(RGB(255, 240, 245));				   //淡红
 	setfont(-35, 0, "楷体");
+	// setbkmode(TRANSPARENT);透明背景文字
 	char HP[10], ATTACK[10], Defence[10], People_HP[10], People_ATTACK[10], People_DEF[10]; //字符型数组，定义打印内容
 	sprintf(HP, "%d", hp);
 	sprintf(ATTACK, "%d", attack);
@@ -1894,10 +2137,47 @@ void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
 	outtextxy(700, 250, People_HP);
 	outtextxy(700, 320, People_ATTACK);
 	outtextxy(700, 380, People_DEF);
+	//待测试
 }
-void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,y)的状态
+//void key_down() //备用
+//{
+//	char userkey;
+//	for (int i = 0; i < 13; i++)
+//	{
+//		for (int j = 0; j < 13; j++)
+//		{
+//			if (map[i][j] == 15)
+//				;
+//			break;
+//		}
+//		if (map[i][j] == 15)
+//			;
+//		break;
+//	}
+//	userkey = getch();
+//	switch (userkey)
+//	{
+//	case 'A':
+//	case 'a':
+//	case 75:
+//		break;
+//	case 'D':
+//	case 'd':
+//	case 77:
+//		break;
+//	case 'W':
+//	case 'w':
+//	case 72:
+//		break;
+//	case 'S':
+//	case 's':
+//		case 80：
+//			break;
+//	 }
+//}
+void change_state(int EXCLE, int x, int y)///EXCLE代表标号值这个函数用于改变(x,y)的状态
 {
-	if (map[x][y] == -2 && map_order_now == 3) ///第三层商店因为访问商店只能从正中间访问用-2表示
+	if (map[x][y] == -2 && map_order_now == 3)///第三层商店因为访问商店只能从正中间访问用-2表示
 	{
 		//   push_SHANGDIAN();
 	}
@@ -1913,9 +2193,11 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		Show_Map();
 	}
 
-	//开门与道具拾取
+
+	///以下包含开门和各类道具的获取
 	else if (map[x][y] == 3 && People.Rkey > 0)
 	{
+		//   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -1924,6 +2206,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 	}
 	else if (map[x][y] == 4 && People.Ykey > 0)
 	{
+		//   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -1932,6 +2215,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 	}
 	else if (map[x][y] == 5 && People.Bkey > 0)
 	{
+		//   mciSendString("play audio\\OPENTHEDOOR.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -1940,6 +2224,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 	}
 	else if (map[x][y] == 6)
 	{
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -1948,6 +2233,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 	}
 	else if (map[x][y] == 7)
 	{
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
@@ -1956,8 +2242,9 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 	}
 	else if (map[x][y] == 8)
 	{
-		map[x][y] = 0;
+		map[x][y] = 0;   ///打印圣光徽图片
 		putimage(260, 230, CrossEmblem_PUSH.img);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		Sleep(200);
 		getch();
 		map[People.x][People.y] = 0;
@@ -1966,32 +2253,38 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 	}
 	else if (map[x][y] == 9)
 	{
-		map[x][y] = 0;
+		map[x][y] = 0;   ///打印风之罗盘图片
 		putimage(260, 230, WindOrient_PUSH.img);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		Sleep(200);
 		getch();
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
 	}
-	else if (map[x][y] == 10) ///上楼梯
+	else if (map[x][y] == 10)///上楼梯
 	{
 		map_order_now++;
 		refresh();
 		floor_changes_role_xy();
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
-	else if (map[x][y] == 11) ///下楼梯
+	else if (map[x][y] == 11)///下楼梯
 	{
 		if (map_order_now == 1)
 		{
-			setcolor(YELLOW);		 ///白色文字
-			setbkmode(TRANSPARENT);	 ///文字背景透明
-			setfont(-55, 0, "黑体"); ///黑体字
+			//  mciSendString("play audio\\PICK.wav","",0,NULL);
+			setcolor(YELLOW);///白色文字
+			setbkmode(TRANSPARENT);///文字背景透明
+			setfont(-55, 0, "黑体");///黑体字
 			char WORDS[40];
 			char words[40];
+			//<<<<<< < HEAD
 			strcpy(WORDS, "无法下楼！");
+			//====== =
 			strcpy(WORDS, "已到第1层无法下楼！按任意");
 			strcpy(words, "键返回游戏！");
+			//>>>>>> > parent of b2f4824... Update main.cpp
 			outtextxy(340, 340, WORDS);
 			outtextxy(500, 420, words);
 			Sleep(200);
@@ -2004,6 +2297,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 			map_order_now--;
 			refresh();
 			floor_changes_role_xy();
+			//  mciSendString("play audio\\PICK.wav","",0,NULL);
 		}
 	}
 	else if (map[x][y] == 12)
@@ -2013,6 +2307,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		changemap();
 		refresh();
 		People.Ykey++;
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 13)
 	{
@@ -2021,6 +2316,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		changemap();
 		refresh();
 		People.Rkey++;
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 14)
 	{
@@ -2029,6 +2325,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		changemap();
 		refresh();
 		People.Bkey++;
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 16)
 	{
@@ -2037,6 +2334,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		changemap();
 		refresh();
 		People.Attack += 3;
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 17)
 	{
@@ -2045,6 +2343,7 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		changemap();
 		refresh();
 		People.Defence += 3;
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 	}
 	else if (map[x][y] == 21 && map_order_now == 2)
 	{
@@ -2052,9 +2351,10 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "获得剑！攻击加60！");
 		outtextxy(340, 340, WORDS);
@@ -2063,20 +2363,22 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		cleardevice();
 		People.Attack += 60;
 		Show_Map();
-	}
+	}///当楼层为2时让白发老人消失(已经改成一把剑)
 	else if (map[x][y] == 18 && map_order_now == 5)
 	{
-		push_OldMan();
-	}
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
+	//      push_BAIFALAOREN();
+	}///当楼层为5时弹出白发老人购买菜单
 	else if (map[x][y] == 25 && map_order_now == 2)
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "获得盾！防御加60！");
 		outtextxy(340, 340, WORDS);
@@ -2085,76 +2387,81 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		cleardevice();
 		People.Defence += 60;
 		Show_Map();
-	}
+	}///当楼层为2时让红衣老人消失(已经改成一盾牌)
 	else if (map[x][y] == 19 && map_order_now == 5)
 	{
-		push_RedMan();
-	}
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
+		 // push_HONGYILAOREN();
+	}///当楼层为5时弹出红衣老人购买菜单
 	else if (map[x][y] == 20)
 	{
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
-		strcpy(WORDS, "没有打开此门的钥匙！");
+		strcpy(WORDS, "你没有打开此门的钥匙！");
 		outtextxy(350, 350, WORDS);
 		Sleep(200);
 		getch();
 		cleardevice();
 		Show_Map();
-		//无法开门
+		///碰到青门无动作
 	}
-	else if (map[x][y] == 21 && map_order_now == 3) ///第三层的宝剑
+	else if (map[x][y] == 21 && map_order_now == 3)///第三层的宝剑
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Attack += 10;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
-		strcpy(WORDS, "取得剑！攻击力加10！");
+		strcpy(WORDS, "取得宝剑！攻击力加10！");
 		outtextxy(350, 350, WORDS);
 		Sleep(200);
 		getch();
 		cleardevice();
 		Show_Map();
 	}
-	else if (map[x][y] == 21 && map_order_now == 9) ///第九层的宝剑
+	else if (map[x][y] == 21 && map_order_now == 9)///第九层的宝剑
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Attack += 60;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
-		strcpy(WORDS, "取得大剑！攻击力加60！");
+		strcpy(WORDS, "取得大宝剑！攻击力加60！");
 		outtextxy(350, 350, WORDS);
 		Sleep(200);
 		getch();
 		cleardevice();
 		Show_Map();
 	}
-	else if (map[x][y] == 23 && Warrior.hp == 0) ///勇士
+	else if (map[x][y] == 23 && Warrior.hp == 0)///勇士
 	{
-		push_Warrior();
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
+		//   push_YONGSHI();
 	}
-	else if (map[x][y] == 24) ///金钥匙
+	else if (map[x][y] == 24)///金钥匙
 	{
 		map[x][y] = 0;
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		// ("play audio\\PICK.wav","",0,NULL);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Attack += 10;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得金钥匙！每种钥匙数量加1！");
 		outtextxy(340, 340, WORDS);
@@ -2172,11 +2479,11 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		// ("play audio\\PICK.wav","",0,NULL);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.Defence += 10;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得盾牌！防御力加10！");
 		outtextxy(350, 350, WORDS);
@@ -2191,14 +2498,14 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		// ("play audio\\PICK.wav","",0,NULL);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.level += 1;
 		People.hp += 800;
 		People.Attack += 3;
 		People.Defence += 3;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得等级翅膀！等级加1级！");
 		outtextxy(350, 350, WORDS);
@@ -2213,11 +2520,11 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		// ("play audio\\PICK.wav","",0,NULL);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.money += 300;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得开心金币！金币加300！");
 		outtextxy(350, 350, WORDS);
@@ -2232,13 +2539,13 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		// ("play audio\\PICK.wav","",0,NULL);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.hp *= 1.5;
 		People.Attack *= 1.5;
 		People.Defence *= 1.5;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		char words[40];
 		strcpy(WORDS, "获得十字架！所有属性变为");
@@ -2256,14 +2563,14 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		// ("play audio\\PICK.wav","",0,NULL);
+		//   mciSendString("play audio\\PICK.wav","",0,NULL);
 		People.level += 3;
 		People.hp += 2400;
 		People.Attack += 9;
 		People.Defence += 9;
-		setcolor(YELLOW);		 ///白色文字
-		setbkmode(TRANSPARENT);	 ///文字背景透明
-		setfont(-55, 0, "黑体"); ///黑体字
+		setcolor(YELLOW);///白色文字
+		setbkmode(TRANSPARENT);///文字背景透明
+		setfont(-55, 0, "黑体");///黑体字
 		char WORDS[40];
 		strcpy(WORDS, "取得经验盒，等级加3级！");
 		outtextxy(350, 350, WORDS);
@@ -2273,10 +2580,10 @@ void change_state(int EXCLE, int x, int y) ///EXCLE代表标号值这个函数用于改变(x,
 		Show_Map();
 	}
 	///以下只包含打怪以及调用打怪函数
-	else if (map[x][y] == 1)
-		; ///撞透明墙
+	else if (map[x][y] == 1);///撞透明墙
 	else
 		atack_monster(EXCLE, x, y);
+
 }
 /*逻辑：1、判断人物前部是什么
 		2、人物坐标移动 图片改变（实时）
@@ -2289,12 +2596,22 @@ void control_move()
 	if (kbhit())
 	{
 		char userkey;
+		// for (int i = 0; i <13;i++)
+		// {
+		// 	for (int j =0;j<13;j++)
+		// 		{
+		// 			if (map[i][j]==15);
+		// 			break;
+		// 		}
+		// 	if (map[i][j]==15);
+		// 			break;
+		// }
 		userkey = getch();
 		switch (userkey)
 		{
 		case 'A':
 		case 'a':
-			//case 75:
+			// case 75:
 			if (map[People.x][People.y - 1] == 0)
 			{
 				People.y -= 1;
@@ -2308,7 +2625,7 @@ void control_move()
 			break;
 		case 'D':
 		case 'd':
-			//case 77:
+			// case 77:
 			if (map[People.x][People.y + 1] == 0)
 			{
 				People.y += 1;
@@ -2322,7 +2639,7 @@ void control_move()
 			break;
 		case 'W':
 		case 'w':
-			//case 72:
+			// case 72:
 			if (map[People.x - 1][People.y] == 0)
 			{
 				People.x -= 1;
@@ -2335,7 +2652,7 @@ void control_move()
 			break;
 		case 'S':
 		case 's':
-			//case 80:
+			// case 80:
 			if (map[People.x + 1][People.y] == 0)
 			{
 				People.x += 1;
@@ -2348,25 +2665,24 @@ void control_move()
 
 			break;
 		}
+
+
 	}
 	Show_Map();
 }
-void Enter_Or_Not() //开始界面函数
+void Enter_Or_Not()
 {
-
-	//文字颜色
 	setcolor(RED);
-	setfont(30, 30, "黑体");
-	putimage(430, 210, StartImage.img);
-	outtextxy(100, 100, "Wanna play Magic Tower? Y OR N");
+	setfont(100,50, "黑体");
+	outtextxy(400, 200, "Wanna play Magic Tower? Y OR N");
 
 	while (!kbhit())
 	{
 		char ch;
 		ch = getch();
-		if (ch == 'Y' || ch == 'y')
+		if (ch == 'Y')
 			break;
-		else if (ch == 'N' || ch == 'n')
+		else if (ch == 'N')
 			closegraph();
 	}
 }
@@ -2382,6 +2698,9 @@ int main()
 
 	while (1)
 	{
+
+
+
 		control_move();
 		Sleep(60);
 	}
