@@ -298,96 +298,96 @@ void initImage() //图像初始化函数
 	RedMan_PUSH[3].img = newimage();
 	StartImage.img = newimage();
 	//获取图像
-	getimage(GreenSlime.img, "picture11/GreenSlime.png");
-	getimage(Background.img, "picture11/Background.png");
-	getimage(BlackSlime.img, "picture11/BlackSlime.png");
-	getimage(RedSlime.img, "picture11/RedSlime.png");
-	getimage(RedDoor.img, "picture11/RedDoor.png");
-	getimage(RedDiamond.img, "picture11/RedDiamond.png");
-	getimage(SmallBat.img, "picture11/SmallBat.png");
-	getimage(BigBat.img, "picture11/BigBat.png");
-	getimage(RedBat.img, "picture11/RedBat.png");
-	getimage(Witch_1.img, "picture11/Witch_1.png");
-	getimage(Witch_2.img, "picture11/Witch_2.png");
-	getimage(Guard_1.img, "picture11/Guard_1.png");
-	getimage(Guard_2.img, "picture11/Guard_2.png");
-	getimage(Guard_3.img, "picture11/Guard_3.png");
-	getimage(BoneMan.img, "picture11/BoneMan.png");
-	getimage(BoneWarrior.img, "picture11/BoneWarrior.png");
-	getimage(BoneGuard.img, "picture11/BoneGuard.png");
-	getimage(GBoss.img, "picture11/GBoss.png");
-	getimage(MonsterKing.img, "picture11/MonsterKing.png");
-	getimage(RBoss.img, "picture11/RBoss.png");
-	getimage(Orc.img, "picture11/Orc.png");
-	getimage(OrcWarrior.img, "picture11/OrcWarrior.png");
-	getimage(OldMan.img, "picture11/OldMan.png");
-	getimage(RedMan.img, "picture11/RedMan.png");
-	getimage(SwordMan.img, "picture11/SwordMan.png");
-	getimage(Warrior.img, "picture11/Warrior.png");
-	getimage(Witch_R.img, "picture11/Witch_R.png");
-	getimage(Witch_Y.img, "picture11/Witch_Y.png");
-	getimage(WhiteWitch.img, "picture11/WhiteWitch.png");
-	getimage(RKey.img, "picture11/RKey.png");
-	getimage(YKey.img, "picture11/YKey.png");
-	getimage(BKey.img, "picture11/BKey.png");
-	getimage(GKey.img, "picture11/GKey.png");
-	getimage(Sword.img, "picture11/Sword.png");
-	getimage(Shield.img, "picture11/Shield.png");
-	getimage(TreasureBox.img, "picture11/TreasureBox.png");
-	getimage(WindOrient.img, "picture11/WindOrient.png");
-	getimage(Level_Up.img, "picture11/Level_Up.png");
-	getimage(GoldCoin.img, "picture11/GoldCoin.png");
-	getimage(HP.img, "picture11/HP.png");
-	getimage(BigHP.img, "picture11/BigHP.png");
-	getimage(CrossEmblem.img, "picture11/CrossEmblem.png");
-	getimage(Block.img, "picture11/Block.png");
-	getimage(Background.img, "picture11/Background.png");
-	getimage(Floor.img, "picture11/Floor.png");
-	getimage(Wall.img, "picture11/Wall.png");
-	getimage(YellowDoor.img, "picture11/YellowDoor.png");
-	getimage(BlueDoor.img, "picture11/BlueDoor.png");
-	getimage(BlueDiamond.img, "picture11/BlueDiamond.png");
-	getimage(GreenDoor.img, "picture11/GreenDoor.png");
-	getimage(Upstairs.img, "picture11/Upstairs.png");
-	getimage(Downstairs.img, "picture11/Downstairs.png");
-	getimage(Shop.img, "picture11/Shop.png");
-	getimage(Stars.img, "picture11/Stars.png");
-	getimage(People.img, "picture11/actor.png");
-	getimage(StoneMan.img, "picture11/StoneMan.png");
+	getimage(GreenSlime.img, "picture1/GreenSlime.png");
+	getimage(Background.img, "picture1/Background.png");
+	getimage(BlackSlime.img, "picture1/BlackSlime.png");
+	getimage(RedSlime.img, "picture1/RedSlime.png");
+	getimage(RedDoor.img, "picture1/RedDoor.png");
+	getimage(RedDiamond.img, "picture1/RedDiamond.png");
+	getimage(SmallBat.img, "picture1/SmallBat.png");
+	getimage(BigBat.img, "picture1/BigBat.png");
+	getimage(RedBat.img, "picture1/RedBat.png");
+	getimage(Witch_1.img, "picture1/Witch_1.png");
+	getimage(Witch_2.img, "picture1/Witch_2.png");
+	getimage(Guard_1.img, "picture1/Guard_1.png");
+	getimage(Guard_2.img, "picture1/Guard_2.png");
+	getimage(Guard_3.img, "picture1/Guard_3.png");
+	getimage(BoneMan.img, "picture1/BoneMan.png");
+	getimage(BoneWarrior.img, "picture1/BoneWarrior.png");
+	getimage(BoneGuard.img, "picture1/BoneGuard.png");
+	getimage(GBoss.img, "picture1/GBoss.png");
+	getimage(MonsterKing.img, "picture1/MonsterKing.png");
+	getimage(RBoss.img, "picture1/RBoss.png");
+	getimage(Orc.img, "picture1/Orc.png");
+	getimage(OrcWarrior.img, "picture1/OrcWarrior.png");
+	getimage(OldMan.img, "picture1/OldMan.png");
+	getimage(RedMan.img, "picture1/RedMan.png");
+	getimage(SwordMan.img, "picture1/SwordMan.png");
+	getimage(Warrior.img, "picture1/Warrior.png");
+	getimage(Witch_R.img, "picture1/Witch_R.png");
+	getimage(Witch_Y.img, "picture1/Witch_Y.png");
+	getimage(WhiteWitch.img, "picture1/WhiteWitch.png");
+	getimage(RKey.img, "picture1/RKey.png");
+	getimage(YKey.img, "picture1/YKey.png");
+	getimage(BKey.img, "picture1/BKey.png");
+	getimage(GKey.img, "picture1/GKey.png");
+	getimage(Sword.img, "picture1/Sword.png");
+	getimage(Shield.img, "picture1/Shield.png");
+	getimage(TreasureBox.img, "picture1/TreasureBox.png");
+	getimage(WindOrient.img, "picture1/WindOrient.png");
+	getimage(Level_Up.img, "picture1/Level_Up.png");
+	getimage(GoldCoin.img, "picture1/GoldCoin.png");
+	getimage(HP.img, "picture1/HP.png");
+	getimage(BigHP.img, "picture1/BigHP.png");
+	getimage(CrossEmblem.img, "picture1/CrossEmblem.png");
+	getimage(Block.img, "picture1/Block.png");
+	getimage(Background.img, "picture1/Background.png");
+	getimage(Floor.img, "picture1/Floor.png");
+	getimage(Wall.img, "picture1/Wall.png");
+	getimage(YellowDoor.img, "picture1/YellowDoor.png");
+	getimage(BlueDoor.img, "picture1/BlueDoor.png");
+	getimage(BlueDiamond.img, "picture1/BlueDiamond.png");
+	getimage(GreenDoor.img, "picture1/GreenDoor.png");
+	getimage(Upstairs.img, "picture1/Upstairs.png");
+	getimage(Downstairs.img, "picture1/Downstairs.png");
+	getimage(Shop.img, "picture1/Shop.png");
+	getimage(Stars.img, "picture1/Stars.png");
+	getimage(People.img, "picture1/actor.png");
+	getimage(StoneMan.img, "picture1/StoneMan.png");
 	//弹窗图片
-	getimage(StartImage.img, "picture11/StartImage.jpg");
-	getimage(CrossEmblem_PUSH.img, "picture11/CrossEmblem_PUSH.png");
-	getimage(Shop_PUSH[0].img, "picture11/Shop1.png");
-	getimage(Shop_PUSH[1].img, "picture11/Shop2.png");
-	getimage(Shop_PUSH[2].img, "picture11/Shop3.png");
-	getimage(Shop_PUSH[3].img, "picture11/Shop4.png");
-	getimage(Versus.img, "picture11/Versus.png");
-	getimage(OldMan_PUSH[0].img, "picture11/OldManOption1.png");
-	getimage(OldMan_PUSH[1].img, "picture11/OldManOption2.png");
-	getimage(OldMan_PUSH[2].img, "picture11/OldManOption3.png");
-	getimage(OldMan_PUSH[3].img, "picture11/OldManOption4.png");
-	getimage(End.img, "picture11/End.png");
-	getimage(WindOrient_PUSH.img, "picture11/WindOrient.png");
-	getimage(RedMan_PUSH[0].img, "picture11/RedManOption1.png");
-	getimage(RedMan_PUSH[1].img, "picture11/RedManOption2.png");
-	getimage(RedMan_PUSH[2].img, "picture11/RedManOption3.png");
-	getimage(RedMan_PUSH[3].img, "picture11/RedManOption4.png");
-	getimage(Warrior_PUSH[0].img, "picture11/Warrior1.png");
-	getimage(Warrior_PUSH[1].img, "picture11/Warrior2.png");
-	getimage(Warrior_PUSH[2].img, "picture11/Warrior3.png");
-	getimage(Warrior_PUSH[3].img, "picture11/Warrior4.png");
-	getimage(Warrior_PUSH[4].img, "picture11/Warrior5.png");
-	getimage(Warrior_PUSH[5].img, "picture11/Warrior6.png");
-	getimage(Warrior_PUSH[6].img, "picture11/Warrior7.png");
-	getimage(Warrior_PUSH[7].img, "picture11/Warrior8.png");
-	getimage(Warrior_PUSH[8].img, "picture11/Warrior9.png");
-	getimage(Warrior_PUSH[9].img, "picture11/Warrior10.png");
-	getimage(Warrior_PUSH[10].img, "picture11/Warrior11.png");
-	getimage(Warrior_PUSH[11].img, "picture11/Warrior12.png");
-	getimage(Warrior_PUSH[12].img, "picture11/Warrior13.png");
-	getimage(Warrior_PUSH[13].img, "picture11/Warrior14.png");
-	getimage(Warrior_PUSH[14].img, "picture11/Warrior15.png");
-	getimage(Warrior_PUSH[15].img, "picture11/Warrior16.png");
+	getimage(StartImage.img, "picture1/StartImage.jpg");
+	getimage(CrossEmblem_PUSH.img, "picture1/CrossEmblem_PUSH.png");
+	getimage(Shop_PUSH[0].img, "picture1/Shop1.png");
+	getimage(Shop_PUSH[1].img, "picture1/Shop2.png");
+	getimage(Shop_PUSH[2].img, "picture1/Shop3.png");
+	getimage(Shop_PUSH[3].img, "picture1/Shop4.png");
+	getimage(Versus.img, "picture1/Versus.png");
+	getimage(OldMan_PUSH[0].img, "picture1/OldManOption1.png");
+	getimage(OldMan_PUSH[1].img, "picture1/OldManOption2.png");
+	getimage(OldMan_PUSH[2].img, "picture1/OldManOption3.png");
+	getimage(OldMan_PUSH[3].img, "picture1/OldManOption4.png");
+	getimage(End.img, "picture1/End.png");
+	getimage(WindOrient_PUSH.img, "picture1/WindOrient.png");
+	getimage(RedMan_PUSH[0].img, "picture1/RedManOption1.png");
+	getimage(RedMan_PUSH[1].img, "picture1/RedManOption2.png");
+	getimage(RedMan_PUSH[2].img, "picture1/RedManOption3.png");
+	getimage(RedMan_PUSH[3].img, "picture1/RedManOption4.png");
+	getimage(Warrior_PUSH[0].img, "picture1/Warrior1.png");
+	getimage(Warrior_PUSH[1].img, "picture1/Warrior2.png");
+	getimage(Warrior_PUSH[2].img, "picture1/Warrior3.png");
+	getimage(Warrior_PUSH[3].img, "picture1/Warrior4.png");
+	getimage(Warrior_PUSH[4].img, "picture1/Warrior5.png");
+	getimage(Warrior_PUSH[5].img, "picture1/Warrior6.png");
+	getimage(Warrior_PUSH[6].img, "picture1/Warrior7.png");
+	getimage(Warrior_PUSH[7].img, "picture1/Warrior8.png");
+	getimage(Warrior_PUSH[8].img, "picture1/Warrior9.png");
+	getimage(Warrior_PUSH[9].img, "picture1/Warrior10.png");
+	getimage(Warrior_PUSH[10].img, "picture1/Warrior11.png");
+	getimage(Warrior_PUSH[11].img, "picture1/Warrior12.png");
+	getimage(Warrior_PUSH[12].img, "picture1/Warrior13.png");
+	getimage(Warrior_PUSH[13].img, "picture1/Warrior14.png");
+	getimage(Warrior_PUSH[14].img, "picture1/Warrior15.png");
+	getimage(Warrior_PUSH[15].img, "picture1/Warrior16.png");
 }
 void InitEnemy() //敌人角色初始化
 {
@@ -2298,7 +2298,7 @@ void control_move()
 			if (map[People.x][People.y - 1] == 0)
 			{
 				People.y -= 1;
-				getimage(People.img, "picture11/actorL.png");
+				getimage(People.img, "picture1/actorL.png");
 			}
 			else
 			{
@@ -2312,7 +2312,7 @@ void control_move()
 			if (map[People.x][People.y + 1] == 0)
 			{
 				People.y += 1;
-				getimage(People.img, "picture11/actorR.png");
+				getimage(People.img, "picture1/actorR.png");
 			}
 			else
 			{
@@ -2326,7 +2326,7 @@ void control_move()
 			if (map[People.x - 1][People.y] == 0)
 			{
 				People.x -= 1;
-				getimage(People.img, "picture11/actorB.png");
+				getimage(People.img, "picture1/actorB.png");
 			}
 			else
 			{
@@ -2339,7 +2339,7 @@ void control_move()
 			if (map[People.x + 1][People.y] == 0)
 			{
 				People.x += 1;
-				getimage(People.img, "picture11/actor.png");
+				getimage(People.img, "picture1/actor.png");
 			}
 			else
 			{
