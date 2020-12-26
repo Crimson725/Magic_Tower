@@ -83,7 +83,7 @@ object RKey, BKey, YKey, GKey, Sword, Shield, TreasureBox, WindOrient, GoldCoin,
 background Background, Block, Floor, Wall, YellowDoor, GreenDoor, RedDoor, BlueDoor, Upstairs, Downstairs, Shop, Stars;							   //地图 背景模块类
 role People;																																	   //主角
 push CrossEmblem_PUSH, Shop_PUSH[4], Versus, Warrior_PUSH[16], OldMan_PUSH[4], RedMan_PUSH[4], WindOrient_PUSH, End;							   //弹出窗口类
-//地图切换核心函数（待完善）
+
 
 void changemap()
 {
@@ -552,6 +552,23 @@ void InitEnemy() //敌人角色初始化
 	MonsterKing.money = 30;
 	strcpy(MonsterKing.name, "史莱姆王");
 }
+void read_map()
+{
+	int MAPNUM;
+	fp = fopen("data\\map.txt", "r");
+	for (int k = 0; k < 11; k++)
+	{
+		fscanf(fp, "%d", &MAPNUM);
+		for (int i = 0; i < 13; i++)
+		{
+			for (int j = 0; j < 13; j++)
+			{
+				fscanf(fp, "%d", &M[k].Map[i][j]);
+			}
+		}
+	}
+}
+
 void Show_Map()
 {
 
@@ -805,7 +822,7 @@ void atack_monster(int EXCLE, int x, int y)
 				cleardevice();
 				Show_Map();
 			}
-		
+
 		break;
 		//骷髅人
 	case 32:
@@ -1997,9 +2014,9 @@ void change_state(int EXCLE, int x, int y) //EXCLE代表标号值这个函数用于改变(x,y
 	{
 		map[x][y] = 0; //打印圣光徽图片
 		putimage(260, 230, CrossEmblem_PUSH.img);
-		People.hp*=1.5;
-		People.Defence*=1.5;
-		People.exp*= 1.5;
+		People.hp *= 1.5;
+		People.Defence *= 1.5;
+		People.exp *= 1.5;
 		Sleep(200);
 		getch();
 		map[People.x][People.y] = 0;
@@ -2010,7 +2027,7 @@ void change_state(int EXCLE, int x, int y) //EXCLE代表标号值这个函数用于改变(x,y
 	{
 		map[x][y] = 0; //打印风之罗盘图片
 		putimage(260, 230, WindOrient_PUSH.img);
-		People.Attack*=2;
+		People.Attack *= 2;
 		Sleep(200);
 		getch();
 		map[People.x][People.y] = 0;
@@ -2322,7 +2339,7 @@ void change_state(int EXCLE, int x, int y) //EXCLE代表标号值这个函数用于改变(x,y
 
 void control_move()
 {
-	changemap();
+	//changemap();
 
 	if (kbhit())
 	{
@@ -2400,7 +2417,7 @@ int Cheat_Mode()
 	char ch;
 	char code_end = 'E';
 	ch = getch();
-	if (ch == 'C'|| ch=='c')
+	if (ch == 'C' || ch == 'c')
 	{
 		People.hp = 99999;
 		People.Attack = 99999;
@@ -2413,13 +2430,13 @@ int Cheat_Mode()
 		People.level = 99999;
 		return 1;
 	}
-	else if (ch == 'E'||ch=='e')
+	else if (ch == 'E' || ch == 'e')
 	{
 		cleardevice();
 		setcolor(WHITE);
 		setfont(30, 30, "宋体");
-		while(1)
-		outtextxy(100, 100, "Congratulations!");
+		while (1)
+			outtextxy(100, 100, "Congratulations!,赵奎老师最帅！");
 		closegraph();
 	}
 	else return 0;
@@ -2431,7 +2448,7 @@ void Enter_Or_Not()
 	setfont(30, 30, "宋体");
 	putimage(250, 250, Versus.img);
 	outtextxy(0, 50, "Wanna play Magic Tower? Y OR N OR T");
-	outtextxy(80,80, "TYPE(Y:yes,N:no,T:cheat:modes)");
+	outtextxy(80, 80, "TYPE(Y:yes,N:no,T:cheat:modes)");
 	while (!kbhit())
 	{
 		char ch;
@@ -2452,8 +2469,8 @@ void Enter_Or_Not()
 			else
 			{
 				//while (1)
-					outtextxy(100, 150, "Press the right button!");
-					break;
+				outtextxy(100, 150, "Press the right button!");
+				break;
 				//closegraph();
 			}
 
@@ -2467,15 +2484,19 @@ int main()
 {
 	initgraph(1080, 780); //创建窗口 1080*780 ege库函数
 	setcaption("Magic_Tower");
+	refresh();
 	initImage();
 	InitEnemy();
+
 	changemap();
+	read_map();
 	floor_changes_role_xy();
 	Enter_Or_Not();
 	while (1)
 	{
 
 		control_move();
+		Show_Map();
 		Sleep(30);
 	}
 	//getch();
