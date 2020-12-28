@@ -553,7 +553,7 @@ void InitEnemy() //敌人角色初始化
 	MonsterKing.money = 30;
 	strcpy(MonsterKing.name, "史莱姆王");
 }
-void read_map()
+void read_map()//地图的读写
 {
 	int MAPNUM;
 	fp = fopen("data\\map.txt", "r");
@@ -1956,16 +1956,18 @@ void change_state(int EXCLE, int x, int y)
 	{
 		push_Shop();
 	}
-	else if (map[x][y] == -2 && map_order_now == 11)
+	else if (map[x][y] == -2 && map_order_now == 15)
 	{
+		cleardevice();
 		putimage(430, 210, End.img);
 		Sleep(500);
 		getch();
-		map[People.x][People.y] = 0;
-		changemap();
-		refresh();
-		cleardevice();
-		Show_Map();
+		closegraph();
+		//map[People.x][People.y] = 0;
+		//changemap();
+		//refresh();
+		//cleardevice();
+		//Show_Map();
 	}
 	//开门与道具拾取
 	else if (map[x][y] == 3 && People.Rkey > 0)
@@ -2497,7 +2499,7 @@ int main()
 
 		control_move();
 		Show_Map();
-		Sleep(30);
+		Sleep(100);//对于闪屏问题的缓解(缺点是操作延迟提升）
 	}
 	//getch();
 	closegraph(); //窗口关闭 ege库函数
