@@ -11,24 +11,24 @@
 #include <graphics.h> //来自ege库
 #include <conio.h>
 #include <math.h>
-FILE* fp; //全局文件指针
+FILE *fp; //全局文件指针
 int map_order_now = 1;
-int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行自增
+int map_order_pre = 0; //地图参数 当前为1 前一地图为0 随关卡进行改变
 int map[13][13] =
-{
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
-	{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
-	{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
-	{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
-	{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
-	{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
-	{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
-	{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
-	{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
-	{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 10, 0, 12, 34, 31, 34, 0, 0, 0, 0, 0, 1},
+		{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
+		{1, 6, 0, 32, 4, 0, 2, 6, 12, 6, 2, 0, 1},
+		{1, 12, 32, 16, 2, 0, 2, 6, 12, 6, 2, 0, 1},
+		{1, 2, 4, 2, 2, 0, 2, 2, 2, 30, 2, 0, 1},
+		{1, 12, 37, 0, 2, 0, 4, 33, 34, 35, 2, 0, 1},
+		{1, 17, 0, 14, 2, 0, 2, 2, 2, 2, 2, 0, 1},
+		{1, 2, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 37, 0, 2, 2, 3, 2, 2, 2, 4, 2, 1},
+		{1, 6, 7, 12, 2, 13, 0, 0, 2, 12, 36, 14, 1},
+		{1, 6, 8, 12, 2, 0, 11, 0, 2, 12, 12, 12, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 }; //初始地图 地图1
 typedef struct
 {
@@ -43,8 +43,8 @@ typedef struct Actor
 	char name[20] = "打工人"; //名称
 	int level = 1;			  //初始等级
 	int hp = 1000;			  //初始血量
-	int Attack = 50;		  //初始攻击力
-	int Defence = 10;  //初始防御力
+	int Attack = 20;		  //初始攻击力
+	int Defence = 10;		  //初始防御力
 	int money = 0;			  //初始金钱
 	int exp = 0;			  //初始经验
 	int x;					  //位置坐标x
@@ -56,7 +56,7 @@ typedef struct Actor
 } role, actor;				  //全局结构体 玩家角色
 typedef struct Object
 {
-	char name[20] = { 0 };
+	char name[20] = {0};
 	int hp;		 //血量
 	int exp;	 //经验值
 	int Attack;	 //攻击力
@@ -85,11 +85,10 @@ background Background, Block, Floor, Wall, YellowDoor, GreenDoor, RedDoor, BlueD
 role People;																																	   //主角
 push CrossEmblem_PUSH, Shop_PUSH[4], Versus, Warrior_PUSH[16], OldMan_PUSH[4], RedMan_PUSH[4], WindOrient_PUSH, End;							   //弹出窗口类
 
-
 void changemap()
 {
 	memcpy(M[map_order_now - 1].Map, map, sizeof(map)); //地图切换函数
-} 
+}
 
 void refresh()
 {
@@ -101,7 +100,7 @@ int get_x_y(int x, int y)
 	return map[x][y];
 }
 
-void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
+void floor_changes_role_xy() //不同层楼之间地图切换(人物初始位置待定）
 {
 	if (map_order_now >= map_order_pre) //上楼情况
 		switch (map_order_now)
@@ -195,7 +194,7 @@ void floor_changes_role_xy() //不同层楼之间的任务地图切换(初始位置待定）
 			People.y = 1;
 			break;
 		}
-	Sleep(300); //去除上下楼无限换图BUG
+	Sleep(300);
 	map_order_pre = map_order_now;
 	refresh();
 };
@@ -553,7 +552,7 @@ void InitEnemy() //敌人角色初始化
 	MonsterKing.money = 30;
 	strcpy(MonsterKing.name, "史莱姆王");
 }
-void read_map()//地图的读写
+void read_map() //地图的读写
 {
 	int MAPNUM;
 	fp = fopen("data\\map.txt", "r");
@@ -576,7 +575,6 @@ void Show_Map()
 	memcpy(map, map1, sizeof(map));
 	map[People.x][People.y] = 15;
 	putimage(0, 0, Background.img);
-
 
 	for (int i = 0; i < 13; i++)
 	{
@@ -690,9 +688,9 @@ void Show_Map()
 				putimage(60 * i + 304, 60 * j + 3, Guard_3.img);
 		}
 		//人物属性栏打印
-		setcolor(WHITE); //白色文字
-		setbkmode(TRANSPARENT);		  //文字背景透明
-		setfont(-30, 0, "宋体");	  //宋体字
+		setcolor(WHITE);		//白色文字
+		setbkmode(TRANSPARENT); //文字背景透明
+		setfont(30, 0, "宋体"); //宋体字
 		char YELLOWKEYNUM[20], REDKEYNUM[20], LEVELNUM[20], BLUEKEYNUM[20], ATACKNUM[20], HPNUM[20], EXNUM[20], MONEYNUM[20], DEFNUM[20];
 		sprintf(YELLOWKEYNUM, "%d", People.Ykey); //头文件cstdio或stdio.h
 		sprintf(REDKEYNUM, "%d", People.Rkey);
@@ -707,7 +705,7 @@ void Show_Map()
 		outtextxy(210, 530, REDKEYNUM);	   //红钥匙打印
 		outtextxy(210, 465, BLUEKEYNUM);   //蓝钥匙打印
 		outtextxy(210, 90, LEVELNUM);	   //等级打印
-		setfont(-35, 0, "宋体");		   //字体变小
+		setfont(25, 0, "宋体");			   //字体变小
 		outtextxy(210, 165, HPNUM);		   //血量打印
 		outtextxy(210, 208, ATACKNUM);	   //攻击力打印
 		outtextxy(210, 250, DEFNUM);	   //防御力打印
@@ -720,7 +718,7 @@ void show_attack_monster(PIMAGE img, int hp, int atack, int def)
 {
 	putimage(300, 200, Versus.img);
 	putimage(325, 240, 80, 80, img, 0, 0, 60, 60);
-	setcolor(RGB(255, 255, 255)); //白色文字
+	setcolor(RGB(255, 255, 255)); //白色
 	setbkmode(TRANSPARENT);		  //文字背景透明
 	setfont(-35, 0, "黑体");	  //黑体字
 	char HP[10], Attack[10], Defence[10], PeopleHP[10], PeopleAttack[10], PeopleDefence[10];
@@ -738,14 +736,15 @@ void show_attack_monster(PIMAGE img, int hp, int atack, int def)
 	outtextxy(700, 380, PeopleDefence);
 } //打怪界面
 
-void atack_monster_hp(int EXCLE, int x, int y, int temhp)
+void attack_monster_hp(int EXCLE, int x, int y, int temhp)
 {
 	map[x][y] = EXCLE;
 	changemap();
 	People.hp += temhp;
+	Sleep(20);
 } //人物hp
 
-void atack_monster(int EXCLE, int x, int y)
+void attack_monster(int EXCLE, int x, int y)
 {
 	//打怪函数
 	switch (EXCLE)
@@ -770,7 +769,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += GreenSlime.money;
@@ -806,7 +805,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += RedSlime.money;
@@ -842,7 +841,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += BoneMan.money;
@@ -877,7 +876,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Witch_1.money;
@@ -913,7 +912,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += GreenSlime.money;
@@ -949,7 +948,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += SmallBat.money;
@@ -984,7 +983,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Orc.money;
@@ -1019,7 +1018,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += BoneWarrior.money;
@@ -1054,7 +1053,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += BigBat.money;
@@ -1089,7 +1088,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Guard_1.money;
@@ -1123,7 +1122,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += GBoss.money;
@@ -1158,7 +1157,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Guard_3.money;
@@ -1192,7 +1191,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += BoneGuard.money;
@@ -1226,7 +1225,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += MonsterKing.money;
@@ -1260,7 +1259,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += StoneMan.money;
@@ -1295,7 +1294,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += RedBat.money;
@@ -1330,7 +1329,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Witch_R.money;
@@ -1365,7 +1364,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Witch_2.money;
@@ -1400,7 +1399,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += WhiteWitch.money;
@@ -1435,7 +1434,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Witch_Y.money;
@@ -1470,7 +1469,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += OrcWarrior.money;
@@ -1505,7 +1504,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += SwordMan.money;
@@ -1540,7 +1539,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Guard_2.money;
@@ -1575,7 +1574,7 @@ void atack_monster(int EXCLE, int x, int y)
 						break;
 				}
 				if (People.hp <= 0)
-					atack_monster_hp(EXCLE, x, y, temhp);
+					attack_monster_hp(EXCLE, x, y, temhp);
 				else
 				{
 					People.money += Guard_3.money;
@@ -1928,31 +1927,9 @@ void push_Warrior()
 	M[1].Map[7][2] = 0; //青门消失
 	Warrior.hp = 1;		//判断是否和勇士说过话(游戏机制）
 }
-
-void VersusWindow(PIMAGE img, int hp, int attack, int def) //战斗界面(RPG形式)
+void change_state(int EXCLE, int x, int y)
 {
-	putimage(300, 200, Versus.img);
-	putimage(325, 240, 80, 80, img, 0, 0, 60, 60); //图片放置 截取
-	setcolor(RGB(255, 240, 245));				   //淡红
-	setfont(-35, 0, "楷体");
-	char HP[10], ATTACK[10], Defence[10], People_HP[10], People_ATTACK[10], People_DEF[10]; //字符型数组，定义打印内容
-	sprintf(HP, "%d", hp);
-	sprintf(ATTACK, "%d", attack);
-	sprintf(Defence, "%d", def);
-	sprintf(People_HP, "%d", People.hp);
-	sprintf(People_DEF, "%d", People.Defence);
-	sprintf(People_ATTACK, "%d", People.Attack);
-	outtextxy(450, 250, HP);
-	outtextxy(450, 320, ATTACK);
-	outtextxy(450, 380, Defence);
-	outtextxy(700, 250, People_HP);
-	outtextxy(700, 320, People_ATTACK);
-	outtextxy(700, 380, People_DEF);
-}
-
-void change_state(int EXCLE, int x, int y) 
-{
-	if (map[x][y] == -2 && map_order_now == 3) 
+	if (map[x][y] == -2 && map_order_now == 3)
 	{
 		push_Shop();
 	}
@@ -2123,7 +2100,7 @@ void change_state(int EXCLE, int x, int y)
 		cleardevice();
 		People.Attack += 60;
 		Show_Map();
-	} 
+	}
 	else if (map[x][y] == 18 && map_order_now == 5)
 	{
 		push_OldMan();
@@ -2134,9 +2111,9 @@ void change_state(int EXCLE, int x, int y)
 		map[People.x][People.y] = 0;
 		changemap();
 		refresh();
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "获得盾 防御加60");
 		outtextxy(340, 340, WORDS);
@@ -2152,9 +2129,9 @@ void change_state(int EXCLE, int x, int y)
 	} //当楼层为5时弹出红衣老人购买菜单
 	else if (map[x][y] == 20)
 	{
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "门已上锁");
 		outtextxy(350, 350, WORDS);
@@ -2171,9 +2148,9 @@ void change_state(int EXCLE, int x, int y)
 		changemap();
 		refresh();
 		People.Attack += 10;
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "取得宝剑！攻击力加10！");
 		outtextxy(350, 350, WORDS);
@@ -2189,9 +2166,9 @@ void change_state(int EXCLE, int x, int y)
 		changemap();
 		refresh();
 		People.Attack += 60;
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "取得大宝剑！攻击力加60！");
 		outtextxy(350, 350, WORDS);
@@ -2211,9 +2188,9 @@ void change_state(int EXCLE, int x, int y)
 		changemap();
 		refresh();
 		People.Attack += 10;
-		setcolor(YELLOW);		
-		setbkmode(TRANSPARENT);	
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "取得金钥匙 每种钥匙数量加1");
 		outtextxy(340, 340, WORDS);
@@ -2232,8 +2209,8 @@ void change_state(int EXCLE, int x, int y)
 		changemap();
 		refresh();
 		People.Defence += 10;
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
 		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "取得盾牌 防御力加10");
@@ -2253,9 +2230,9 @@ void change_state(int EXCLE, int x, int y)
 		People.hp += 800;
 		People.Attack += 3;
 		People.Defence += 3;
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "取得等级翅膀 等级加1");
 		outtextxy(350, 350, WORDS);
@@ -2271,9 +2248,9 @@ void change_state(int EXCLE, int x, int y)
 		changemap();
 		refresh();
 		People.money += 300;
-		setcolor(YELLOW);		
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "取得幸运金币 金币加300");
 		outtextxy(350, 350, WORDS);
@@ -2291,9 +2268,9 @@ void change_state(int EXCLE, int x, int y)
 		People.hp *= 1.5;
 		People.Attack *= 1.5;
 		People.Defence *= 1.5;
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		char words[40];
 		strcpy(WORDS, "获得十字架 所有属性变为");
@@ -2315,9 +2292,9 @@ void change_state(int EXCLE, int x, int y)
 		People.hp += 2400;
 		People.Attack += 9;
 		People.Defence += 9;
-		setcolor(YELLOW);		 
-		setbkmode(TRANSPARENT);	 
-		setfont(-55, 0, "黑体"); 
+		setcolor(YELLOW);
+		setbkmode(TRANSPARENT);
+		setfont(-55, 0, "黑体");
 		char WORDS[40];
 		strcpy(WORDS, "取得经验盒 等级加3级");
 		outtextxy(350, 350, WORDS);
@@ -2329,7 +2306,7 @@ void change_state(int EXCLE, int x, int y)
 	else if (map[x][y] == 1)
 		; //撞透明墙
 	else
-		atack_monster(EXCLE, x, y);
+		attack_monster(EXCLE, x, y);
 }
 /*逻辑：1、判断人物前部是什么
 		2、人物坐标移动 图片改变（实时）
@@ -2338,7 +2315,6 @@ void change_state(int EXCLE, int x, int y)
 
 void control_move()
 {
-	
 
 	if (kbhit())
 	{
@@ -2436,12 +2412,12 @@ int Cheat_Mode()
 		setcolor(WHITE);
 		setfont(30, 30, "宋体");
 		while (1)
-			outtextxy(100, 100, "Thanks!,赵奎老师最帅！");
 			putimage(250, 250, End.img);
 
 		closegraph();
 	}
-	else return 0;
+	else
+		return 0;
 }
 //初始界面
 void Enter_Or_Not()
@@ -2450,7 +2426,7 @@ void Enter_Or_Not()
 	setfont(30, 30, "宋体");
 	putimage(250, 250, Versus.img);
 	outtextxy(0, 50, "Wanna play Magic Tower? Y OR N OR T");
-	outtextxy(80, 80, "TYPE(Y:yes,N:no,T:cheat:modes)");
+	outtextxy(80, 80, "TYPE(Y:yes,N:no,T:cheat_.modes)");
 	while (!kbhit())
 	{
 		char ch;
@@ -2465,7 +2441,6 @@ void Enter_Or_Not()
 					return;
 				else if (Cheat_Mode() == 0)
 					break;
-
 			}
 
 			else
@@ -2475,10 +2450,7 @@ void Enter_Or_Not()
 				break;
 				//closegraph();
 			}
-
-
 		}
-
 	}
 }
 
@@ -2496,10 +2468,8 @@ int main()
 	Enter_Or_Not();
 	while (1)
 	{
-
 		control_move();
-		Show_Map();
-		Sleep(100);//对于闪屏问题的缓解(缺点是操作延迟提升）
+		Sleep(60); //对于闪屏问题的缓解(缺点是操作延迟提升）
 	}
 	//getch();
 	closegraph(); //窗口关闭 ege库函数
